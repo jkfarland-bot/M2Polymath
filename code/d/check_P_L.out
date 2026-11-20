@@ -1,0 +1,8 @@
+P1 failures (1<=x<=100000): 0 ; P2 failures: 0
+U,V costs: 5/11 5/11  first correction level: 5/22
+Croot exponent 1/4+1/(4+16eps/3) at eps=1/6: 5/11
+balance a=1/2,b=1/3: (Fraction(3, 11), Fraction(5, 11))  a=1/2,b=9/28: (Fraction(7, 26), Fraction(47, 104))
+9c: E(log_3 2)=(1+g)/3=0.543643, 5/9=0.555556
+L: form test vs cubic-residue test disagreements: 0 ; represented primes <= N: 1559
+L: pointwise (N1)/(N2) failures n<=100000: 0; summed mod 8 failures: 0; parity (N3) failures: 0
+time 3

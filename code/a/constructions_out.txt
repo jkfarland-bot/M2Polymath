@@ -1,0 +1,62 @@
+X = 100000
+Table rows from the extract (positive nodes 1..Z):
+  pos Z=2: listed C=2, H5 minimal C=2, listed==H5:True, s_1=2, s_2..s_Z all zero:True
+  pos Z=3: listed C=6, H5 minimal C=6, listed==H5:True, s_1=6, s_2..s_Z all zero:True
+  pos Z=4: listed C=12, H5 minimal C=12, listed==H5:True, s_1=12, s_2..s_Z all zero:True
+  pos Z=6: listed C=60, H5 minimal C=60, listed==H5:True, s_1=60, s_2..s_Z all zero:True
+  pos Z=9: listed C=2520, H5 minimal C=2520, listed==H5:True, s_1=2520, s_2..s_Z all zero:True
+  sgn Z=2: listed C=12, H5 minimal C=12, listed==H5:True, s_1=12, s_2..s_2Z all zero:True
+  sgn Z=3: listed C=60, H5 minimal C=60, listed==H5:True, s_1=60, s_2..s_2Z all zero:True
+  sgn Z=4: listed C=840, H5 minimal C=840, listed==H5:True, s_1=840, s_2..s_2Z all zero:True
+  sgn Z=6: listed C=27720, H5 minimal C=27720, listed==H5:True, s_1=27720, s_2..s_2Z all zero:True
+Pointwise tests of listed rows:
+  pos Z=2: p=2 k=1 C=2 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  pos Z=3: p=2 k=1 C=6 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  pos Z=3: p=3 k=1 C=6 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  pos Z=4: p=2 k=3 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 3 [sum v_p(nodes)=3] H9:True H10:True all-r moments:True
+  pos Z=4: p=3 k=1 C=12 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  pos Z=6: p=2 k=4 C=60 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=6: p=3 k=2 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=6: p=5 k=1 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  pos Z=9: p=2 k=7 C=2520 v=3 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=7] H9:True H10:True all-r moments:True
+  pos Z=9: p=3 k=4 C=2520 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=9: p=5 k=1 C=2520 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  sgn Z=2: p=2 k=2 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 2 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=3: p=2 k=2 C=60 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=3: p=3 k=2 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=4: p=2 k=6 C=840 v=3 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=6] H9:True H10:True all-r moments:True
+  sgn Z=4: p=3 k=2 C=840 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=6: p=2 k=8 C=27720 v=3 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=8] H9:True H10:True all-r moments:True
+  sgn Z=6: p=3 k=4 C=27720 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  sgn Z=6: p=5 k=2 C=27720 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+Own (H5) constructions at the predicted Z, p in {2,3,5}, k = 1..4:
+  sgn Z=2: p=2 k=1 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 2 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=2: p=2 k=1 C=2 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  sgn Z=2: p=2 k=2 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 2 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=4: p=2 k=2 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 3 [sum v_p(nodes)=3] H9:True H10:True all-r moments:True
+  sgn Z=4: p=2 k=3 C=840 v=3 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=6] H9:True H10:True all-r moments:True
+  pos Z=4: p=2 k=3 C=12 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 3 [sum v_p(nodes)=3] H9:True H10:True all-r moments:True
+  sgn Z=4: p=2 k=4 C=840 v=3 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=6] H9:True H10:True all-r moments:True
+  pos Z=6: p=2 k=4 C=60 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  sgn Z=3: p=3 k=1 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=3: p=3 k=1 C=6 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  sgn Z=3: p=3 k=2 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=6: p=3 k=2 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=6: p=3 k=3 C=27720 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=9: p=3 k=3 C=2520 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  sgn Z=6: p=3 k=4 C=27720 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=9: p=3 k=4 C=2520 v=2 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  sgn Z=5: p=5 k=1 C=2520 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=5: p=5 k=1 C=60 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): 1 [sum v_p(nodes)=1] H9:True H10:True all-r moments:True
+  sgn Z=5: p=5 k=2 C=2520 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  pos Z=10: p=5 k=2 C=2520 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=2] H9:True H10:True all-r moments:True
+  sgn Z=10: p=5 k=3 C=232792560 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=15: p=5 k=3 C=360360 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=3] H9:True H10:True all-r moments:True
+  sgn Z=10: p=5 k=4 C=232792560 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+  pos Z=20: p=5 k=4 C=232792560 v=1 F(prime powers)=C:True composites div by C:True target D_k:True min v_p(F(n)) - v over omega>=2 (n<=X): all F(n)=0 [sum v_p(nodes)=4] H9:True H10:True all-r moments:True
+Side: d_2(12)=6, d_-2(12)=-2, d_2-d_-2 at 12 = 8 (mod 16: 8)
+Side: B_2-B_-2 prime powers all 4: True; omega>=2 all = 0 mod 16: True
+Side: (B_2 - delta)/2: integer valued True, =1 on prime powers True, =0 mod 2 for omega>=2 True, value at 1 = 0
+Side: (B_3 - delta)/3: integer valued True, =1 on prime powers True, =0 mod 3 for omega>=2 True, value at 1 = 0
+Side: (B_5 - delta)/5: integer valued True, =1 on prime powers True, =0 mod 5 for omega>=2 True, value at 1 = 0
+ALL CONSTRUCTION TESTS PASSED

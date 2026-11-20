@@ -1,0 +1,5 @@
+forward x=1000000007: pi mod 3 via D3 oracle = 1; reference pi=50847535 (mod 3 = 1); oracle calls 1057; steps 3.05e+06 (steps/x^(5/9)=30.5) 1s
+forward x=10000000000: pi mod 3 via D3 oracle = 1; reference pi=455052511 (mod 3 = 1); oracle calls 2232; steps 1.18e+07 (steps/x^(5/9)=32.9) 3s
+forward x=100000000000: pi mod 3 via D3 oracle = 2; reference pi=4118054813 (mod 3 = 2); oracle calls 4747; steps 4.52e+07 (steps/x^(5/9)=35.0) 10s
+my prime_count(1e10) = 455052511 (lit 455052511)
+reverse x=1000000007: D3 mod 9 via pi oracle = 4; D3_F1_fast mod 9 = 4

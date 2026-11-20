@@ -1,0 +1,48 @@
+p=2 k=1 signed: Z=2 (least v at that Z: 1, v<= 8 tested)  predicted=2  OK
+p=2 k=1 cheap : Z=2 (least v at that Z: 1, v<= 8 tested)  predicted=2  OK
+p=2 k=2 signed: Z=2 (least v at that Z: 2, v<= 8 tested)  predicted=2  OK
+p=2 k=2 cheap : Z=4 (least v at that Z: 2, v<= 8 tested)  predicted=4  OK
+p=2 k=3 signed: Z=4 (least v at that Z: 2, v<= 8 tested)  predicted=4  OK
+p=2 k=3 cheap : Z=4 (least v at that Z: 2, v<= 8 tested)  predicted=4  OK
+p=2 k=4 signed: Z=4 (least v at that Z: 2, v<= 8 tested)  predicted=4  OK
+p=2 k=4 cheap : Z=6 (least v at that Z: 2, v<= 8 tested)  predicted=6  OK
+p=2 k=5 signed: Z=4 (least v at that Z: 3, v<= 8 tested)  predicted=4  OK
+p=2 k=5 cheap : Z=8 (least v at that Z: 3, v<= 8 tested)  predicted=8  OK
+p=2 k=6 signed: Z=4 (least v at that Z: 3, v<= 8 tested)  predicted=4  OK
+p=2 k=6 cheap : Z=8 (least v at that Z: 3, v<= 8 tested)  predicted=8  OK
+p=2 k=7 signed: Z=6 (least v at that Z: 3, v<= 8 tested)  predicted=6  OK
+p=2 k=7 cheap : Z=8 (least v at that Z: 3, v<= 8 tested)  predicted=8  OK
+p=2 k=8 signed: Z=6 (least v at that Z: 3, v<= 8 tested)  predicted=6  OK
+p=2 k=8 cheap : Z=10 (least v at that Z: 3, v<= 8 tested)  predicted=10  OK
+p=3 k=1 signed: Z=3 (least v at that Z: 1, v<= 8 tested)  predicted=3  OK
+p=3 k=1 cheap : Z=3 (least v at that Z: 1, v<= 8 tested)  predicted=3  OK
+p=3 k=2 signed: Z=3 (least v at that Z: 1, v<= 8 tested)  predicted=3  OK
+p=3 k=2 cheap : Z=6 (least v at that Z: 1, v<= 8 tested)  predicted=6  OK
+p=3 k=3 signed: Z=6 (least v at that Z: 2, v<= 8 tested)  predicted=6  OK
+p=3 k=3 cheap : Z=9 (least v at that Z: 2, v<= 8 tested)  predicted=9  OK
+p=3 k=4 signed: Z=6 (least v at that Z: 2, v<= 8 tested)  predicted=6  OK
+p=3 k=4 cheap : Z=9 (least v at that Z: 2, v<= 8 tested)  predicted=9  OK
+p=3 k=5 signed: Z=9 (least v at that Z: 2, v<= 8 tested)  predicted=9  OK
+p=3 k=5 cheap : Z=12 (least v at that Z: 2, v<= 8 tested)  predicted=12  OK
+p=3 k=6 signed: Z=9 (least v at that Z: 2, v<= 8 tested)  predicted=9  OK
+p=3 k=6 cheap : Z=15 (least v at that Z: 2, v<= 8 tested)  predicted=15  OK
+p=5 k=1 signed: Z=5 (least v at that Z: 1, v<= 8 tested)  predicted=5  OK
+p=5 k=1 cheap : Z=5 (least v at that Z: 1, v<= 8 tested)  predicted=5  OK
+p=5 k=2 signed: Z=5 (least v at that Z: 1, v<= 8 tested)  predicted=5  OK
+p=5 k=2 cheap : Z=10 (least v at that Z: 1, v<= 8 tested)  predicted=10  OK
+p=5 k=3 signed: Z=10 (least v at that Z: 1, v<= 8 tested)  predicted=10  OK
+p=5 k=3 cheap : Z=15 (least v at that Z: 1, v<= 8 tested)  predicted=15  OK
+p=5 k=4 signed: Z=10 (least v at that Z: 1, v<= 8 tested)  predicted=10  OK
+p=5 k=4 cheap : Z=20 (least v at that Z: 1, v<= 8 tested)  predicted=20  OK
+p=5 k=5 signed: Z=15 (least v at that Z: 2, v<= 8 tested)  predicted=15  OK
+p=5 k=5 cheap : Z=25 (least v at that Z: 2, v<= 8 tested)  predicted=25  OK
+p=7 k=1 signed: Z=7 (least v at that Z: 1, v<= 8 tested)  predicted=7  OK
+p=7 k=1 cheap : Z=7 (least v at that Z: 1, v<= 8 tested)  predicted=7  OK
+p=7 k=2 signed: Z=7 (least v at that Z: 1, v<= 8 tested)  predicted=7  OK
+p=7 k=2 cheap : Z=14 (least v at that Z: 1, v<= 8 tested)  predicted=14  OK
+p=7 k=3 signed: Z=14 (least v at that Z: 1, v<= 8 tested)  predicted=14  OK
+p=7 k=3 cheap : Z=21 (least v at that Z: 1, v<= 8 tested)  predicted=21  OK
+p=7 k=4 signed: Z=14 (least v at that Z: 1, v<= 8 tested)  predicted=14  OK
+p=7 k=4 cheap : Z=28 (least v at that Z: 1, v<= 8 tested)  predicted=28  OK
+cross-check short vs full row range:
+  1060 (p,k,signed,Z,v) cases, disagreements: 0

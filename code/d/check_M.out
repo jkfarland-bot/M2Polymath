@@ -1,0 +1,11 @@
+table checks to 100000 failures: none time 3.1
+H(N)= 2506268 D3(N)= 7518850 pi(N)= 9592 pi mod 3= 1
+oracle reductions: forward failures 0 (all x<=N); reverse failures 0 (all x<=20000 and every 97th to N)
+X=1e12 calls fw=10183 rv=38454 (x^(1/3)=10000) ; a=0.333 fw/x^a=9.81 rv/x^a=14.75; a=0.400 fw/x^a=4.81 rv/x^a=5.71; a=0.450 fw/x^a=3.35 rv/x^a=3.61; a=0.490 fw/x^a=2.71 rv/x^a=2.81
+X=1e15 calls fw=100455 rv=384711 (x^(1/3)=100000) ; a=0.333 fw/x^a=12.06 rv/x^a=17.07; a=0.400 fw/x^a=5.09 rv/x^a=5.67; a=0.450 fw/x^a=3.41 rv/x^a=3.53; a=0.490 fw/x^a=2.73 rv/x^a=2.76
+X=1e18 calls fw=1001235 rv=3847296 (x^(1/3)=1000000) ; a=0.333 fw/x^a=14.35 rv/x^a=19.37; a=0.400 fw/x^a=5.27 rv/x^a=5.64; a=0.450 fw/x^a=3.44 rv/x^a=3.49; a=0.490 fw/x^a=2.73 rv/x^a=2.75
+X=1000000 H_direct=35343498 D3_F1=106030594 D3_A25=106030594 M1:True (0.1s)
+X=10000000 H_direct=473920012 D3_F1=1421760251 D3_A25=1421760251 M1:True (1.0s)
+X=100000000 pi=5761455 M4=5761455 M2first_ok=True M2second_ok=True (0s)
+X=1000000007 pi=50847535 M4=50847535 M2first_ok=True M2second_ok=True (2s)
+X=1162261467 pi=58648288 M4=58648288 M2first_ok=True M2second_ok=True (2s)

@@ -1,0 +1,6 @@
+M: identity failures (first x) x<=30000: none ; forward oracle failures 0 ; reverse 0
+   H(3e4)=611785 D3(3e4)=1835386 pi(3e4)=3245
+L: reduced primitive forms of disc -108: [(1, 0, 27), (4, -2, 7), (4, 2, 7)]
+L: failures none ; form vs cubic criterion disagreements 0 ; |R cap [1,3e4]| = 534
+N: (N4) failures n<=2e4, L<=3: 0 ; first n with c_L != mu mod 3: {0: 2, 1: 8, 2: 512}
+N: T via c_L vs literal tuples (x<1500 sample, L<=2) failures 0 ; (N5) least depth failures x<=2e4: 0

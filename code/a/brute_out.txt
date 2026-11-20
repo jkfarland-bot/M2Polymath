@@ -1,0 +1,56 @@
+Part 1: exhaustive tiny cases (count of solutions mod p^(v+k))
+  p=2 k=1 v=0 nodes=[1]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=2 k=1 v=1 nodes=[1]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=2 k=1 v=0 nodes=[1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 1 vs k=1
+  p=2 k=1 v=1 nodes=[1, 2]: 2 solutions; linear algebra says feasible=True; agree=True; lower bound sum v_p = 1 vs k=1
+  p=2 k=1 v=1 nodes=[-1, 1]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=2 k=1 v=2 nodes=[-1, 1]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=2 k=2 v=1 nodes=[1, 2, 3]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 1 vs k=2
+  p=2 k=2 v=2 nodes=[1, 2, 3]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 1 vs k=2
+  p=2 k=2 v=2 nodes=[1, 2, 3, 4]: 64 solutions; linear algebra says feasible=True; agree=True; lower bound sum v_p = 3 vs k=2
+  p=2 k=2 v=1 nodes=[-2, -1, 1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 2 vs k=2
+  p=2 k=2 v=2 nodes=[-2, -1, 1, 2]: 64 solutions; linear algebra says feasible=True; agree=True; lower bound sum v_p = 2 vs k=2
+  p=2 k=3 v=2 nodes=[-1, 1]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=3
+  p=2 k=3 v=2 nodes=[-2, -1, 1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 2 vs k=3
+  p=3 k=1 v=1 nodes=[1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=3 k=1 v=2 nodes=[1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=3 k=1 v=1 nodes=[1, 2, 3]: 6 solutions; linear algebra says feasible=True; agree=True; lower bound sum v_p = 1 vs k=1
+  p=3 k=1 v=1 nodes=[-2, -1, 1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  p=3 k=2 v=1 nodes=[-2, -1, 1, 2]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=2
+  p=3 k=2 v=1 nodes=[1, 2, 3]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 1 vs k=2
+  skip (too large) 3 2 [-3, -2, -1, 1, 2, 3] 1
+  p=5 k=1 v=1 nodes=[1, 2, 3, 4]: 0 solutions; linear algebra says feasible=False; agree=True; lower bound sum v_p = 0 vs k=1
+  skip (too large) 5 1 [1, 2, 3, 4, 5] 1
+Part 2: Theorem B exhaustive (mod p^2, v=1, k=1)
+  p=2 nodes=[-4, -3, -2, -1, 0, 1, 2, 3, 4]: 16384 solutions mod 4; violating B: 0; violating refinement sum_(v_p(z)=1) a_z z/p = u mod p: 0
+  p=3 nodes=[-3, -2, -1, 0, 1, 2, 3]: 4374 solutions mod 9; violating B: 0; violating refinement sum_(v_p(z)=1) a_z z/p = u mod p: 0
+  p=3 nodes=[0, 1, 2, 3, 4, 5, 6]: 4374 solutions mod 9; violating B: 0; violating refinement sum_(v_p(z)=1) a_z z/p = u mod p: 0
+  p=2 nodes=[0, 1, 2, 3, 4, 5, 6, 7, 8]: 16384 solutions mod 4; violating B: 0; violating refinement sum_(v_p(z)=1) a_z z/p = u mod p: 0
+  p=5 nodes=[0, 1, 2, 3, 4, 5]: 500 solutions mod 25; violating B: 0; violating refinement sum_(v_p(z)=1) a_z z/p = u mod p: 0
+  1,2,3 mod 9 claim:
+   solutions (a1 mod 9, a2 mod 9, a3 mod 3): [(0, 0, 1), (0, 0, 2)]
+Part 3: Theorem B by linear algebra (a_z in pZ forced for v_p(z)=1)
+  p=2 Z=2 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=2 Z=2 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=2 Z=4 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=2 Z=4 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=2 Z=8 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=2 Z=8 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=3 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=3 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=6 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=6 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=12 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=3 Z=12 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=5 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=5 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=10 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=10 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=20 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=5 Z=20 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=7 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=7 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=14 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=14 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=28 signed: unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)
+  p=7 Z=28 cheap : unrestricted w=1 (feasible=True); restricted w=2 (feasible=False)

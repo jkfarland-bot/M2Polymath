@@ -1,0 +1,4 @@
+all y<=3000, all L: 111099 cases, fails 0
+random y<=1e9 (CHECK on): 7500 fails 0
+special forms (CHECK on): 1647 fails 0
+random y in [1e11,1e13]: 120 fails 0

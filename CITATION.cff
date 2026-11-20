@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "M2Polymath: pi(x) mod 3, divisor sums and the exact degree"
+authors:
+  - family-names: Farland
+    given-names: Joseph S.
+date-released: 2026-11-20
+license: Apache-2.0
+repository-code: "https://github.com/jkfarland-bot/M2Polymath"
+abstract: >-
+  For identities built from shifted and twisted zeta and Dirichlet L factors with squarefull corrections,
+  no identity detects primes modulo p, the divided count needs a factor of degree divisible by p exactly once,
+  and the least degree yielding pi(x) mod p^k is S(p^ceil(k/2)) (signed) or S(p^k) (unsigned), S the Kempner
+  function. pi(x) mod 3 below the square root is equivalent to D_3(x) mod 9 below the square root, and
+  D_3(x) is computable in O(x^(5/9) log^2 x) operations, so pi(x) mod 3 is computable in x^(5/9+o(1)).
+  Core statements are machine-checked in Lean 4. Prepared with Claude (Anthropic); several results were first
+  proposed by ChatGPT (OpenAI) and independently checked. No external human referee has reviewed this work.
+keywords:
+  - prime counting
+  - Polymath4
+  - divisor sums
+  - Kempner function
+  - Lean 4

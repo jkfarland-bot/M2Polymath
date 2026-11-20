@@ -1,0 +1,10 @@
+slope of log steps vs log x, all points: 0.5692
+slope, x >= 1e13: 0.5655
+slope of log(steps/ln x), all: 0.5371; x>=1e13: 0.5380
+local slope 1e9->1e10: 0.5802
+local slope 1e10->1e11: 0.5770
+local slope 1e11->1e12: 0.5737
+local slope 1e12->1e13: 0.5716
+local slope 1e13->1e15: 0.5696
+local slope 1e15->1e17: 0.5596
+local slope 1e17->1e19: 0.5691

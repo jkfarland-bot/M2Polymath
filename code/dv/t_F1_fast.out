@@ -1,0 +1,12 @@
+F1_fast vs sieve: every x<=30000 failures 0 ; every 97th to 3e5 failures 0
+D3(1e6) = 106030594 (record 106030594)
+x=10000000 F1_fast=1421760251 grouped=1421760251 match=True
+x=100000007 F1_fast=18362474330 grouped=18362474330 match=True
+x=1000000007 F1_fast=230375375887 grouped=230375375887 match=True
+x=10000000000 F1_fast=2824280446479 grouped=2824280446479 match=True
+total steps for (F1) with hull walk:
+x=1e9 D3=230375375227 steps=1603592  /x^(5/9)=16.036  /(x^(5/9) ln x)=0.7738  /x^(2/3)=1.6036  tail/steps=0.041  0s
+x=1e10 D3=2824280446479 steps=6099752  /x^(5/9)=16.973  /(x^(5/9) ln x)=0.7371  /x^(2/3)=1.3142  tail/steps=0.035  2s
+x=1e11 D3=33978264556380 steps=23033408  /x^(5/9)=17.834  /(x^(5/9) ln x)=0.7041  /x^(2/3)=1.0691  tail/steps=0.030  6s
+x=1e12 D3=402439152166882 steps=86313562  /x^(5/9)=18.596  /(x^(5/9) ln x)=0.6730  /x^(2/3)=0.8631  tail/steps=0.025  23s
+x=1e13 D3=4703975577244852 steps=321892745  /x^(5/9)=19.297  /(x^(5/9) ln x)=0.6447  /x^(2/3)=0.6935  tail/steps=0.022  85s
