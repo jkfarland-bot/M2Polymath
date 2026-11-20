@@ -4,6 +4,7 @@ title: "M2Polymath: pi(x) mod 3, divisor sums and the exact degree"
 authors:
   - family-names: Farland
     given-names: Joseph S.
+version: "1.0.0"
 date-released: 2026-11-20
 license: Apache-2.0
 repository-code: "https://github.com/jkfarland-bot/M2Polymath"

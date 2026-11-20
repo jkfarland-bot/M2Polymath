@@ -1,0 +1,42 @@
+{
+  "upload_type": "software",
+  "title": "M2Polymath: pi(x) mod 3, divisor sums and the exact degree (Lean 4 formalization and checks)",
+  "creators": [
+    {
+      "name": "Farland, Joseph S."
+    }
+  ],
+  "version": "1.0.0",
+  "publication_date": "2026-11-20",
+  "access_right": "open",
+  "license": "Apache-2.0",
+  "description": "<p>Lean 4 formalization, exact-arithmetic check code and review reports for an obstruction theorem and an exact degree formula for prime-counting congruences from divisor sums, linked to the Polymath4 project. For identities built from shifted and twisted zeta and Dirichlet L factors with squarefull corrections: no identity detects primes modulo p; the divided count needs a factor whose degree is divisible by p exactly once; the least degree yielding pi(x) mod p^k is S(p^ceil(k/2)) (signed) or S(p^k) (unsigned), with S the Kempner function. pi(x) mod 3 below the square root is equivalent to D_3(x) mod 9 below the square root, and D_3(x) is computable in O(x^(5/9) log^2 x) operations, so pi(x) mod 3 is computable in x^(5/9+o(1)). Includes 2,011 Lean declarations on the standard axioms only and a Lean function computing pi(x) mod 3, proved correct for every x.</p><p>AI assistance: this work was prepared with Claude (Anthropic), an AI model, which helped draft the text, develop and check the proofs, run the computations, and search the literature. Several results, marked A19 in CLAIMS.md, were first proposed by ChatGPT (OpenAI) and independently checked here. The formalized statements are machine-checked in Lean 4; the rest is not. The author, Joseph S. Farland, chose the problems, directed the work, and is responsible for its content. No external human referee has reviewed this work.</p>",
+  "keywords": [
+    "prime counting function",
+    "Polymath4",
+    "divisor sums",
+    "Kempner function",
+    "Dirichlet series",
+    "Lean 4",
+    "formal verification",
+    "number-theoretic algorithms"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "arXiv:1009.3956",
+      "relation": "references",
+      "scheme": "arxiv"
+    },
+    {
+      "identifier": "arXiv:1206.3369",
+      "relation": "references",
+      "scheme": "arxiv"
+    },
+    {
+      "identifier": "arXiv:1305.1639",
+      "relation": "references",
+      "scheme": "arxiv"
+    }
+  ],
+  "notes": "Toolchain: Lean 4.33.1, Mathlib rev 0df444a360eaa60ab8c11dca51a86af692955474. Build: lake exe cache get && lake build."
+}
