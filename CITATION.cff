@@ -4,7 +4,16 @@ title: "M2Polymath: pi(x) mod 3, divisor sums and the exact degree"
 authors:
   - family-names: Farland
     given-names: Joseph S.
+    orcid: "https://orcid.org/0009-0007-6809-804X"
 version: "1.0.0"
+doi: 10.5281/zenodo.24408423
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24408423
+    description: "All versions (concept DOI)"
+  - type: doi
+    value: 10.5281/zenodo.24408424
+    description: "Version 1.0.0"
 date-released: 2026-11-20
 license: Apache-2.0
 repository-code: "https://github.com/jkfarland-bot/M2Polymath"

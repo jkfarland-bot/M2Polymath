@@ -1,5 +1,7 @@
 # M2Polymath: pi(x) mod 3, divisor sums and the exact degree
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24408424.svg)](https://doi.org/10.5281/zenodo.24408424)
+
 **Author:** Joseph S. Farland
 
 **AI assistance:** this work was prepared with Claude (Anthropic), an AI model, which helped draft the text, develop
@@ -76,6 +78,10 @@ Polymath4, D. H. J. Polymath, "Deterministic methods to find primes", Math. Comp
 R. Sladkey, [arXiv:1206.3369](https://arxiv.org/abs/1206.3369); A. Lelechenko,
 [arXiv:1305.1639](https://arxiv.org/abs/1305.1639); J. C. Lagarias and A. M. Odlyzko (1987); D. Hirsch, I. Kessler and
 U. Mendlovic, [arXiv:2212.09857](https://arxiv.org/abs/2212.09857).
+
+## Citation
+
+Version 1.0.0: [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
 
 ## License
 
