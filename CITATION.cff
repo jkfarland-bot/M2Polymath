@@ -17,6 +17,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.24411133
     description: "Version 1.1.0"
+  - type: doi
+    value: 10.5281/zenodo.24421664
+    description: "Version 1.2.0"
 date-released: 2026-11-21
 license: Apache-2.0
 repository-code: "https://github.com/jkfarland-bot/M2Polymath"
