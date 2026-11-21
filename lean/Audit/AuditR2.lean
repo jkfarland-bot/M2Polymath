@@ -171,3 +171,5 @@ example : FrobLevel.kempner 2 3 ≤ FrobLevel.kempner 2 3 - 1 + 1 :=
         exact isUnit_one) (by norm_num))).2
 
 end AuditV2
+
+#print axioms AuditV2.signed_twisted_lower_sdeg
