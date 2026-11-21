@@ -31,13 +31,13 @@ sources:
   - title: "The exact degree of divisor-sum identities for the prime-counting function modulo prime powers"
     authors:
       - "Joseph S. Farland"
-    id: "https://doi.org/10.5281/zenodo.24408923"
+    id: "https://doi.org/10.5281/zenodo.24423389"
     type: "article"
-    location: "Preprint, version 1, Zenodo, 20 November 2026, https://doi.org/10.5281/zenodo.24408923"
+    location: "Preprint, version 2.0, Zenodo, 21 November 2026, https://doi.org/10.5281/zenodo.24423389 (version 1: https://doi.org/10.5281/zenodo.24408923; all versions: https://doi.org/10.5281/zenodo.24408922)"
     relationship: "formalizes"
     note: >-
       The paper and this formalization have the same author. Every theorem, proposition, lemma and corollary of the
-      paper's Sections 3 to 8 is proved in this repository; running times are outside the paper's scope. Origin of the
+      paper's Sections 3 to 9 is proved in this repository; running times are outside the paper's scope except the cost of one call of the block routine in an explicit operation model (Theorem 7.20). Origin of the
       results: the slice reduction, the obstruction to detecting primes modulo p and the degree principle were found
       by the author with Claude (Anthropic) on 9 November 2026. The extended slice theorem, the twisted model, the exact form of
       Theorem B, the exact degree theorem with its Lagrange construction and squarefull corrections, the unequal-shift
@@ -88,11 +88,12 @@ sources:
     note: "The Kempner function S(m), the least s with m dividing s!."
     license: "unknown"
     author_endorsement: "n/a"
-  - title: "Frobenius congruences for the Moebius function and the exact number of divisor levels"
+  - title: "Minimal polynomials of sum_n z^(p^n) modulo prime powers: a proof of a conjecture of Kauers, Krattenthaler and Mueller, and the exact number of divisor levels for the Moebius function"
     authors:
       - "Joseph S. Farland"
+    id: "https://doi.org/10.5281/zenodo.24411195"
     type: "article"
-    location: "Preprint in preparation, 2026"
+    location: "Preprint, Zenodo, 2026, https://doi.org/10.5281/zenodo.24411195 (Theorem 4.4)"
     relationship: "background"
     note: "Source of the six library modules (Found, Upper, Lower, LowerPadic, DirBase, DirMain): the Dirichlet ring with the operator E_p and the Kempner function. The moment argument here reproves its lower bound S(p^k) - 1 for the Moebius function."
     license: "unknown"
@@ -111,12 +112,15 @@ status:
     prime-indicator target modulo p^k, k >= 1); degree_p_needed (with degrees in 0..p-1 target D is impossible);
     mod9_iff (the mod 9 criterion for degrees 1, 2, 3); d3_ternary (D_3(x) = floor(x^(1/3)) + 3H(x) for every x);
     piMod3_correct (the computable piMod3, a block routine for D_3 followed by the reduction from D_3 mod 9, equals
-    pi(x) mod 3 for every x). The development (lean/) proves every theorem of the preprint, including the versions over
+    pi(x) mod 3 for every x). Since version 1.3.0 also, from the preprint's version 2.0: blockStep_fast_path and
+    blockStep_tail_short (Theorem 7.20 (2): the run-time checks of a block step pass, and the short final step),
+    block_count (Theorem 7.20 (3): at most 4 (icbrt y + 1)(log2 y + 2) + 1 block steps), and normCount_one_and_eight_dvd,
+    normCount_prime_pow, normCount_mod8, normCount_parity (Theorem 9.1: a weighted count of primitive representations
+    by a^2 + 27 b^2 gives the parity of the number of primes of that form). The development (lean/) proves every theorem of the preprint, including the versions over
     rings of integers of number fields and Z_p, twisted factors, the explicit constructions and tables, the
     prime-counting identities, the Moebius link, Result M's identities and reductions, and the unequal-shift filters.
-    Not formalized here: running times of the seven compared statements. Since version 1.2.0, lean/CostAll.lean proves
-    the per-call cost of the block routine in an explicit operation-count model (outside the preprint's scope); the
-    full x^(5/9) bound remains a paper proof. Results that need Chebotarev's density theorem are not formalized.
+    Not compared: the operation-count bound of Theorem 7.20 (4), which lean/CostAll.lean proves for a counter defined in
+    that file (the charges were checked by reading); the full x^(5/9) bound remains a paper proof. Results that need Chebotarev's density theorem are not formalized.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -205,5 +209,40 @@ alignment:
       module: "Challenge"
       status: "proved"
       note: "From M2L5.piMod3_correct (lean/M2BlockS.lean)."
+    - source: "Theorem 7.20 (2): in a block step with y < n0^3, 1 <= Q and 1 <= q <= Q, and if q <= R the step returns the fast block sum (the run-time checks pass)"
+      lean: "M2Polymath.blockStep_fast_path"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6c.blockStep_checks and M2L6c.blockStep_fast (lean/CostAll.lean)."
+    - source: "Theorem 7.20 (2): otherwise the step adds the remaining R < q <= Q columns directly, and Q^6 <= y"
+      lean: "M2Polymath.blockStep_tail_short"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6c.blockStep_checks, blockStep_tail and tail_short (lean/CostAll.lean)."
+    - source: "Theorem 7.20 (3): the block loop of blockS(y, L) makes at most 4 (icbrt y + 1)(log2 y + 2) + 1 block steps"
+      lean: "M2Polymath.block_count"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6c.blockSZ_nblocks (lean/CostAll.lean). The operation counter of Theorem 7.20 (4) is not registered."
+    - source: "Theorem 9.1 (1): W(1) = 1 and 8 | W(n) when omega(n) >= 2"
+      lean: "M2Polymath.normCount_one_and_eight_dvd"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L4.Wfun_one and M2L4.Wfun_eight_dvd (lean/M2TheoremL.lean)."
+    - source: "Theorem 9.1 (2): W(q^j) = 4 if q > 3, q = 1 mod 3 and (q = a^2 + 27 b^2 or 3 | j), else 0"
+      lean: "M2Polymath.normCount_prime_pow"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6n.Wfun_prime_pow (lean/N2.lean)."
+    - source: "Theorem 9.1 (3): sum_{n <= x} W(n) = 1 + 4 (pi_R(x) + C_R(x)) mod 8"
+      lean: "M2Polymath.normCount_mod8"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6n.L_summed_mod8_Wfun (lean/N2.lean)."
+    - source: "Theorem 9.1 (3): the parity of pi_R(x), with exact division by 4"
+      lean: "M2Polymath.normCount_parity"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L6n.L_N3_Wfun (lean/N2.lean)."
 
 acknowledgements: "Lean 4 and Mathlib; Claude (Anthropic) and ChatGPT (OpenAI) for AI assistance; the Palomar starter template for the check scripts."

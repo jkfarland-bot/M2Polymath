@@ -65,22 +65,22 @@ lake build           # builds every module, the audit files and AllAxioms
 `declarations scanned: N; nonstandard axiom uses: 0`. No file uses `sorry`, `admit`, `native_decide`, `axiom`
 or `implemented_by`. Bounded checks (table rows, witness primes) use kernel `decide`.
 
-## Palomar layout (version 1.1.0)
+## Palomar layout (version 1.1.0; extended in 1.3.0)
 
 Version 1.1.0 ports the development to Lean and Mathlib v4.35.0-rc2 and Lean's module system, with no change to any theorem statement, and adds the layout of the [Palomar registry](https://palomar-registry.org/):
 
 | File | Contents |
 |---|---|
-| `Challenge.lean` | The statement surface a reader audits: every definition restated over Mathlib alone, and seven theorems with `sorry` |
-| `Solution.lean` | Proves the same seven declarations from the development |
+| `Challenge.lean` | The statement surface a reader audits: every definition restated over Mathlib alone, and fourteen theorems with `sorry` (seven since 1.1.0, seven more since 1.3.0) |
+| `Solution.lean` | Proves the same fourteen declarations from the development |
 | `lean/ChallengeDefs.lean` | A copy of the definition block of `Challenge.lean`, which `Solution.lean` imports |
-| `comparator.json` | The seven compared theorems and the permitted axioms (propext, Quot.sound, Classical.choice); no definition is left as a hole |
+| `comparator.json` | The fourteen compared theorems and the permitted axioms (propext, Quot.sound, Classical.choice); no definition is left as a hole |
 | `formalization.yaml` | Authorship, sources, AI assistance, scope and fidelity |
 | `scripts/` | Palomar's checks, from the Palomar starter template |
 
 The comparator checks every definition of `Challenge.lean` in full, body included, against the one `Solution.lean` exports, so no definition can be swapped for a weaker one. `Solution.lean` gets its definitions from `lean/ChallengeDefs.lean`, a copy of the same block, and `scripts/check-challenge-defs.py` checks that the two blocks are identical. A changed definition body in `Challenge.lean` was tested and is rejected.
 
-The seven compared theorems: `exact_degree_cheap` and `exact_degree_signed` (the exact degree, S(p^k) and S(p^ceil(k/2))), `no_prime_detection`, `degree_p_needed`, `mod9_iff`, `d3_ternary` (D_3(x) = floor(x^(1/3)) + 3H(x)) and `piMod3_correct` (a computable pi(x) mod 3, correct for every x).
+The first seven compared theorems: `exact_degree_cheap` and `exact_degree_signed` (the exact degree, S(p^k) and S(p^ceil(k/2))), `no_prime_detection`, `degree_p_needed`, `mod9_iff`, `d3_ternary` (D_3(x) = floor(x^(1/3)) + 3H(x)) and `piMod3_correct` (a computable pi(x) mod 3, correct for every x). Since version 1.3.0 also `blockStep_fast_path`, `blockStep_tail_short` and `block_count` (Theorem 7.20 (2) and (3) of preprint version 2.0: the block routine's run-time checks always pass, and the number of blocks is O(y^(1/3) log y)), and `normCount_one_and_eight_dvd`, `normCount_prime_pow`, `normCount_mod8` and `normCount_parity` (Theorem 9.1: the parity of the number of primes a^2 + 27 b^2 from a weighted norm count). The operation counter of Theorem 7.20 (4) stays in `lean/CostAll.lean` and is not compared.
 
 Checks, as Palomar runs them:
 
@@ -98,6 +98,10 @@ checked the proof and wrote code from the definitions, then a verifier or cold r
 from scratch, scanned for axioms, tested with a deliberately planted error per file (each must fail), and audited by
 a separate reader for whether the Lean statements mean what the mathematics claims and whether any hypothesis is
 vacuous. "No prior art found" in the reviews is never a claim of novelty.
+
+## Version 1.3.0
+
+Extends the Palomar statement file with seven theorems from version 2.0 of the preprint ([10.5281/zenodo.24423389](https://doi.org/10.5281/zenodo.24423389)): Theorem 7.20 (2) and (3) (`blockStep_fast_path`, `blockStep_tail_short`, `block_count`) and Theorem 9.1 (`normCount_one_and_eight_dvd`, `normCount_prime_pow`, `normCount_mod8`, `normCount_parity`). New definitions in `Challenge.lean` (and its copy `lean/ChallengeDefs.lean`): `nblocks`, `rStar`, `Wfun`, `R27`, `piR`, `piPlus`, `CR`. The seven earlier statements and all earlier definitions are unchanged. The comparator compares every definition body and accepts with the Lean kernel, nanoda and con-ron. Written by Claude seat M2L7p and audited by a separate seat. Metadata now cites preprint version 2.0 and the Frobenius preprint ([10.5281/zenodo.24411195](https://doi.org/10.5281/zenodo.24411195)).
 
 ## Version 1.2.0
 
@@ -118,7 +122,7 @@ U. Mendlovic, [arXiv:2212.09857](https://arxiv.org/abs/2212.09857).
 
 ## Citation
 
-Preprint: J. S. Farland, *The exact degree of divisor-sum identities for the prime-counting function modulo prime powers*, Zenodo, 2026, [10.5281/zenodo.24408923](https://doi.org/10.5281/zenodo.24408923) (all versions [10.5281/zenodo.24408922](https://doi.org/10.5281/zenodo.24408922)). Every theorem of the preprint is proved in this repository.
+Preprint: J. S. Farland, *The exact degree of divisor-sum identities for the prime-counting function modulo prime powers*, Zenodo, 2026, version 2.0 [10.5281/zenodo.24423389](https://doi.org/10.5281/zenodo.24423389), version 1 [10.5281/zenodo.24408923](https://doi.org/10.5281/zenodo.24408923) (all versions [10.5281/zenodo.24408922](https://doi.org/10.5281/zenodo.24408922)). Every theorem of the preprint is proved in this repository.
 
 Software: version 1.0.0 [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424); version 1.1.0 [10.5281/zenodo.24411133](https://doi.org/10.5281/zenodo.24411133); version 1.2.0 [10.5281/zenodo.24421664](https://doi.org/10.5281/zenodo.24421664). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
 

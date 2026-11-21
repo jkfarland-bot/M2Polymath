@@ -18,7 +18,6 @@ open scoped Nat ArithmeticFunction.omega ArithmeticFunction.zeta ArithmeticFunct
 
 namespace M2Polymath
 
-
 /-! ## Kempner values, Dirichlet powers, the family and the targets -/
 
 /-- The Kempner value `S(p^k)`: the least `N` such that `p^k` divides `N!`. -/
@@ -188,6 +187,11 @@ def loop (y r : ℕ) : ℕ → ℕ → ℤ
     let p := blockStep y r n0
     p.2 + loop y r fuel (n0 + p.1)
 
+/-- The number of calls of `blockStep` made by `loop y r fuel n0` (same recursion as `loop`). -/
+def nblocks (y r : ℕ) : ℕ → ℕ → ℕ
+  | 0, _ => 0
+  | fuel + 1, n0 => if r < n0 then 0 else 1 + nblocks y r fuel (n0 + (blockStep y r n0).1)
+
 /-- The routine `S(y, L)` as an integer: direct columns for `b ≤ min(icbrt y, isqrt y)`, then blocks. -/
 def blockSZ (y L : ℕ) : ℤ :=
   let r := Nat.sqrt y
@@ -233,6 +237,31 @@ def piMod3OfD3 (o : ℕ → ℕ) (x : ℕ) : ZMod 3 := piOfG (GofH (HofD o)) x
 
 /-- `π(x) mod 3` from the fast values of `D_3 mod 9`. -/
 def piMod3 (x : ℕ) : ZMod 3 := piMod3OfD3 (fun y => D3fast y % 9) x
+
+/-! ## Primes of the form `a^2 + 27 b^2`: the primitive norm count -/
+
+/-- `r*(n) = #{(a, b) ∈ ℤ² : a² + 27 b² = n, gcd(a, b) = 1}` (the box `|a|, |b| ≤ n` contains all). -/
+noncomputable def rStar (n : ℕ) : ℕ :=
+  ((Icc (-(n : ℤ)) n ×ˢ Icc (-(n : ℤ)) n).filter
+    (fun ab : ℤ × ℤ => ab.1 ^ 2 + 27 * ab.2 ^ 2 = n ∧ Int.gcd ab.1 ab.2 = 1)).card
+
+/-- `W(n) = 2^ω(n) r*(n) / 2` for `(n, 6) = 1`, `0` otherwise (equation (N1)). -/
+noncomputable def Wfun (n : ℕ) : ℤ := if Nat.Coprime n 6 then 2 ^ ω n * (rStar n : ℤ) / 2 else 0
+
+/-- `R27 q`: `q` is a prime of the form `a^2 + 27 b^2`. -/
+def R27 (q : ℕ) : Prop := q.Prime ∧ ∃ a b : ℤ, a ^ 2 + 27 * b ^ 2 = q
+
+noncomputable instance : DecidablePred R27 := Classical.decPred _
+
+/-- `π_R(y) = #{q ≤ y : q ∈ R}`. -/
+def piR (R : ℕ → Prop) [DecidablePred R] (y : ℕ) : ℕ := ((Ioc 0 y).filter R).card
+
+/-- `π_+(y) = #{q ≤ y prime : q > 3, q ≡ 1 (mod 3)}`. -/
+def piPlus (y : ℕ) : ℕ := ((Ioc 0 y).filter (fun q => q.Prime ∧ 3 < q ∧ q % 3 = 1)).card
+
+/-- `C_R(x) = ∑_{2 ≤ j ≤ ⌊log₂ x⌋} (π_+(⌊x^(1/j)⌋) if 3 ∣ j, else π_R(⌊x^(1/j)⌋))`. -/
+def CR (R : ℕ → Prop) [DecidablePred R] (x : ℕ) : ℤ :=
+  ∑ j ∈ Icc 2 (Nat.log 2 x), (if 3 ∣ j then (piPlus (iroot j x) : ℤ) else piR R (iroot j x))
 
 /-! ## Results -/
 

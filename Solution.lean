@@ -8,6 +8,8 @@ public import A1
 public import BCor
 public import M2Ternary
 public import M2BlockS
+public import N2
+public import CostAll
 
 public section
 
@@ -19,7 +21,10 @@ The definitions are the same text as in `Challenge.lean`; the section "Bridges" 
 equal to the definition used in the development (`lean/`), and each theorem is then proved from the
 development's theorem: `M2L.Zcheap_eq`, `M2L.Zsigned_eq` (Construct), `M2L2.not_targetU_untwisted`
 (A1), `M2L2.not_targetD_below_p` and `M2L2.mod9_iff` (BCor), `M2L3.ternary_M1` (M2Ternary) and
-`M2L5.piMod3_correct` (M2BlockS).
+`M2L5.piMod3_correct` (M2BlockS); Theorem 9.1 from `M2L4.Wfun_one`, `M2L4.Wfun_eight_dvd`
+(M2TheoremL), `M2L6n.Wfun_prime_pow`, `M2L6n.L_summed_mod8_Wfun` and `M2L6n.L_N3_Wfun` (N2);
+Theorem 7.20 (2), (3) from `M2L6c.blockStep_checks`, `M2L6c.blockStep_fast`, `M2L6c.blockStep_tail`,
+`M2L6c.tail_short` and `M2L6c.blockSZ_nblocks` (CostAll).
 -/
 
 open Finset ArithmeticFunction
@@ -136,6 +141,20 @@ private theorem piMod3OfD3_eq : piMod3OfD3 = M2L4.piMod3OfD3 := rfl
 private theorem piMod3_eq : piMod3 = M2L5.piMod3 := by
   funext x; unfold piMod3 M2L5.piMod3; rw [piMod3OfD3_eq, D3fast_eq]
 
+private theorem nblocks_eq : nblocks = M2L6c.nblocks := by
+  funext y r fuel
+  induction fuel with
+  | zero => funext n0; rw [nblocks, M2L6c.nblocks]
+  | succ fuel ih => funext n0; rw [nblocks, M2L6c.nblocks, blockStep_eq, ih]
+
+private theorem Wfun_eq : Wfun = M2L4.Wfun := rfl
+
+private theorem R27_eq : R27 = M2L6n.R27 := rfl
+
+private theorem piR_R27_eq (x : ℕ) : piR R27 x = M2L4.piR M2L6n.R27 x := rfl
+
+private theorem CR_R27_eq (x : ℕ) : CR R27 x = M2L4.CR M2L6n.R27 x := rfl
+
 /-! ## Results -/
 
 /-- **Exact degree, cheap nodes.** For a prime `p` and `k ≥ 1`, the least `Z` such that the family
@@ -190,5 +209,82 @@ theorem d3_ternary (x : ℕ) : D3 x = icbrt x + 3 * H x :=
 theorem piMod3_correct (x : ℕ) : piMod3 x = (Nat.primeCounting x : ZMod 3) := by
   rw [piMod3_eq]
   exact M2L5.piMod3_correct x
+
+/-- **Theorem 9.1 (1) of the preprint** (https://doi.org/10.5281/zenodo.24423389), equation (N1),
+pointwise: `W(1) = 1`, and `8 ∣ W(n)` whenever `ω(n) ≥ 2`. -/
+theorem normCount_one_and_eight_dvd :
+    Wfun 1 = 1 ∧ ∀ n : ℕ, 2 ≤ ω n → (8 : ℤ) ∣ Wfun n := by
+  rw [Wfun_eq]
+  exact ⟨M2L4.Wfun_one, fun _ h => M2L4.Wfun_eight_dvd h⟩
+
+/-- **Theorem 9.1 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), (N2): the values
+of `W` at prime powers. For a prime `q` and `j ≥ 1`, `W(q^j) = 4` if `q > 3`, `q ≡ 1 (mod 3)` and
+(`q = a^2 + 27 b^2` or `3 ∣ j`), and `W(q^j) = 0` otherwise. -/
+theorem normCount_prime_pow (q j : ℕ) (hq : q.Prime) (hj : 1 ≤ j) :
+    Wfun (q ^ j) = if 3 < q ∧ q % 3 = 1 ∧ (R27 q ∨ 3 ∣ j) then 4 else 0 :=
+  M2L6n.Wfun_prime_pow q j hq hj
+
+/-- **Theorem 9.1 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the summed
+formula modulo 8: for `x ≥ 1`, `∑_{n ≤ x} W(n) ≡ 1 + 4 (π_R(x) + C_R(x)) (mod 8)` with `R` the
+primes of the form `a^2 + 27 b^2`. -/
+theorem normCount_mod8 {x : ℕ} (hx : 1 ≤ x) :
+    ∑ n ∈ Ioc 0 x, Wfun n ≡ 1 + 4 * ((piR R27 x : ℤ) + CR R27 x) [ZMOD 8] := by
+  rw [piR_R27_eq, CR_R27_eq, Wfun_eq]
+  exact M2L6n.L_summed_mod8_Wfun hx
+
+/-- **Theorem 9.1 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), (N3): for
+`x ≥ 1`, `4 ∣ ∑_{n ≤ x} W(n) - 1`, and the number of primes `q ≤ x` of the form `a^2 + 27 b^2` is
+congruent modulo 2 to `(∑_{n ≤ x} W(n) - 1) / 4 - C_R(x)`. -/
+theorem normCount_parity {x : ℕ} (hx : 1 ≤ x) :
+    (4 : ℤ) ∣ ∑ n ∈ Ioc 0 x, Wfun n - 1 ∧
+      (piR R27 x : ℤ) ≡ (∑ n ∈ Ioc 0 x, Wfun n - 1) / 4 - CR R27 x [ZMOD 2] := by
+  rw [piR_R27_eq, CR_R27_eq, Wfun_eq]
+  exact M2L6n.L_N3_Wfun hx
+
+/-- **Theorem 7.20 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the fast path.
+Under the routine's setup `1 ≤ y`, `y < n0 ^ 3` (that is `n0 > ⌊y^(1/3)⌋`), with
+`Q = icbrtF (n0 ^ 3 / y)` and `(a, q) = approx y (n0 * n0) Q`: `1 ≤ Q`, `1 ≤ q ≤ Q`, and whenever
+`q ≤ R = r + 1 - n0` the run-time checks of `blockStep` pass, so that it returns the block of length
+`k q` with `k = min Q R / q` and the fast sum `blockFast y n0 a q (gcdA a q) k`. -/
+theorem blockStep_fast_path (y r n0 : ℕ) (hy : 1 ≤ y) (hn : y < n0 ^ 3) :
+    let Q := icbrtF (n0 ^ 3 / y)
+    let a := (approx y (n0 * n0) Q).1
+    let q := (approx y (n0 * n0) Q).2
+    let R := r + 1 - n0
+    1 ≤ Q ∧ 1 ≤ q ∧ q ≤ Q ∧
+      (q ≤ R →
+        (|(q : ℤ) * y - (a : ℤ) * (n0 : ℤ) ^ 2| * (((min Q R / q * q : ℕ) : ℤ) - 1) < (n0 : ℤ) ^ 2 ∧
+          (q : ℤ) * y * (((min Q R / q * q : ℕ) : ℤ) - 1) ^ 2 ≤ (n0 : ℤ) ^ 3 ∧
+          ((a : ℤ) * Nat.gcdA a q) % (q : ℤ) = 1 % (q : ℤ)) ∧
+        blockStep y r n0 = (min Q R / q * q, blockFast y n0 a q (Nat.gcdA a q) (min Q R / q))) := by
+  have h1 := M2L6c.blockStep_checks y r n0 hy hn
+  have h2 := M2L6c.blockStep_fast y r n0 hy hn
+  simp only [icbrtF_eq, approx_eq, blockStep_eq, blockFast_eq]
+  dsimp only at h1
+  exact ⟨h1.1, h1.2.1, h1.2.2.1, fun h => ⟨h1.2.2.2 h, h2 h⟩⟩
+
+/-- **Theorem 7.20 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the tail. Under
+the routine's setup `1 ≤ y`, `y < n0 ^ 3` and `n0 ≤ ⌊√y⌋`, if `R = r + 1 - n0 < q` (with `Q` and `q`
+as in `blockStep_fast_path`) then `blockStep` sums the rest of the range directly, and that direct
+sum is short: `R < Q` and `Q ^ 6 ≤ y`. -/
+theorem blockStep_tail_short (y r n0 : ℕ) (hy : 1 ≤ y) (hn : y < n0 ^ 3) (hr : n0 ≤ Nat.sqrt y)
+    (hR : r + 1 - n0 < (approx y (n0 * n0) (icbrtF (n0 ^ 3 / y))).2) :
+    blockStep y r n0 = (r + 1 - n0, direct y n0 (r + 1 - n0)) ∧
+      r + 1 - n0 < icbrtF (n0 ^ 3 / y) ∧ icbrtF (n0 ^ 3 / y) ^ 6 ≤ y := by
+  rw [icbrtF_eq, approx_eq] at hR
+  rw [icbrtF_eq, blockStep_eq, direct_eq]
+  have h1 := M2L6c.blockStep_checks y r n0 hy hn
+  dsimp only at h1
+  exact ⟨M2L6c.blockStep_tail y r n0 hR, by omega, M2L6c.tail_short hy hr⟩
+
+/-- **Theorem 7.20 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the number of
+blocks. For every `y ≥ 1` and every `L`, the loop `loop y r (r + 1) n1` of `blockSZ y L`
+(`r = ⌊√y⌋`, `n1 = max (L + 1) (min (icbrtF y + 1) (r + 1))`) makes at most
+`4 (⌊y^(1/3)⌋ + 1) (⌊log₂ y⌋ + 2) + 1` calls of `blockStep`. -/
+theorem block_count (y L : ℕ) (hy : 1 ≤ y) :
+    nblocks y (Nat.sqrt y) (Nat.sqrt y + 1) (max (L + 1) (min (icbrtF y + 1) (Nat.sqrt y + 1)))
+      ≤ 4 * (icbrt y + 1) * (Nat.log 2 y + 2) + 1 := by
+  rw [nblocks_eq, icbrtF_eq, icbrt_eq]
+  exact M2L6c.blockSZ_nblocks y L hy
 
 end M2Polymath

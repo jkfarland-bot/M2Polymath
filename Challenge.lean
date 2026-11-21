@@ -32,6 +32,11 @@ in `lean/` (each restated definition is shown equal to the development's own).
   positive triples `(a, b, c)` with `a b c ≤ x`, `a ≤ b`, `a < c`.
 * `piMod3` is the certified algorithm for `π(x) mod 3`: a fast computation of `D_3` by a block
   routine, then the reduction from `D_3 mod 9` to `π mod 3`.
+* `nblocks y r fuel n0` is the number of calls of `blockStep` made by `loop y r fuel n0`.
+* `rStar n` counts the primitive representations `n = a^2 + 27 b^2`, `Wfun n = 2^ω(n) r*(n) / 2`
+  for `n` coprime to 6 (and `0` otherwise); `R27 q` says that `q` is a prime of the form
+  `a^2 + 27 b^2`; `piR R`, `piPlus` and `CR R` are the prime counts and the correction term of
+  Theorem 9.1 of the preprint.
 
 ## Results
 
@@ -49,6 +54,12 @@ in `lean/` (each restated definition is shown equal to the development's own).
   `TargetD 3 1 1` if and only if `9 ∣ a_1`, `9 ∣ a_2` and `3 ∤ a_3`.
 * `d3_ternary`: `D_3(x) = ⌊x^(1/3)⌋ + 3 H(x)` for every natural `x`.
 * `piMod3_correct`: `piMod3 x = π(x) mod 3` for every natural `x`.
+* `normCount_one_and_eight_dvd`, `normCount_prime_pow`, `normCount_mod8`, `normCount_parity`:
+  Theorem 9.1 (1), (2), (3) of the preprint (https://doi.org/10.5281/zenodo.24423389), the parity
+  of the number of primes `q ≤ x` of the form `a^2 + 27 b^2` from the summed primitive norm count.
+* `blockStep_fast_path`, `blockStep_tail_short`, `block_count`: Theorem 7.20 (2) and (3) of the
+  preprint: every block of the routine takes the fast path except a final short direct block, and
+  `blockSZ y L` makes at most `4 (⌊y^(1/3)⌋ + 1) (⌊log₂ y⌋ + 2) + 1` blocks.
 -/
 
 open Finset ArithmeticFunction
@@ -225,6 +236,11 @@ def loop (y r : ℕ) : ℕ → ℕ → ℤ
     let p := blockStep y r n0
     p.2 + loop y r fuel (n0 + p.1)
 
+/-- The number of calls of `blockStep` made by `loop y r fuel n0` (same recursion as `loop`). -/
+def nblocks (y r : ℕ) : ℕ → ℕ → ℕ
+  | 0, _ => 0
+  | fuel + 1, n0 => if r < n0 then 0 else 1 + nblocks y r fuel (n0 + (blockStep y r n0).1)
+
 /-- The routine `S(y, L)` as an integer: direct columns for `b ≤ min(icbrt y, isqrt y)`, then blocks. -/
 def blockSZ (y L : ℕ) : ℤ :=
   let r := Nat.sqrt y
@@ -270,6 +286,31 @@ def piMod3OfD3 (o : ℕ → ℕ) (x : ℕ) : ZMod 3 := piOfG (GofH (HofD o)) x
 
 /-- `π(x) mod 3` from the fast values of `D_3 mod 9`. -/
 def piMod3 (x : ℕ) : ZMod 3 := piMod3OfD3 (fun y => D3fast y % 9) x
+
+/-! ## Primes of the form `a^2 + 27 b^2`: the primitive norm count -/
+
+/-- `r*(n) = #{(a, b) ∈ ℤ² : a² + 27 b² = n, gcd(a, b) = 1}` (the box `|a|, |b| ≤ n` contains all). -/
+noncomputable def rStar (n : ℕ) : ℕ :=
+  ((Icc (-(n : ℤ)) n ×ˢ Icc (-(n : ℤ)) n).filter
+    (fun ab : ℤ × ℤ => ab.1 ^ 2 + 27 * ab.2 ^ 2 = n ∧ Int.gcd ab.1 ab.2 = 1)).card
+
+/-- `W(n) = 2^ω(n) r*(n) / 2` for `(n, 6) = 1`, `0` otherwise (equation (N1)). -/
+noncomputable def Wfun (n : ℕ) : ℤ := if Nat.Coprime n 6 then 2 ^ ω n * (rStar n : ℤ) / 2 else 0
+
+/-- `R27 q`: `q` is a prime of the form `a^2 + 27 b^2`. -/
+def R27 (q : ℕ) : Prop := q.Prime ∧ ∃ a b : ℤ, a ^ 2 + 27 * b ^ 2 = q
+
+noncomputable instance : DecidablePred R27 := Classical.decPred _
+
+/-- `π_R(y) = #{q ≤ y : q ∈ R}`. -/
+def piR (R : ℕ → Prop) [DecidablePred R] (y : ℕ) : ℕ := ((Ioc 0 y).filter R).card
+
+/-- `π_+(y) = #{q ≤ y prime : q > 3, q ≡ 1 (mod 3)}`. -/
+def piPlus (y : ℕ) : ℕ := ((Ioc 0 y).filter (fun q => q.Prime ∧ 3 < q ∧ q % 3 = 1)).card
+
+/-- `C_R(x) = ∑_{2 ≤ j ≤ ⌊log₂ x⌋} (π_+(⌊x^(1/j)⌋) if 3 ∣ j, else π_R(⌊x^(1/j)⌋))`. -/
+def CR (R : ℕ → Prop) [DecidablePred R] (x : ℕ) : ℤ :=
+  ∑ j ∈ Icc 2 (Nat.log 2 x), (if 3 ∣ j then (piPlus (iroot j x) : ℤ) else piR R (iroot j x))
 
 /-! ## Results -/
 
@@ -321,6 +362,71 @@ theorem d3_ternary (x : ℕ) : D3 x = icbrt x + 3 * H x := by
 
 /-- **`π(x) mod 3` is computed correctly.** For every natural `x`, `piMod3 x = π(x) mod 3`. -/
 theorem piMod3_correct (x : ℕ) : piMod3 x = (Nat.primeCounting x : ZMod 3) := by
+  sorry
+
+/-- **Theorem 9.1 (1) of the preprint** (https://doi.org/10.5281/zenodo.24423389), equation (N1),
+pointwise: `W(1) = 1`, and `8 ∣ W(n)` whenever `ω(n) ≥ 2`. -/
+theorem normCount_one_and_eight_dvd :
+    Wfun 1 = 1 ∧ ∀ n : ℕ, 2 ≤ ω n → (8 : ℤ) ∣ Wfun n := by
+  sorry
+
+/-- **Theorem 9.1 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), (N2): the values
+of `W` at prime powers. For a prime `q` and `j ≥ 1`, `W(q^j) = 4` if `q > 3`, `q ≡ 1 (mod 3)` and
+(`q = a^2 + 27 b^2` or `3 ∣ j`), and `W(q^j) = 0` otherwise. -/
+theorem normCount_prime_pow (q j : ℕ) (hq : q.Prime) (hj : 1 ≤ j) :
+    Wfun (q ^ j) = if 3 < q ∧ q % 3 = 1 ∧ (R27 q ∨ 3 ∣ j) then 4 else 0 := by
+  sorry
+
+/-- **Theorem 9.1 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the summed
+formula modulo 8: for `x ≥ 1`, `∑_{n ≤ x} W(n) ≡ 1 + 4 (π_R(x) + C_R(x)) (mod 8)` with `R` the
+primes of the form `a^2 + 27 b^2`. -/
+theorem normCount_mod8 {x : ℕ} (hx : 1 ≤ x) :
+    ∑ n ∈ Ioc 0 x, Wfun n ≡ 1 + 4 * ((piR R27 x : ℤ) + CR R27 x) [ZMOD 8] := by
+  sorry
+
+/-- **Theorem 9.1 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), (N3): for
+`x ≥ 1`, `4 ∣ ∑_{n ≤ x} W(n) - 1`, and the number of primes `q ≤ x` of the form `a^2 + 27 b^2` is
+congruent modulo 2 to `(∑_{n ≤ x} W(n) - 1) / 4 - C_R(x)`. -/
+theorem normCount_parity {x : ℕ} (hx : 1 ≤ x) :
+    (4 : ℤ) ∣ ∑ n ∈ Ioc 0 x, Wfun n - 1 ∧
+      (piR R27 x : ℤ) ≡ (∑ n ∈ Ioc 0 x, Wfun n - 1) / 4 - CR R27 x [ZMOD 2] := by
+  sorry
+
+/-- **Theorem 7.20 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the fast path.
+Under the routine's setup `1 ≤ y`, `y < n0 ^ 3` (that is `n0 > ⌊y^(1/3)⌋`), with
+`Q = icbrtF (n0 ^ 3 / y)` and `(a, q) = approx y (n0 * n0) Q`: `1 ≤ Q`, `1 ≤ q ≤ Q`, and whenever
+`q ≤ R = r + 1 - n0` the run-time checks of `blockStep` pass, so that it returns the block of length
+`k q` with `k = min Q R / q` and the fast sum `blockFast y n0 a q (gcdA a q) k`. -/
+theorem blockStep_fast_path (y r n0 : ℕ) (hy : 1 ≤ y) (hn : y < n0 ^ 3) :
+    let Q := icbrtF (n0 ^ 3 / y)
+    let a := (approx y (n0 * n0) Q).1
+    let q := (approx y (n0 * n0) Q).2
+    let R := r + 1 - n0
+    1 ≤ Q ∧ 1 ≤ q ∧ q ≤ Q ∧
+      (q ≤ R →
+        (|(q : ℤ) * y - (a : ℤ) * (n0 : ℤ) ^ 2| * (((min Q R / q * q : ℕ) : ℤ) - 1) < (n0 : ℤ) ^ 2 ∧
+          (q : ℤ) * y * (((min Q R / q * q : ℕ) : ℤ) - 1) ^ 2 ≤ (n0 : ℤ) ^ 3 ∧
+          ((a : ℤ) * Nat.gcdA a q) % (q : ℤ) = 1 % (q : ℤ)) ∧
+        blockStep y r n0 = (min Q R / q * q, blockFast y n0 a q (Nat.gcdA a q) (min Q R / q))) := by
+  sorry
+
+/-- **Theorem 7.20 (2) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the tail. Under
+the routine's setup `1 ≤ y`, `y < n0 ^ 3` and `n0 ≤ ⌊√y⌋`, if `R = r + 1 - n0 < q` (with `Q` and `q`
+as in `blockStep_fast_path`) then `blockStep` sums the rest of the range directly, and that direct
+sum is short: `R < Q` and `Q ^ 6 ≤ y`. -/
+theorem blockStep_tail_short (y r n0 : ℕ) (hy : 1 ≤ y) (hn : y < n0 ^ 3) (hr : n0 ≤ Nat.sqrt y)
+    (hR : r + 1 - n0 < (approx y (n0 * n0) (icbrtF (n0 ^ 3 / y))).2) :
+    blockStep y r n0 = (r + 1 - n0, direct y n0 (r + 1 - n0)) ∧
+      r + 1 - n0 < icbrtF (n0 ^ 3 / y) ∧ icbrtF (n0 ^ 3 / y) ^ 6 ≤ y := by
+  sorry
+
+/-- **Theorem 7.20 (3) of the preprint** (https://doi.org/10.5281/zenodo.24423389), the number of
+blocks. For every `y ≥ 1` and every `L`, the loop `loop y r (r + 1) n1` of `blockSZ y L`
+(`r = ⌊√y⌋`, `n1 = max (L + 1) (min (icbrtF y + 1) (r + 1))`) makes at most
+`4 (⌊y^(1/3)⌋ + 1) (⌊log₂ y⌋ + 2) + 1` calls of `blockStep`. -/
+theorem block_count (y L : ℕ) (hy : 1 ≤ y) :
+    nblocks y (Nat.sqrt y) (Nat.sqrt y + 1) (max (L + 1) (min (icbrtF y + 1) (Nat.sqrt y + 1)))
+      ≤ 4 * (icbrt y + 1) * (Nat.log 2 y + 2) + 1 := by
   sorry
 
 end M2Polymath

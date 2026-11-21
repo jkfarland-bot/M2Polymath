@@ -8,7 +8,14 @@
     "M2Polymath.degree_p_needed",
     "M2Polymath.mod9_iff",
     "M2Polymath.d3_ternary",
-    "M2Polymath.piMod3_correct"
+    "M2Polymath.piMod3_correct",
+    "M2Polymath.normCount_one_and_eight_dvd",
+    "M2Polymath.normCount_prime_pow",
+    "M2Polymath.normCount_mod8",
+    "M2Polymath.normCount_parity",
+    "M2Polymath.blockStep_fast_path",
+    "M2Polymath.blockStep_tail_short",
+    "M2Polymath.block_count"
   ],
   "definition_names": [],
   "permitted_axioms": [

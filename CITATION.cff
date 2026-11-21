@@ -5,7 +5,7 @@ authors:
   - family-names: Farland
     given-names: Joseph S.
     orcid: "https://orcid.org/0009-0007-6809-804X"
-version: "1.2.0"
+version: "1.3.0"
 doi: 10.5281/zenodo.24408423
 identifiers:
   - type: doi
@@ -44,5 +44,5 @@ references:
       - family-names: Farland
         given-names: Joseph S.
     year: 2026
-    doi: 10.5281/zenodo.24408923
-    notes: "Preprint; every theorem is proved in this repository"
+    doi: 10.5281/zenodo.24423389
+    notes: "Preprint, version 2.0 (version 1: 10.5281/zenodo.24408923); every theorem is proved in this repository"
