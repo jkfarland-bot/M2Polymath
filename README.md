@@ -81,7 +81,9 @@ U. Mendlovic, [arXiv:2212.09857](https://arxiv.org/abs/2212.09857).
 
 ## Citation
 
-Version 1.0.0: [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
+Preprint: J. S. Farland, *The exact degree of divisor-sum identities for the prime-counting function modulo prime powers*, Zenodo, 2026, [10.5281/zenodo.24408923](https://doi.org/10.5281/zenodo.24408923) (all versions [10.5281/zenodo.24408922](https://doi.org/10.5281/zenodo.24408922)). Every theorem of the preprint is proved in this repository.
+
+Software, version 1.0.0: [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
 
 ## License
 

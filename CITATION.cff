@@ -31,3 +31,12 @@ keywords:
   - divisor sums
   - Kempner function
   - Lean 4
+references:
+  - type: article
+    title: "The exact degree of divisor-sum identities for the prime-counting function modulo prime powers"
+    authors:
+      - family-names: Farland
+        given-names: Joseph S.
+    year: 2026
+    doi: 10.5281/zenodo.24408923
+    notes: "Preprint; every theorem is proved in this repository"
