@@ -1,11 +1,17 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultM
+meta import M2ResultM
+
+/-!
   Seat M2L5, item 1: the certified D_3 algorithm (m2/e/PROOF_D3_5_9.md).
   A computable block routine `blockS y L` for S(y, L) = sum_{L < b <= isqrt y} floor(y / b),
   proved equal to that sum for every y and L, and `D3fast`, proved equal to D_3 for every x,
   via (F1) of round 3 (M2L3.ternary_F1). Then `piMod3`, proved equal to pi(x) mod 3 via round 4.
 -/
-import Mathlib
-import M2ResultM
+
+@[expose] public section
 
 open Finset
 
@@ -33,16 +39,16 @@ theorem bfirst_spec (p : ℕ → Bool) : ∀ (n lo hi : ℕ), hi - lo = n → lo
   intro lo hi hn hle hmono
   rw [bfirst]
   by_cases h1 : lo < hi
-  · rw [dif_pos h1]
+  · rw [dite_eq_left h1]
     by_cases h2 : p ((lo + hi) / 2) = true
-    · rw [if_pos h2]
+    · rw [ite_eq_left h2]
       obtain ⟨a1, a2, a3, a4⟩ := ih ((lo + hi) / 2 - lo) (by omega) lo ((lo + hi) / 2) rfl
         (by omega) (fun i j hi1 hij hj => hmono i j hi1 hij (by omega))
       refine ⟨a1, by omega, a3, ?_⟩
       rcases a4 with h | h
       · exact Or.inl h
       · left; rw [h]; exact h2
-    · rw [if_neg h2]
+    · rw [ite_eq_right h2]
       obtain ⟨a1, a2, a3, a4⟩ := ih (hi - ((lo + hi) / 2 + 1)) (by omega) ((lo + hi) / 2 + 1) hi rfl
         (by omega) (fun i j hi1 hij hj => hmono i j (by omega) hij hj)
       refine ⟨by omega, a2, ?_, a4⟩
@@ -52,7 +58,7 @@ theorem bfirst_spec (p : ℕ → Bool) : ∀ (n lo hi : ℕ), hi - lo = n → lo
         · rfl
         · exact absurd (hmono i _ hi1 hc (by omega) hpi) h2
       · exact a3 i (by omega) hi2
-  · rw [dif_neg h1]
+  · rw [dite_eq_right h1]
     exact ⟨le_rfl, hle, fun i h1 h2 => absurd h2 (by omega), Or.inr (by omega)⟩
 
 /-! ## Fast integer cube root -/
@@ -113,7 +119,7 @@ theorem countLe_spec (y : ℤ) (k : ℕ) :
   unfold countLe
   by_cases hk : k = 0
   · subst hk; simp
-  rw [if_neg hk]
+  rw [ite_eq_right hk]
   dsimp only
   obtain ⟨b1, b2, b3, b4⟩ := bfirst_spec (fun l => decide (P (l + 1) - P l ≤ 0)) (k - 1) 0 (k - 1)
     (by omega) (by omega) (fun i j _ hij _ hi => by
@@ -142,7 +148,7 @@ theorem countLe_spec (y : ℤ) (k : ℕ) :
       have := (diff_anti P hc ls j (by omega)).trans hd
       linarith [ih (by omega)]
   by_cases hmax : P ls ≤ y
-  · rw [if_pos hmax]
+  · rw [ite_eq_left hmax]
     congr 1
     rw [filter_true_of_mem, card_range]
     intro l hl
@@ -150,7 +156,7 @@ theorem countLe_spec (y : ℤ) (k : ℕ) :
     rcases le_total l ls with h | h
     · exact (hup l ls h le_rfl).trans hmax
     · exact (hdown ls l le_rfl h (by omega)).trans hmax
-  rw [if_neg hmax]
+  rw [ite_eq_right hmax]
   push Not at hmax
   obtain ⟨c1, c2, c3, c4⟩ := bfirst_spec (fun l => decide (y < P l)) ls 0 ls (by omega) (by omega)
     (fun i j _ hij hj hi => by
@@ -660,8 +666,8 @@ theorem loop_spec (y r : ℕ) : ∀ fuel n0 : ℕ, 1 ≤ n0 →
   | fuel + 1, n0, hn0 => by
     unfold loop
     by_cases h : r < n0
-    · rw [if_pos h, Ico_eq_empty (by omega), sum_empty]
-    · rw [if_neg h]
+    · rw [ite_eq_left h, Ico_eq_empty (by omega), sum_empty]
+    · rw [ite_eq_right h]
       dsimp only
       obtain ⟨s1, s2, s3⟩ := blockStep_spec y r n0 hn0 (by omega)
       rw [loop_spec y r fuel _ (by omega), s3, direct, sum_Ico_consecutive _ (by omega) s2]

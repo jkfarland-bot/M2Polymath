@@ -1,4 +1,17 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+public import A1
+
+/-!
 Run r25 / M2, seat M2L2 (item 4): concrete twisted cores meet the congruence hypothesis.
 
 A twisted factor is `ell chi j (n) = chi(n) n ^ j` with `chi` a Mathlib Dirichlet character with
@@ -19,18 +32,10 @@ Contents.
    `thmB_twisted` (Theorem B), `not_targetU_twisted` (Corollary A1); the modulus is built as
    `M = p ^ m * prod of all character levels` (`twModulus`).
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1, FamGen and A1.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1, FamGen and A1.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
-import A1
+
+@[expose] public section
 
 namespace M2L2
 
@@ -51,7 +56,7 @@ theorem ell_apply' (χ : DirichletCharacter ℤ N) (j n : ℕ) :
     ell χ j n = if n = 0 then 0 else χ (n : ZMod N) * (n : ℤ) ^ j := rfl
 
 theorem ell_apply (χ : DirichletCharacter ℤ N) (j : ℕ) {n : ℕ} (hn : n ≠ 0) :
-    ell χ j n = χ (n : ZMod N) * (n : ℤ) ^ j := by rw [ell_apply', if_neg hn]
+    ell χ j n = χ (n : ZMod N) * (n : ℤ) ^ j := by rw [ell_apply', ite_eq_right hn]
 
 theorem ell_one (χ : DirichletCharacter ℤ N) (j : ℕ) : ell χ j 1 = 1 := by
   rw [ell_apply χ j one_ne_zero]; simp
@@ -324,12 +329,12 @@ def chi4F (j : ℕ) (inv : Bool) : TwFactor := ⟨4, ZMod.χ₄, j, inv⟩
 noncomputable def powF (j : ℕ) (inv : Bool) : TwFactor := ⟨1, 1, j, inv⟩
 
 theorem powF_apply (j : ℕ) {n : ℕ} (hn : n ≠ 0) : (powF j false).af n = (n : ℤ) ^ j := by
-  simp only [TwFactor.af, powF, Bool.false_eq_true, if_false]
+  simp only [TwFactor.af, powF, Bool.false_eq_true, ite_false]
   exact ell_trivial_apply j hn
 
 theorem chi4F_apply (j : ℕ) {n : ℕ} (hn : n ≠ 0) :
     (chi4F j false).af n = ZMod.χ₄ (n : ZMod 4) * (n : ℤ) ^ j := by
-  simp only [TwFactor.af, chi4F, Bool.false_eq_true, if_false]
+  simp only [TwFactor.af, chi4F, Bool.false_eq_true, ite_false]
   exact ell_apply _ j hn
 
 /-- Example: the core `L(s - 1, chi_4) * zeta(s - 2) * zeta(s)^(-1)` (factors `chi_4(n) n`,

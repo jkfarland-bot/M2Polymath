@@ -1,4 +1,13 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import Upper
+public import Lower
+public import LowerPadic
+public import DirBase
+
+/-!
 Run r25, seat L3: exact level counts in the Dirichlet ring (ledger R-084, the all-zero flag case,
 with the prime count of the note's Remark "a lower bound without multiplicativity").
 
@@ -14,12 +23,8 @@ For `R = ℤ` or `R = ℤ_[p]`, `f` a unit of the Dirichlet ring (`f(1)` a unit)
 Lower-bound route: restrict to `{q_i}`-smooth arguments (DirBase.lean, `res`, a ring hom commuting
 with the lifts), then seat L1's power-series theorem `levelCount_eq_of_fullRank_int` / `_padic`.
 -/
-import Mathlib
-import Found
-import Upper
-import Lower
-import LowerPadic
-import DirBase
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -63,7 +68,7 @@ theorem fullRank_res {p n : ℕ} {q : Fin n → ℕ} (hq : ∀ i, (q i).Prime)
   · rw [Finset.sum_eq_single i]
     · rw [Finsupp.single_eq_same, mul_one]
       exact Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero hi) (hlt i)
-    · intro j _ hj; rw [Finsupp.single_apply, if_neg (Ne.symm hj), mul_zero]
+    · intro j _ hj; rw [Finsupp.single_apply, ite_eq_right (Ne.symm hj), mul_zero]
     · intro h'; exact absurd (Finset.mem_univ i) h'
   · rw [coeff_res, smoothNum_single]; exact hu i
 

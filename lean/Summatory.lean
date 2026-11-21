@@ -1,4 +1,15 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+
+/-!
 Run r25 / M2, seat M2L2 (item 5): the summatory identities (H9) and (H10) of A19 (Q5 section 10).
 
 Notation: `π = Nat.primeCounting` (number of primes `<= n`), `⌊y⌋₊ = Nat.floor`,
@@ -19,16 +30,10 @@ Contents.
    `H9_H10_cheap`, `H9_H10_signed`: the same on the node sets `{1..Z}` with `S(p^k) <= Z` and
    `{-Z..Z} \ {0}` with `S(p^ceil(k/2)) <= Z`.
 
-Lean v4.33.1 with Mathlib; imports the r25 library and round 1.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library and round 1.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
+
+@[expose] public section
 
 namespace M2L2
 

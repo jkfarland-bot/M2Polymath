@@ -1,4 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+
+/-!
 Run r25 / M2, seat M2L2 (item 2): the corollaries of Theorem B (A19, Q2 section 3) and the
 Vandermonde variant of O2 (ledger R-113).
 
@@ -19,17 +31,10 @@ Contents.
    (family, degrees in `{0..p-1}`: it suffices to know `f n = 0 (mod p^2)` on squarefree `n` with
    `2 <= omega(n) <= p` and prime factors in `P`).
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1 and FamGen.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1 and FamGen.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
+
+@[expose] public section
 
 namespace M2L2
 

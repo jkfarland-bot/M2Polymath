@@ -1,4 +1,10 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import Upper
+
+/-!
 Run r25, seat L1: R-080 stage (c) and the lower half of stage (d), by a trace argument over
 `ℤ[ζ_p]` (this replaces the p-independence / Moore determinant route; see INDEX.md).
 
@@ -17,9 +23,8 @@ annihilator of `u = ∏ (1 - x_i)` of degree `m < p ^ n` modulo `p ^ k` forces `
 `L(ζ_n; p, k) + 1 = min (p ^ n) (S(p ^ k))` over `ℤ` and over `ℤ_[p]` (`levelCount_zeta_int`,
 `levelCount_zeta_padic`): ledger R-080 (C), R-060 closed, for every `n`, `p`, `k ≥ 1`.
 -/
-import Mathlib
-import Found
-import Upper
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -428,21 +433,21 @@ theorem coeff_single_prod_one_sub_X {R : Type*} [CommRing R] {n : ℕ} (i : Fin 
   classical
   induction s using Finset.induction_on with
   | empty =>
-    rw [Finset.prod_empty, coeff_one, if_neg (Finsupp.single_ne_zero.2 one_ne_zero)]
+    rw [Finset.prod_empty, coeff_one, ite_eq_right (Finsupp.single_ne_zero.2 one_ne_zero)]
     simp
   | insert a s ha ih =>
     rw [Finset.prod_insert ha, sub_mul, one_mul, map_sub, ih, X, coeff_monomial_mul]
     by_cases hai : a = i
     · subst hai
-      rw [if_pos le_rfl, tsub_self, coeff_zero_eq_constantCoeff_apply,
+      rw [ite_eq_left le_rfl, tsub_self, coeff_zero_eq_constantCoeff_apply,
         constantCoeff_prod_one_sub_X, one_mul,
-        if_neg ha, if_pos (Finset.mem_insert_self _ _)]
+        ite_eq_right ha, ite_eq_left (Finset.mem_insert_self _ _)]
       simp
     · have hle : ¬ Finsupp.single a 1 ≤ Finsupp.single i 1 := by
         intro hle
         have := hle a
         simp [Ne.symm hai] at this
-      rw [if_neg hle, sub_zero]
+      rw [ite_eq_right hle, sub_zero]
       simp [Finset.mem_insert, Ne.symm hai]
 
 /-- `ρ(u) = n` (ledger R-060, R-080): the exponent vectors, modulo `p`, of the monomials of `u`
@@ -471,7 +476,7 @@ theorem fullRank_zetaDen {R : Type*} [CommRing R] (hpu : ¬ IsUnit (p : R)) (n :
       · simp
     rw [hsum]
     exact Nat.not_dvd_of_pos_of_lt (Nat.pos_of_ne_zero hi) (hlt i)
-  · rw [zetaDen, coeff_single_prod_one_sub_X, if_pos (Finset.mem_univ _)]
+  · rw [zetaDen, coeff_single_prod_one_sub_X, ite_eq_left (Finset.mem_univ _)]
     exact not_natCast_dvd_neg_one p hpu
 
 /-- Hypothesis `(hu)` of `core_bound` for the image in `O[[x]]` of a full rank `u ∈ ℤ[[x]]`. -/

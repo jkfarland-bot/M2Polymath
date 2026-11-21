@@ -1,11 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import M2ThetaJ
+
+/-!
   Seat M2L4, item 5a: Theorem J (A19 section 13) beyond round 3: a general slice form covering
   rational combinations with denominators 2^e 3^t (in particular 3-power denominators and the
   half-integral case thetaJ_half, restated here), and the principal split prime variant
   (base 2 only). The theta-series facts remain hypotheses, as in round 3.
 -/
-import Mathlib
-import M2ThetaJ
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 

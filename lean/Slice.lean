@@ -1,4 +1,13 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+
+/-!
 Run r25 / M2, seat M2L: the slice link (Theorem A of A19, integer case) and the
 arithmetic-function forms of Theorem B and of the Theorem H lower bound.
 
@@ -23,15 +32,11 @@ Contents.
    `sum over v_p(z) = 1 of c_z h_z(1) (z / p) = u (mod p)` and a node with `v_p(z) = 1` whose
    aggregated coefficient `c_z h_z(1)` is prime to `p`.
 
-Lean v4.33.1 with Mathlib; imports DirBase (r25 library: `mapHom`, `pow_apply_one`), DirMain
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports DirBase (r25 library: `mapHom`, `pow_apply_one`), DirMain
 (`mul_apply_prime`), Moment, MomentZ. No sorry.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
+
+@[expose] public section
 
 namespace M2L
 
@@ -195,7 +200,7 @@ theorem zpowZeta_prime (z : ℤ) {q : ℕ} (hq : q.Prime) : zpowZeta z q = z := 
   · rw [pow_apply_prime' (by simp) _ hq, moebius_apply_prime hq]; omega
 
 theorem zpowZeta_of_pos {z : ℤ} (hz : 0 ≤ z) : zpowZeta z = (ζ : ArithmeticFunction ℤ) ^ z.toNat := by
-  rw [zpowZeta, if_pos hz]
+  rw [zpowZeta, ite_eq_left hz]
 
 /-! ## 4. The target and Theorem H (lower bound) for arithmetic functions -/
 

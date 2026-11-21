@@ -1,0 +1,20 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "M2Polymath.exact_degree_cheap",
+    "M2Polymath.exact_degree_signed",
+    "M2Polymath.no_prime_detection",
+    "M2Polymath.degree_p_needed",
+    "M2Polymath.mod9_iff",
+    "M2Polymath.d3_ternary",
+    "M2Polymath.piMod3_correct"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": true
+}

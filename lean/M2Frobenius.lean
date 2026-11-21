@@ -1,11 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultN
+
+/-!
   Seat M2L4, item 7: the Frobenius identity for the Dirichlet ring,
   f^(*p) = E_p(Frob ∘ f) for every arithmetic function f over a commutative ring of
   characteristic p (p prime); over Z/p, f^(*p) = E_p(f); for integer-valued f,
   f^(*p) ≡ E_p(f) (mod p) coefficientwise.
 -/
-import Mathlib
-import M2ResultN
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 
@@ -26,7 +31,7 @@ lemma delta_mul (a b : ℕ) :
   ext n
   rw [mul_apply, delta_apply]
   by_cases h : n ≠ 0 ∧ n = a * b
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     have ha : a ≠ 0 := by rintro rfl; exact h.1 (by rw [h.2, zero_mul])
     have hb : b ≠ 0 := by rintro rfl; exact h.1 (by rw [h.2, mul_zero])
     rw [sum_eq_single_of_mem (a, b) (Nat.mem_divisorsAntidiagonal.2 ⟨h.2.symm, h.1⟩)]
@@ -36,17 +41,17 @@ lemma delta_mul (a b : ℕ) :
       by_cases h1 : x.1 ≠ 0 ∧ x.1 = a
       · by_cases h2 : x.2 ≠ 0 ∧ x.2 = b
         · exact absurd (Prod.ext h1.2 h2.2) hx
-        · rw [if_neg h2, mul_zero]
-      · rw [if_neg h1, zero_mul]
-  · rw [if_neg h]
+        · rw [ite_eq_right h2, mul_zero]
+      · rw [ite_eq_right h1, zero_mul]
+  · rw [ite_eq_right h]
     refine sum_eq_zero fun x hx => ?_
     rw [Nat.mem_divisorsAntidiagonal] at hx
     rw [delta_apply, delta_apply]
     by_cases h1 : x.1 ≠ 0 ∧ x.1 = a
     · by_cases h2 : x.2 ≠ 0 ∧ x.2 = b
       · exact absurd ⟨hx.2, by rw [← hx.1, h1.2, h2.2]⟩ h
-      · rw [if_neg h2, mul_zero]
-    · rw [if_neg h1, zero_mul]
+      · rw [ite_eq_right h2, mul_zero]
+    · rw [ite_eq_right h1, zero_mul]
 
 lemma delta_one : (delta 1 : ArithmeticFunction R) = 1 := by
   ext n; rw [delta_apply, one_apply]
@@ -89,10 +94,10 @@ lemma trunc_apply (f : ArithmeticFunction R) {n m : ℕ} (hm : m ∣ n) (hn : n 
   have hm0 : m ≠ 0 := by rintro rfl; exact hn (Nat.eq_zero_of_zero_dvd hm)
   rw [sum_eq_single_of_mem m (Nat.mem_divisors.2 ⟨hm, hn⟩)]
   · show f m • (delta m : ArithmeticFunction R) m = f m
-    rw [delta_apply, if_pos ⟨hm0, rfl⟩, smul_eq_mul, mul_one]
+    rw [delta_apply, ite_eq_left ⟨hm0, rfl⟩, smul_eq_mul, mul_one]
   · intro d _ hd
     show f d • (delta d : ArithmeticFunction R) m = 0
-    rw [delta_apply, if_neg (fun h => hd h.2.symm), smul_zero]
+    rw [delta_apply, ite_eq_right (fun h => hd h.2.symm), smul_zero]
 
 /-- `Frob ∘ f`: `n ↦ f(n)^p`. -/
 def frobF (p : ℕ) [Fact p.Prime] (f : ArithmeticFunction R) : ArithmeticFunction R :=
@@ -123,17 +128,17 @@ theorem frobenius_dirichlet (p : ℕ) [hp : Fact p.Prime] [CharP R p] (f : Arith
     show f d ^ p • (delta (d ^ p) : ArithmeticFunction R) n = _
     rw [delta_apply]
     by_cases h : d ^ p = n
-    · rw [if_pos ⟨hn, h.symm⟩, if_pos h, smul_eq_mul, mul_one]
-    · rw [if_neg (fun h' => h h'.2.symm), if_neg h, smul_zero]
+    · rw [ite_eq_left ⟨hn, h.symm⟩, ite_eq_left h, smul_eq_mul, mul_one]
+    · rw [ite_eq_right (fun h' => h h'.2.symm), ite_eq_right h, smul_zero]
   rw [sum_congr rfl e2]
   by_cases hpow : ∃ m, m ^ p = n
   · obtain ⟨m, rfl⟩ := hpow
     have hm : m ∈ (m ^ p).divisors := Nat.mem_divisors.2 ⟨dvd_pow_self m hp0.ne', hn⟩
-    rw [sum_eq_single_of_mem m hm, if_pos rfl, Ek_pow hp0]
+    rw [sum_eq_single_of_mem m hm, ite_eq_left rfl, Ek_pow hp0]
     · rfl
-    · intro d _ hd; rw [if_neg (fun h => hd (pow_left_inj' hp0 h))]
+    · intro d _ hd; rw [ite_eq_right (fun h => hd (pow_left_inj' hp0 h))]
   · rw [Ek_notpow _ (fun c hc => hpow ⟨c, hc⟩)]
-    exact sum_eq_zero fun d _ => if_neg (fun h => hpow ⟨d, h⟩)
+    exact sum_eq_zero fun d _ => ite_eq_right (fun h => hpow ⟨d, h⟩)
 
 end Frob
 

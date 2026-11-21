@@ -1,4 +1,14 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+
+/-!
 Run r25 / M2, seat M2L: the construction half of Theorem H, pointwise on all positive integers,
 and the exact minimal node bounds for arithmetic functions.
 
@@ -18,16 +28,11 @@ Contents.
    `{-Z..-1} union {1..Z}` iff `S(p^ceil(k/2)) <= Z`. `IsLeast` forms:
    `Z_cheap(p, k) = S(p^k)`, `Z_signed(p, k) = S(p^ceil(k/2))`.
 
-Lean v4.33.1 with Mathlib; imports DirBase, DirMain (r25 library), Moment, MomentZ, Slice.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports DirBase, DirMain (r25 library), Moment, MomentZ, Slice.
 No sorry.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
+
+@[expose] public section
 
 namespace M2L
 
@@ -41,7 +46,7 @@ def Bz (z : ℤ) : ArithmeticFunction ℤ := ⟨fun n => if n = 0 then 0 else z 
 
 theorem Bz_apply (z : ℤ) {n : ℕ} (hn : n ≠ 0) : Bz z n = z ^ ω n := by
   show (if n = 0 then 0 else z ^ ω n) = _
-  rw [if_neg hn]
+  rw [ite_eq_right hn]
 
 theorem Bz_mult (z : ℤ) : (Bz z).IsMultiplicative := by
   rw [IsMultiplicative.iff_ne_zero]

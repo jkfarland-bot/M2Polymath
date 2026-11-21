@@ -1,11 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import M2Polymath
+
+/-!
   Seat M2L4, item 1: the rest of Result M (A19 section 9a).
   Second transform of (M2), the recovery of H from D_3 mod 9, the exact identities (M3) and (M4),
   and the two oracle reductions as Lean functions proved correct, for every natural x.
   Builds on round 3 (M2Ternary: (M1); M2Polymath: (F2), S_3 mod 9, first transform of (M2) for x >= 1).
 -/
-import Mathlib
-import M2Polymath
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.Moebius
@@ -189,7 +194,7 @@ lemma sum_hyperbola_moebius_inner (f : ℕ → ℤ) (N : ℕ) :
       intro x hx
       rw [Nat.mem_divisorsAntidiagonal] at hx
       have hx1 : x.1 ≠ 0 := by rintro h; rw [h, zero_mul] at hx; exact hx.2 hx.1.symm
-      rw [hx.1, natCoe_apply, zeta_apply, if_neg hx1]
+      rw [hx.1, natCoe_apply, zeta_apply, ite_eq_right hx1]
       push_cast; ring
     rw [sum_congr rfl h1, ← mul_sum, ← mul_apply, coe_zeta_mul_moebius, one_apply]
     split_ifs with h <;> simp [h]
@@ -208,7 +213,7 @@ lemma sum_hyperbola_moebius_outer (f : ℕ → ℤ) (N : ℕ) :
       intro x hx
       rw [Nat.mem_divisorsAntidiagonal] at hx
       have hx2 : x.2 ≠ 0 := by rintro h; rw [h, mul_zero] at hx; exact hx.2 hx.1.symm
-      rw [hx.1, natCoe_apply, zeta_apply, if_neg hx2]
+      rw [hx.1, natCoe_apply, zeta_apply, ite_eq_right hx2]
       push_cast; ring
     rw [sum_congr rfl h1, ← mul_sum, ← mul_apply, moebius_mul_coe_zeta, one_apply]
     split_ifs with h <;> simp [h]

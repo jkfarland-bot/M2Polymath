@@ -1,4 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+
+/-!
 Run r25 / M2, seat M2L2 (item 1): Corollary A1 of A19 (our O1, ledger R-113).
 
 No member of the family (integer cores congruent to their degree `z` modulo `p` on an infinite set
@@ -21,17 +33,10 @@ Contents.
    (Its representation `(B_p - delta) / p` has the coefficient `1 / p`; termwise integrality is
    what A1 uses.)
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1 and FamGen.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1 and FamGen.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
+
+@[expose] public section
 
 namespace M2L2
 
@@ -157,11 +162,11 @@ omit hp in
 theorem p_mul_Ediv {n : ℕ} (hn : n ≠ 0) :
     (p : ℤ) * Ediv p n = (p : ℤ) ^ ω n - if n = 1 then 1 else 0 := by
   show (p : ℤ) * (if n = 0 then 0 else ((p : ℤ) ^ ω n - if n = 1 then 1 else 0) / p) = _
-  rw [if_neg hn]
+  rw [ite_eq_right hn]
   apply Int.mul_ediv_cancel'
   by_cases h1 : n = 1
   · subst h1; simp
-  · rw [if_neg h1, sub_zero]
+  · rw [ite_eq_right h1, sub_zero]
     have : ω n ≠ 0 := fun h => h1 (by
       have := (cardDistinctFactors_eq_zero).1 h; omega)
     exact dvd_pow_self _ this
@@ -177,14 +182,14 @@ theorem Bp_sub_delta :
     have hne : q ^ e ≠ 0 := pow_ne_zero _ hq.ne_zero
     have h1 : q ^ e ≠ 1 := (Nat.one_lt_pow (by omega) hq.one_lt).ne'
     have := p_mul_Ediv p hne
-    rw [if_neg h1, sub_zero, cardDistinctFactors_apply_prime_pow hq (by omega), pow_one] at this
+    rw [ite_eq_right h1, sub_zero, cardDistinctFactors_apply_prime_pow hq (by omega), pow_one] at this
     exact (mul_eq_left₀ hp0).1 this
   have hcomp : ∀ n, 2 ≤ ω n → (p : ℤ) ∣ Ediv p n := by
     intro n hn
     have hn0 : n ≠ 0 := by rintro rfl; simp at hn
     have hn1 : n ≠ 1 := by rintro rfl; simp at hn
     have := p_mul_Ediv p hn0
-    rw [if_neg hn1, sub_zero] at this
+    rw [ite_eq_right hn1, sub_zero] at this
     have h2 : (p : ℤ) ^ 2 ∣ (p : ℤ) * Ediv p n := by rw [this]; exact pow_dvd_pow _ hn
     rw [pow_two] at h2
     exact (mul_dvd_mul_iff_left hp0).1 h2

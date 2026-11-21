@@ -1,12 +1,17 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultN
+
+/-!
   Seat M2L5, item 4: Result N (A19 section 9b) as a positive tuple count.
   c_L(n) is the number of positive tuples (u_0, v_0, ..., u_{L-1}, v_{L-1}) with
   n = ∏_r (u_r v_r)^(3^r); and (N5): for every x and every depth L with ⌊x^(1/3)⌋ < 2^(3^L),
   π(x) ≡ ∑_{1 ≤ j ≤ ⌊log₂ x⌋} w_j T_{j,L}(x) (mod 3), w_j = j μ(j) mod 3, where T_{j,L}(x) counts the
   positive tuples (a, b, c, u_0, v_0, ...) with a ≤ b, a < c, (abc)^j ∏_r (u_r v_r)^(j 3^(r+1)) ≤ x.
 -/
-import Mathlib
-import M2ResultN
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.Moebius
@@ -86,11 +91,11 @@ lemma Ek3_box (f : ArithmeticFunction ℤ) {b N : ℕ} (hb : 1 ≤ b) (hbN : b �
       rcases Nat.eq_zero_or_pos m with rfl | h; · simp at hb
       exact h
     have hmN : m ≤ N := (Nat.le_self_pow (by norm_num) m).trans hbN
-    rw [Ek_pow (by norm_num), sum_eq_single_of_mem m (mem_Icc.2 ⟨hm1, hmN⟩), if_pos rfl]
+    rw [Ek_pow (by norm_num), sum_eq_single_of_mem m (mem_Icc.2 ⟨hm1, hmN⟩), ite_eq_left rfl]
     intro c _ hc
-    rw [if_neg (fun h => hc (Nat.pow_left_injective (by norm_num) h))]
+    rw [ite_eq_right (fun h => hc (Nat.pow_left_injective (by norm_num) h))]
   · rw [Ek_notpow _ (fun c hc => h ⟨c, hc⟩)]
-    exact (sum_eq_zero fun c _ => if_neg (fun hc => h ⟨c, hc⟩)).symm
+    exact (sum_eq_zero fun c _ => ite_eq_right (fun hc => h ⟨c, hc⟩)).symm
 
 lemma cL_succ_box (L : ℕ) {n N : ℕ} (hn : 1 ≤ n) (hnN : n ≤ N) :
     (cL (L + 1) n : ℤ) = ∑ p ∈ BB N, ∑ m ∈ Icc 1 N, if p.1 * p.2 * m ^ 3 = n then cL L m else 0 := by
@@ -115,8 +120,8 @@ lemma cL_succ_box (L : ℕ) {n N : ℕ} (hn : 1 ≤ n) (hnN : n ≤ N) :
   rw [sum_ite_eq]
   simp only [Nat.mem_divisorsAntidiagonal]
   by_cases h : p.1 * p.2 * m ^ 3 = n
-  · rw [if_pos ⟨h, by omega⟩, if_pos h]
-  · rw [if_neg (fun h' => h h'.1), if_neg h]
+  · rw [ite_eq_left ⟨h, by omega⟩, ite_eq_left h]
+  · rw [ite_eq_right (fun h' => h h'.1), ite_eq_right h]
 
 /-- **`c_L` as a positive tuple count**: for `1 ≤ n ≤ N`, `c_L(n)` is the number of tuples
 `(u_0, v_0, ..., u_{L-1}, v_{L-1})` in `[1, N]^(2L)` with `n = ∏_r (u_r v_r)^(3^r)`. (Every such tuple has
@@ -136,7 +141,7 @@ theorem cL_count (L : ℕ) : ∀ N n : ℕ, 1 ≤ n → n ≤ N → (cL L n : �
     simp only [Ptup, univ_eq_empty, prod_empty, ArithmeticFunction.one_apply]
     by_cases h : n = 1
     · subst h; simp
-    · rw [if_neg h, if_neg (Ne.symm h)]; simp
+    · rw [ite_eq_right h, ite_eq_right (Ne.symm h)]; simp
   | succ L ih =>
     intro N n hn hnN
     rw [cL_succ_box L hn hnN, tupSet, natCast_card_filter, sum_piFinset_cons]
@@ -152,8 +157,8 @@ theorem cL_count (L : ℕ) : ∀ N n : ℕ, 1 ≤ n → n ≤ N → (cL L n : �
       rw [sum_ite_eq, Ptup_cons]
       have h1 := Ptup_pos ht
       by_cases hm : Ptup L t ∈ Icc 1 N
-      · rw [if_pos hm]
-      · rw [if_neg hm, if_neg]
+      · rw [ite_eq_left hm]
+      · rw [ite_eq_right hm, ite_eq_right]
         have : N < Ptup L t := by simp only [mem_Icc, not_and, not_le] at hm; exact hm h1
         intro h
         have : Ptup L t ≤ p.1 * p.2 * Ptup L t ^ 3 := by
@@ -234,8 +239,8 @@ theorem TT_eq {j L x : ℕ} (hj : 1 ≤ j) :
     intro t ht
     rw [sum_ite_eq]
     by_cases hc : Ptup L t ∈ Icc 1 x
-    · rw [if_pos hc]
-    · rw [if_neg hc]
+    · rw [ite_eq_left hc]
+    · rw [ite_eq_right hc]
       have hP := Ptup_pos ht
       have hgt : x < Ptup L t := by simp only [mem_Icc, not_and, not_le] at hc; exact hc hP
       have : iroot j x / Ptup L t ^ 3 = 0 := by

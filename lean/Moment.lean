@@ -1,4 +1,9 @@
-/-
+module
+
+public import Mathlib
+public import Found
+
+/-!
 Run r25 / M2, seat M2L: the moment core of Theorems B and H (A19, Q2 and Q5), over the integers.
 
 For a finite set `T` of integer nodes and integer weights `a`, the moments are
@@ -20,10 +25,10 @@ Contents.
    and `C * prod z | s_r` for every `r >= 2`.
 5. Exact minimal node bounds for the moment target: `cheap_moment_iff`, `signed_moment_iff`.
 
-Lean v4.33.1 with Mathlib; imports Found (r25 library). No sorry.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports Found (r25 library). No sorry.
 -/
-import Mathlib
-import Found
+
+@[expose] public section
 
 namespace M2L
 
@@ -179,11 +184,11 @@ theorem node_congr (z : ℤ) {r : ℕ} (hr2 : 2 ≤ r) (hr : p * (p - 1) ∣ r -
     (pow_dvd_pow_of_dvd h 2).trans (pow_dvd_pow z hr2)
   by_cases h1 : (p : ℤ) ∣ z
   · by_cases h2 : (p : ℤ) ^ 2 ∣ z
-    · rw [if_neg (fun h => h.2 h2), sub_zero]; exact dvd_sub h2 (hzr h1)
-    · rw [if_pos ⟨h1, h2⟩]
+    · rw [ite_eq_right (fun h => h.2 h2), sub_zero]; exact dvd_sub h2 (hzr h1)
+    · rw [ite_eq_left ⟨h1, h2⟩]
       have : z - z ^ r - z = -(z ^ r) := by ring
       rw [this]; exact (hzr h1).neg_right
-  · rw [if_neg (fun h => h1 h.1), sub_zero]
+  · rw [ite_eq_right (fun h => h1 h.1), sub_zero]
     have := euler_sq p h1 (by omega) hr
     rw [← neg_sub]; exact this.neg_right
 

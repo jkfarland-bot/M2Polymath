@@ -1,4 +1,9 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultM
+
+/-!
   Seat M2L4, item 6: the elementary parts of Theorem L (A19 section 16).
   From the pointwise statements taken as hypotheses (W(1) = 1; 8 | W(n) when ω(n) ≥ 2;
   the prime-power values (N2)), the summed mod 8 formula and (N3), for every x ≥ 1, with the
@@ -6,8 +11,8 @@
   Also the elementary pointwise part: the sign-change argument 4 | r*(n) for n > 1 coprime to 6,
   hence 8 | W(n) when ω(n) ≥ 2, and W(1) = 1, for W defined from r* as in (N1).
 -/
-import Mathlib
-import M2ResultM
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.omega
@@ -22,28 +27,28 @@ lemma ppow_pointwise (W : ℕ → ℤ) {x n : ℕ} (hn : n ∈ Ioc 0 x) :
       = ∑ k ∈ Ioc 0 x, ∑ p ∈ Ioc 0 x, (if p ^ k = n ∧ p.Prime then W (p ^ k) else 0) := by
   rw [mem_Ioc] at hn
   by_cases hpp : IsPrimePow n
-  · rw [if_pos hpp]
+  · rw [ite_eq_left hpp]
     obtain ⟨p0, k0, hp0, hk0, rfl⟩ := hpp
     rw [← Nat.prime_iff] at hp0
     have hk0x : k0 ∈ Ioc 0 x := mem_Ioc.2 ⟨hk0, (Nat.lt_pow_self hp0.one_lt).le.trans hn.2⟩
     have hp0x : p0 ∈ Ioc 0 x :=
       mem_Ioc.2 ⟨hp0.pos, (Nat.le_self_pow hk0.ne' p0).trans hn.2⟩
-    rw [sum_eq_single_of_mem k0 hk0x, sum_eq_single_of_mem p0 hp0x, if_pos ⟨rfl, hp0⟩]
+    rw [sum_eq_single_of_mem k0 hk0x, sum_eq_single_of_mem p0 hp0x, ite_eq_left ⟨rfl, hp0⟩]
     · intro p _ hp
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨h, hpr⟩
       exact hp (hpr.pow_inj' hp0 hk0.ne' hk0.ne' h).1
     · intro k hk hkk
       apply sum_eq_zero
       intro p _
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨h, hpr⟩
       exact hkk (hpr.pow_inj' hp0 (mem_Ioc.1 hk).1.ne' hk0.ne' h).2
-  · rw [if_neg hpp]
+  · rw [ite_eq_right hpp]
     symm
     apply sum_eq_zero; intro k hk
     apply sum_eq_zero; intro p _
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h, hpr⟩
     exact hpp ⟨p, k, Nat.prime_iff.1 hpr, (mem_Ioc.1 hk).1, h⟩
 
@@ -146,7 +151,7 @@ theorem L_summed_exact (W : ℕ → ℤ) (hR : ∀ q, R q → q.Prime ∧ 3 < q 
     · have h1 : n ≠ 1 := by rintro rfl; simp at h
       have h2 : ¬ IsPrimePow n := fun hp => by rw [cardDistinctFactors_eq_one_iff.2 hp] at h; omega
       simp [h1, h2, h]
-  rw [sum_congr rfl hsplit, sum_add_distrib, sum_add_distrib, sum_ite_eq', if_pos (by simp; omega),
+  rw [sum_congr rfl hsplit, sum_add_distrib, sum_add_distrib, sum_ite_eq', ite_eq_left (by simp; omega),
     hW1, sum_primePow, ← sum_filter]
   congr 1
   -- the prime-power part
@@ -177,7 +182,7 @@ theorem L_summed_exact (W : ℕ → ℤ) (hR : ∀ q, R q → q.Prime ∧ 3 < q 
       ext k; simp only [mem_Ioc, mem_insert, mem_Icc]; omega
     rw [hs, sum_insert (by simp), CR]
     congr 1
-    · rw [cnt_eq hR one_pos, if_neg (by norm_num), iroot_one]
+    · rw [cnt_eq hR one_pos, ite_eq_right (by norm_num), iroot_one]
     · refine sum_congr rfl fun k hk => ?_
       rw [cnt_eq hR (by have := (mem_Icc.1 hk).1; omega)]
       split_ifs <;> rfl
@@ -185,7 +190,7 @@ theorem L_summed_exact (W : ℕ → ℤ) (hR : ∀ q, R q → q.Prime ∧ 3 < q 
     subst hx1
     rw [hl, CR, hl]
     have h1 : ¬ R 1 := fun h => (hR 1 h).1.ne_one rfl
-    have hf : ({1} : Finset ℕ).filter R = ∅ := by rw [filter_singleton, if_neg h1]
+    have hf : ({1} : Finset ℕ).filter R = ∅ := by rw [filter_singleton, ite_eq_right h1]
     simp [piR, hf]
 
 /-- **The summed mod 8 formula of Theorem L**: for every `x ≥ 1`,
@@ -240,7 +245,7 @@ noncomputable def Wfun (n : ℕ) : ℤ := if Nat.Coprime n 6 then 2 ^ ω n * (rS
 theorem rStar_one : rStar 1 = 2 := by decide
 
 theorem Wfun_one : Wfun 1 = 1 := by
-  rw [Wfun, if_pos (by norm_num), rStar_one]; simp
+  rw [Wfun, ite_eq_left (by norm_num), rStar_one]; simp
 
 /-- For `n > 1` coprime to 6 every primitive representation has both coordinates nonzero, so the
 independent sign changes act freely: `4 ∣ r*(n)`. -/

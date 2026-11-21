@@ -1,9 +1,13 @@
-import M2Ternary
-import M2Polymath
-import M2FilterD
-import M2ThetaJ
-import M2WitnessK
-import M2GapG
+module
+
+public import M2Ternary
+public import M2Polymath
+public import M2FilterD
+public import M2ThetaJ
+public import M2WitnessK
+public import M2GapG
+
+@[expose] public section
 
 open ArithmeticFunction Finset Filter Topology
 

@@ -1,4 +1,9 @@
-/-
+module
+
+public import Mathlib
+public import M2Polymath
+
+/-!
   Seat M2L3, item 3: A19 Theorem D (section 5), the two explicit filters.
   Mod 9: A(q^e) = 1 + q^2 + q^4, B(q^e) = A(q^e) for q ≠ 3, B(3^e) = 0, F = 3A - 2B.
   Mod 4: A(q^e) = 1 + q^2, B(q^e) = A(q^e) for odd q, B(2^e) = 0, F = 2A - B.
@@ -6,8 +11,8 @@
   Model: A = G_A * h_A, B = G_B * h_B with G the products of ℓ(χ, k) and h multiplicative,
   zero at every prime, supported on squarefull integers.
 -/
-import Mathlib
-import M2Polymath
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.sigma ArithmeticFunction.Moebius
@@ -65,11 +70,11 @@ lemma Ffun_one : Ffun r g 1 = 1 := by
 
 lemma Ffun_prime_pow_ne {q e : ℕ} (hq : q.Prime) (he : 0 < e) (hqr : q ≠ r) :
     Ffun r g (q ^ e) = g q := by
-  rw [Ffun, Afun_prime_pow g hq he, Bfun_prime_pow r g hq he, if_neg hqr]; ring
+  rw [Ffun, Afun_prime_pow g hq he, Bfun_prime_pow r g hq he, ite_eq_right hqr]; ring
 
 lemma Ffun_prime_pow_eq {e : ℕ} (hr : r.Prime) (he : 0 < e) :
     Ffun r g (r ^ e) = r * g r := by
-  rw [Ffun, Afun_prime_pow g hr he, Bfun_prime_pow r g hr he, if_pos rfl]; ring
+  rw [Ffun, Afun_prime_pow g hr he, Bfun_prime_pow r g hr he, ite_eq_left rfl]; ring
 
 /-- If `r ∣ g(p)` for every prime `p ≠ r`, then `r^2 ∣ F(n)` whenever `ω(n) ≥ 2`. -/
 theorem Ffun_dvd (hg : ∀ p, p.Prime → p ≠ r → (r : ℤ) ∣ g p)
@@ -92,7 +97,7 @@ theorem Ffun_dvd (hg : ∀ p, p.Prime → p ≠ r → (r : ℤ) ∣ g p)
       (dvd_prod_of_mem _ hp))
   · -- A(n) = B(n) and every factor is divisible by `r`
     have hAB : ∏ p ∈ n.primeFactors, (if p = r then 0 else g p) = ∏ p ∈ n.primeFactors, g p :=
-      prod_congr rfl fun p hp => if_neg (fun (h : p = r) => hrn (h ▸ hp))
+      prod_congr rfl fun p hp => ite_eq_right (fun (h : p = r) => hrn (h ▸ hp))
     rw [hAB, show (r : ℤ) * ∏ p ∈ n.primeFactors, g p - ((r : ℤ) - 1) * ∏ p ∈ n.primeFactors, g p
       = ∏ p ∈ n.primeFactors, g p by ring]
     have hd : ∏ _p ∈ n.primeFactors, (r : ℤ) ∣ ∏ p ∈ n.primeFactors, g p :=
@@ -118,13 +123,13 @@ theorem Ffun_sum (hg : ∀ p, p.Prime → p ≠ r → (r : ℤ) ∣ g p)
   rw [← Int.modEq_iff_dvd]
   by_cases hn1 : n = 1
   · subst hn1; simp [Ffun_one, not_isPrimePow_one]
-  rw [if_neg hn1]
+  rw [ite_eq_right hn1]
   by_cases hp : IsPrimePow n
   · obtain ⟨q, e, hq, he, rfl⟩ := hp
     rw [← Nat.prime_iff] at hq
-    rw [if_pos ⟨q, e, Nat.prime_iff.1 hq, he, rfl⟩]
+    rw [ite_eq_left ⟨q, e, Nat.prime_iff.1 hq, he, rfl⟩]
     simpa using hpp q e hq he
-  · rw [if_neg hp]
+  · rw [ite_eq_right hp]
     have h2 : 2 ≤ ω n := by
       have h0 : ω n ≠ 0 := by rw [Ne, cardDistinctFactors_eq_zero]; have := (mem_Ioc.1 hn).1; omega
       have h1' : ω n ≠ 1 := fun h => hp (cardDistinctFactors_eq_one_iff.1 h)
@@ -280,7 +285,7 @@ lemma cmul_inverse {f : ArithmeticFunction ℤ} (h1 : f 1 = 1) (h : ∀ a b, f (
     intro x hx
     rw [Nat.mem_divisorsAntidiagonal] at hx
     have hx1 : x.1 ≠ 0 := by rintro h0; rw [h0, zero_mul] at hx; exact hx.2 hx.1.symm
-    rw [pmul_apply, ← hx.1, h, natCoe_apply, zeta_apply, if_neg hx1]
+    rw [pmul_apply, ← hx.1, h, natCoe_apply, zeta_apply, ite_eq_right hx1]
     push_cast; ring
   rw [sum_congr rfl this, ← mul_sum, ← mul_apply, coe_zeta_mul_moebius, one_apply]
   split_ifs with hn
@@ -319,7 +324,7 @@ theorem correction (G Gi T : ArithmeticFunction ℤ) (hG : IsMultiplicative G)
   have hzero : ∀ q, q.Prime → (T * Gi) q = 0 := by
     intro q hq
     have e1 := mul_apply_prime hG hGi hq
-    rw [hinv, one_apply, if_neg hq.one_lt.ne'] at e1
+    rw [hinv, one_apply, ite_eq_right hq.one_lt.ne'] at e1
     rw [mul_apply_prime hT hGi hq, hprime q hq]
     linarith
   refine ⟨hh, ?_, hzero, fun n hn => squarefull_of_prime_zero hh hzero hn⟩

@@ -52,7 +52,7 @@ Paths of the form `m2/<seat>/` in the reviews and ledger correspond to `code/<se
 
 ## Building
 
-Requires [elan](https://github.com/leanprover/elan). The toolchain (Lean 4.33.1) and Mathlib (rev 0df444a3) are pinned.
+Requires [elan](https://github.com/leanprover/elan). The toolchain (Lean v4.35.0-rc2) and Mathlib (v4.35.0-rc2) are pinned.
 
 ```bash
 lake exe cache get   # download prebuilt Mathlib
@@ -62,6 +62,32 @@ lake build           # builds every module, the audit files and AllAxioms
 `lake build` prints the axiom report; the expected final line is
 `declarations scanned: N; nonstandard axiom uses: 0`. No file uses `sorry`, `admit`, `native_decide`, `axiom`
 or `implemented_by`. Bounded checks (table rows, witness primes) use kernel `decide`.
+
+## Palomar layout (version 1.1.0)
+
+Version 1.1.0 ports the development to Lean and Mathlib v4.35.0-rc2 and Lean's module system, with no change to any theorem statement, and adds the layout of the [Palomar registry](https://palomar-registry.org/):
+
+| File | Contents |
+|---|---|
+| `Challenge.lean` | The statement surface a reader audits: every definition restated over Mathlib alone, and seven theorems with `sorry` |
+| `Solution.lean` | Proves the same seven declarations from the development |
+| `lean/ChallengeDefs.lean` | A copy of the definition block of `Challenge.lean`, which `Solution.lean` imports |
+| `comparator.json` | The seven compared theorems and the permitted axioms (propext, Quot.sound, Classical.choice); no definition is left as a hole |
+| `formalization.yaml` | Authorship, sources, AI assistance, scope and fidelity |
+| `scripts/` | Palomar's checks, from the Palomar starter template |
+
+The comparator checks every definition of `Challenge.lean` in full, body included, against the one `Solution.lean` exports, so no definition can be swapped for a weaker one. `Solution.lean` gets its definitions from `lean/ChallengeDefs.lean`, a copy of the same block, and `scripts/check-challenge-defs.py` checks that the two blocks are identical. A changed definition body in `Challenge.lean` was tested and is rejected.
+
+The seven compared theorems: `exact_degree_cheap` and `exact_degree_signed` (the exact degree, S(p^k) and S(p^ceil(k/2))), `no_prime_detection`, `degree_p_needed`, `mod9_iff`, `d3_ternary` (D_3(x) = floor(x^(1/3)) + 3H(x)) and `piMod3_correct` (a computable pi(x) mod 3, correct for every x).
+
+Checks, as Palomar runs them:
+
+```bash
+python3 scripts/check-lean-sources.py
+python3 scripts/check-challenge-defs.py
+ruby scripts/validate-formalization.rb
+./scripts/verify-comparator.sh   # needs bubblewrap (bwrap); expected: "Your solution is okay!"
+```
 
 ## How the work was checked
 

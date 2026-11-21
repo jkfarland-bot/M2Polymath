@@ -1,4 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+
+/-!
 Run r25 / M2, seat M2L2 (item 7): Theorems A, B, H and Corollary A1 with coefficients in a ring
 `O` (covering cyclotomic coefficients and characters with cyclotomic values).
 
@@ -19,17 +31,10 @@ Contents.
    the prime indicator modulo `p O`).
 4. `intDvdDescends_ringOfIntegers`: the hypothesis holds for `𝓞 K`, `K` any number field.
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1 and FamGen.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1 and FamGen.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
+
+@[expose] public section
 
 namespace M2L2
 
@@ -410,7 +415,7 @@ theorem intDvdDescends_ringOfIntegers (K : Type*) [Field K] [NumberField K] (p :
   have hint : IsIntegral ℤ r := by
     have hyi : IsIntegral ℤ (y : K) := y.isIntegral_coe
     rw [← hry] at hyi
-    exact (isIntegral_algebraMap_iff (algebraMap ℚ K).injective).mp hyi
+    exact isIntegral_algebraMap_iff.mp hyi
   obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.mp hint
   refine ⟨n, ?_⟩
   have : (x : ℚ) = (p : ℚ) ^ m * n := by

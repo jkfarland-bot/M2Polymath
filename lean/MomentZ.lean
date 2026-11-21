@@ -1,4 +1,10 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import Moment
+
+/-!
 Run r25 / M2, seat M2L: Kempner consequences of Theorem H and the matching construction, at the
 moment level (integer nodes, integer weights).
 
@@ -16,11 +22,10 @@ Contents.
    `signed_moment_iff`: achievable on nodes in `{-Z..-1} union {1..Z}` iff
    `S(p^ceil(k/2)) <= Z` (`ceil(k/2)` written `(k + 1) / 2`). `S = FrobLevel.kempner`.
 
-Lean v4.33.1 with Mathlib; imports Found (r25 library) and Moment. No sorry.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports Found (r25 library) and Moment. No sorry.
 -/
-import Mathlib
-import Found
-import Moment
+
+@[expose] public section
 
 namespace M2L
 
@@ -111,7 +116,7 @@ theorem exists_weights (T : Finset ℤ) (h0 : (0 : ℤ) ∉ T) (hne : T.Nonempty
     rw [mom, ← sum_coe_sort T (fun z => a z * z ^ r), ← e.sum_comp]
     apply sum_congr rfl
     intro j _
-    simp only [a, w, dif_pos (e j).2, Subtype.coe_eta, Equiv.symm_apply_apply]
+    simp only [a, w, dite_eq_left (e j).2, Subtype.coe_eta, Equiv.symm_apply_apply]
   have hrow : ∀ i : Fin d, mom T a ((i : ℕ) + 1) = if i = i0 then M.det else 0 := by
     intro i
     rw [hmom]
@@ -125,12 +130,12 @@ theorem exists_weights (T : Finset ℤ) (h0 : (0 : ℤ) ∉ T) (hne : T.Nonempty
     ring
   refine ⟨a, ?_, ?_⟩
   · have := hrow i0
-    rw [if_pos rfl] at this
+    rw [ite_eq_left rfl] at this
     rw [show (1 : ℕ) = ((i0 : ℕ) + 1) from rfl, this]
     exact hdet
   · intro r hr2 hrd
     have := hrow ⟨r - 1, by omega⟩
-    rw [if_neg (fun h => by
+    rw [ite_eq_right (fun h => by
       have := congrArg Fin.val h; simp [i0] at this; omega)] at this
     rwa [show ((⟨r - 1, by omega⟩ : Fin d) : ℕ) + 1 = r by simp; omega] at this
 
@@ -172,7 +177,7 @@ theorem construct_moment (T : Finset ℤ) (h0 : (0 : ℤ) ∉ T) (hne : T.Nonemp
   have hR0 : R.coeff 0 = -((nodePoly T).coeff 0 * A.coeff 0) := by
     have := congrArg (coeff · 0) hRA
     simp only [coeff_add, mul_coeff_zero, coeff_X_pow] at this
-    rw [if_neg (by omega)] at this
+    rw [ite_eq_right (by omega)] at this
     linear_combination this
   rw [hmr, hR0]
   have : ∏ z ∈ T, z ∣ (nodePoly T).coeff 0 := by

@@ -1,4 +1,9 @@
-/-
+module
+
+public import Mathlib
+public import Found
+
+/-!
 Run r25, seat L1: R-080 stage (a), the upper bound L_f + 1 ≤ min(p ^ n, S(p ^ k)),
 and the upper half of stage (d) (the value for f = ∏ (1 - x_i)⁻¹).
 
@@ -15,8 +20,8 @@ and the upper half of stage (d) (the value for f = ∏ (1 - x_i)⁻¹).
    `L_f(p, k) + 1 ≤ min (p ^ n) (S(p ^ k))`; `levelCount_zeta_le` is the case
    `f = ∏ (1 - x_i)⁻¹` (upper half of stage (d)), with `R = ℤ_[p]` in `levelCount_zeta_le_padic`.
 -/
-import Mathlib
-import Found
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -232,7 +237,7 @@ theorem eq_sum_digit (a : MvPowerSeries (Fin n) R) :
     rw [Finsupp.tsub_apply, Finsupp.smul_apply, smul_eq_mul, h1, h2]
     omega
   rw [Finset.sum_eq_single e0]
-  · rw [mul_comm, coeff_monomial_mul, if_pos he0m, one_mul, hsub, coeff_frob_smul,
+  · rw [mul_comm, coeff_monomial_mul, ite_eq_left he0m, one_mul, hsub, coeff_frob_smul,
       coeff_classPart, hsplit]
   · intro e he hne
     rw [mul_comm, coeff_monomial_mul]

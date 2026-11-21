@@ -1,4 +1,8 @@
-/-
+module
+
+public import Mathlib
+
+/-!
   Seat M2L3, item 6: the elementary inequality behind the Theorem G gap (A19 section 8;
   Lelechenko arXiv:1305.1639v3, proof of Theorem 5, page 9).
   The proof uses ∑_{d ≤ U} d^(-b k1/k2) ≪ U^(1 - b k1/k2). When b k1 > k2 the exponent
@@ -6,7 +10,8 @@
   constant C gives the bound for all U. The parameter arithmetic of the mod 3 counterexample
   (mu with k1 = 3, a = 2/3; d_3 with k2 = 1, b = 3/5) is checked exactly.
 -/
-import Mathlib
+
+@[expose] public section
 
 open Finset Filter Topology
 

@@ -1,7 +1,12 @@
-import M2BlockS
-import M2Parity
-import M2Closures
-import M2TupleN
+module
+
+public import M2BlockS
+meta import M2BlockS
+public import M2Parity
+public import M2Closures
+public import M2TupleN
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.Moebius ArithmeticFunction.omega
@@ -44,7 +49,7 @@ lemma ell_eq_zeta {N k : ℕ} (χ : DirichletCharacter ℤ N)
     induction e with
     | zero => simp [M2L2.ell_one]
     | succ e ih => rw [pow_succ, M2L2.ell_mul_apply, ih, hq p hp, one_mul]
-  rw [hpow e, natCoe_apply, zeta_apply, if_neg (pow_ne_zero _ hp.ne_zero)]; simp
+  rw [hpow e, natCoe_apply, zeta_apply, ite_eq_right (pow_ne_zero _ hp.ne_zero)]; simp
 
 /-- Every DType3 core is exactly d_3 = zeta * zeta * zeta (no power twist, no nontrivial character). -/
 theorem DType3_iff_d3 (G : ArithmeticFunction ℤ) :
@@ -101,7 +106,7 @@ lemma ellOne_eq (k : ℕ) : M2L3.ellOne k = M2L2.ell (1 : DirichletCharacter ℤ
   ext n
   by_cases hn : n = 0
   · subst hn; simp
-  · rw [M2L3.ellOne_apply, if_neg hn, M2L2.ell_trivial_apply k hn]
+  · rw [M2L3.ellOne_apply, ite_eq_right hn, M2L2.ell_trivial_apply k hn]
 
 lemma ellPrin_eq (k : ℕ) : M2L3.ellPrin 3 k = M2L2.ell (1 : DirichletCharacter ℤ 3) k := by
   ext n
@@ -110,11 +115,11 @@ lemma ellPrin_eq (k : ℕ) : M2L3.ellPrin 3 k = M2L2.ell (1 : DirichletCharacter
   · rw [M2L2.ell_apply _ k hn]
     simp only [M2L3.ellPrin, coe_mk, hn, false_or]
     by_cases h3 : 3 ∣ n
-    · rw [if_pos h3]
+    · rw [ite_eq_left h3]
       have : ¬ IsUnit ((n : ℕ) : ZMod 3) := by
         rw [(ZMod.natCast_eq_zero_iff n 3).2 h3]; exact not_isUnit_zero
       rw [MulChar.map_nonunit _ this, zero_mul]
-    · rw [if_neg h3]
+    · rw [ite_eq_right h3]
       have : IsUnit ((n : ℕ) : ZMod 3) := by
         rw [ZMod.isUnit_iff_coprime]
         exact (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd Nat.prime_three).2 h3))
@@ -122,7 +127,7 @@ lemma ellPrin_eq (k : ℕ) : M2L3.ellPrin 3 k = M2L2.ell (1 : DirichletCharacter
 
 lemma prin_val {q k : ℕ} (hq : q.Prime) (h3 : q ≠ 3) :
     M2L2.ell (1 : DirichletCharacter ℤ 3) k q = (q : ℤ) ^ k := by
-  rw [← ellPrin_eq, M2L3.ellPrin_apply, if_neg]
+  rw [← ellPrin_eq, M2L3.ellPrin_apply, ite_eq_right]
   rintro (h | h)
   · exact hq.ne_zero h
   · exact h3 ((Nat.prime_dvd_prime_iff_eq Nat.prime_three hq).1 h).symm
@@ -137,19 +142,19 @@ theorem F9_in_relaxed : ConjClass' M2L3.F9 := by
       · intro q hq h3; rw [prin_val hq h3]; simpa using sq_mod3 hq h3 0
       · intro q hq h3; rw [prin_val hq h3]; simpa using sq_mod3 hq h3 1
       · intro q hq h3; rw [prin_val hq h3]; simpa using sq_mod3 hq h3 2
-      · simp only [Bool.false_eq_true, if_false, M2L3.GB9, ellPrin_eq]
+      · simp only [Bool.false_eq_true, ite_false, M2L3.GB9, ellPrin_eq]
     · refine ⟨1, 1, 1, 0, 2, 4, 1, 1, 1, ?_, ?_, ?_, ?_⟩
       · intro q hq _; rw [M2L2.ell_trivial_apply _ hq.ne_zero]; simp
       · intro q hq h3; rw [M2L2.ell_trivial_apply _ hq.ne_zero]; simpa using sq_mod3 hq h3 1
       · intro q hq h3; rw [M2L2.ell_trivial_apply _ hq.ne_zero]; simpa using sq_mod3 hq h3 2
-      · simp only [if_true, M2L3.GA9, ellOne_eq]
+      · simp only [ite_true, M2L3.GA9, ellOne_eq]
   · intro b _
     cases b
     · exact ⟨mB, fun q hq => (h0 q hq).2⟩
     · exact ⟨mA, fun q hq => (h0 q hq).1⟩
   · intro n
     rw [M2L2.famI_apply, sum_pair (by decide)]
-    simp only [if_true, Bool.false_eq_true, if_false, eA, eB, M2L3.F9, M2L3.Ffun]
+    simp only [ite_true, Bool.false_eq_true, ite_false, eA, eB, M2L3.F9, M2L3.Ffun]
     push_cast; ring
 
 /-! ## (C) Window check / fast path: how many blocks take the certified fast path (eval only). -/

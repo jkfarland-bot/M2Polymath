@@ -1,0 +1,208 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "M2Polymath: the exact degree of divisor-sum identities for the prime-counting function modulo prime powers"
+  description: >-
+    Consider integer combinations f = sum_z c_z (G_z * h_z) of Dirichlet convolutions in which each core G_z is the
+    Dirichlet power zeta^z (z >= 0) or mu^|z| (z < 0) and each correction h_z vanishes on squarefree integers greater
+    than 1. Target D_k asks that f(q) = p^v u_q (mod p^(v+k)) at every prime q with p not dividing u_q, and that
+    f(n) = 0 (mod p^(v+k)) whenever n has at least two distinct prime factors; summing an f that meets a strong form of D_k (one value at every prime power) gives pi(x) modulo p^k.
+    The development proves that, for every prime p and every k >= 1, the least Z for which some combination with
+    degrees in {-Z..Z} meets D_k is S(p^ceil(k/2)), and with degrees in {1..Z} (no inverse factors) it is S(p^k),
+    where S(m) is the least s with m dividing s! (the Kempner function). As corollaries no combination detects primes
+    modulo p, and the divided target needs a degree divisible by p. It also proves D_3(x) = floor(x^(1/3)) + 3H(x),
+    where H(x) counts triples (a, b, c) with abc <= x, a <= b and a < c, and certifies an algorithm for pi(x) mod 3
+    through D_3.
+  authors:
+    - "Joseph S. Farland"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Joseph S. Farland"
+
+repository:
+  role: "substantive-development"
+
+classification:
+  arxiv: ["math.NT"]
+  msc2020: ["11A25", "11N05", "11Y16", "68V20"]
+
+sources:
+  - title: "The exact degree of divisor-sum identities for the prime-counting function modulo prime powers"
+    authors:
+      - "Joseph S. Farland"
+    id: "https://doi.org/10.5281/zenodo.24408923"
+    type: "article"
+    location: "Preprint, version 1, Zenodo, 20 November 2026, https://doi.org/10.5281/zenodo.24408923"
+    relationship: "formalizes"
+    note: >-
+      The paper and this formalization have the same author. Every theorem, proposition, lemma and corollary of the
+      paper's Sections 3 to 8 is proved in this repository; running times are outside the paper's scope. Origin of the
+      results: the slice reduction, the obstruction to detecting primes modulo p and the degree principle were found
+      by the author with Claude (Anthropic) on 9 November 2026. The extended slice theorem, the twisted model, the exact form of
+      Theorem B, the exact degree theorem with its Lagrange construction and squarefull corrections, the unequal-shift
+      filters, the identities relating pi(x) mod 3 to D_3(x) mod 9 in both directions, Theorem 7.19 and the form of
+      Theorem 7.18 were first proposed by ChatGPT (OpenAI) in answer to a question from the author's
+      project, then checked independently by Claude agent seats before being formalized. On novelty: the Polymath4
+      project observed that fast sums of tau_k modulo (k+1)^2 give pi(x) modulo k+1 (the sufficiency direction); no
+      prior statement of the necessity results or of the exact degree was found in searches of the Polymath4 threads,
+      the paper below, works citing it, and MathOverflow (20 November 2026). This is not a claim of novelty.
+    license: "CC-BY-4.0"
+    author_endorsement: "participated"
+  - title: "Deterministic methods to find primes"
+    authors:
+      - "D. H. J. Polymath"
+    type: "article"
+    location: "Math. Comp. 81 (2012), 1233-1246; arXiv:1009.3956"
+    relationship: "background"
+    note: >-
+      Context: the parity of pi(x) below the square-root barrier and the identity modulo 9 for the three-fold divisor
+      function (Section 4). Section 2.1 sketches the block method that the certified routine for incomplete hyperbola
+      sums follows.
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: "(Research thread III) Determinstic way to find primes"
+    authors:
+      - "Terence Tao"
+    type: "web-discussion"
+    location: "Polymath blog, 13 August 2009 and comments of 17 August 2009, https://polymathprojects.org/2009/08/13/research-thread-iii-determinstic-way-to-find-primes/"
+    relationship: "background"
+    note: "Tao's remarks that pi(x) modulo 3 would want a divisor function with value 3 at primes, and that sums of tau_k modulo (k+1)^2 give pi(x) modulo k+1; the paper proves the necessity side."
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: "Breaking the square-root barrier in the parity of the prime counting function"
+    authors:
+      - "Ernest Croot"
+    type: "web-discussion"
+    location: "Two-page note, 28 August 2009, linked from Polymath4 Research Thread IV"
+    relationship: "background"
+    note: "The parity of pi(x) in x^(5/11+o(1)); the hyperbola split behind the formalized parity identities (P1), (P2)."
+    license: "unknown"
+    author_endorsement: "not-contacted"
+  - title: "Miscellanea"
+    authors:
+      - "Aubrey J. Kempner"
+    type: "article"
+    location: "Amer. Math. Monthly 25 (1918), no. 5, 201-210"
+    relationship: "background"
+    note: "The Kempner function S(m), the least s with m dividing s!."
+    license: "unknown"
+    author_endorsement: "n/a"
+  - title: "Frobenius congruences for the Moebius function and the exact number of divisor levels"
+    authors:
+      - "Joseph S. Farland"
+    type: "article"
+    location: "Preprint in preparation, 2026"
+    relationship: "background"
+    note: "Source of the six library modules (Found, Upper, Lower, LowerPadic, DirBase, DirMain): the Dirichlet ring with the operator E_p and the Kempner function. The moment argument here reproves its lower bound S(p^k) - 1 for the Moebius function."
+    license: "unknown"
+    author_endorsement: "participated"
+
+related_formalizations:
+  - id: "https://doi.org/10.5281/zenodo.24408424"
+    relationship: "supersedes"
+    note: "Release v1.0.0 of this repository (Lean 4.33.1, no module system). This version ports it to Lean and Mathlib v4.35.0-rc2 and Lean's module system and adds the Challenge/Solution split; the mathematics is unchanged."
+
+status:
+  scope: >-
+    Compared declarations (Challenge.lean, restating every definition over Mathlib only): exact_degree_cheap and
+    exact_degree_signed (the exact degree theorem over Z: IsLeast with value S(p^k) without inverse factors and
+    S(p^((k+1)/2)) with them, for k >= 1); no_prime_detection (no member of the untwisted general family meets the
+    prime-indicator target modulo p^k, k >= 1); degree_p_needed (with degrees in 0..p-1 target D is impossible);
+    mod9_iff (the mod 9 criterion for degrees 1, 2, 3); d3_ternary (D_3(x) = floor(x^(1/3)) + 3H(x) for every x);
+    piMod3_correct (the computable piMod3, a block routine for D_3 followed by the reduction from D_3 mod 9, equals
+    pi(x) mod 3 for every x). The development (lean/) proves every theorem of the preprint, including the versions over
+    rings of integers of number fields and Z_p, twisted factors, the explicit constructions and tables, the
+    prime-counting identities, the Moebius link, Result M's identities and reductions, and the unequal-shift filters.
+    Not formalized: running times (the algorithm's correctness is certified, its cost is not; the x^(5/9) cost bound is
+    a paper proof in the repository outside the preprint's scope); results that need Chebotarev's density theorem.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Claude (Anthropic)", "ChatGPT (OpenAI)"]
+      framework: "Claude.ai with code execution (agent seats); ChatGPT for one research answer"
+      tool_setup: >-
+        AI-assisted throughout. ChatGPT (OpenAI) proposed several of the results in one research answer. Claude agent
+        seats (Claude Opus) checked every result independently (a worker writing its own exact-arithmetic code, then a
+        verifier or cold reader), wrote the Lean development in five rounds, and audited it: each round was rebuilt
+        from source by the coordinating seat, scanned for axioms over every declaration, tested with one planted error
+        per file, and read by a separate seat for statement fidelity and non-vacuity. The author directed the work.
+      cost:
+        wall_time: "9 to 20 November 2026, intermittent"
+        spend_usd: "subscription-based"
+        hardware: "cloud workspace (2 cores, 8 GB) plus local machine"
+      prompting_notes: "Seats received written briefs with the statements to check or formalize, the source text treated as unreviewed claims, and the rule that no seat sees another's verdict before forming its own."
+  spend_usd: "subscription-based"
+  notes: >-
+    The author chose the problems, directed the work, and is responsible for its content. Claude produced the Lean
+    formalization and the paper's text under the author's direction. No external human referee has reviewed the paper
+    or the formalization.
+
+fidelity:
+  divergences: >-
+    Challenge.lean restates the development's definitions in namespace M2Polymath over Mathlib alone. The Kempner value
+    is kempner p k = sInf {N | p^k divides N!}, the least such N. The core of degree z is zeta^z for z >= 0 and mu^|z| for
+    z < 0 (zpowZeta). The family is a finite sum of c_z (G_z * h_z) over integer nodes (fam) or over any finite index set
+    with arbitrary degrees (famI). Target D_k (TargetD p v k f) quantifies the offset v inside CheapAchievable and
+    SignedAchievable, leaves the value at 1 and at higher prime powers free, and asks for vanishing modulo p^(v+k) at every
+    n with at least two distinct prime factors. Corrections are required to vanish on squarefree m > 1, which allows any
+    correction supported on 1 and the non-squarefree integers (a superset of the squarefull corrections used in the
+    construction; this is the condition of the paper's Definition 2.7). ceil(k/2) is written (k+1)/2. The integer cube
+    root floor(x^(1/3)) is icbrt, the greatest m <= x with m^3 <= x. The algorithm checks the approximation window of each
+    block at run time and falls back to a direct sum when a check fails, so piMod3_correct holds unconditionally; whether
+    the fast path is taken is not part of any theorem.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "Joseph S. Farland"
+  notes: >-
+    Statements were audited for fidelity and non-vacuity by Claude seats that did not write them; the author compared
+    the statements in Challenge.lean with the paper. The comparator compares every definition of Challenge.lean with
+    its body (comparator.json has no definition holes); Solution.lean imports the same block from lean/ChallengeDefs.lean,
+    checked identical by scripts/check-challenge-defs.py. No external referee has reviewed the paper or the formalization.
+
+alignment:
+  namespace: "M2Polymath"
+  statements:
+    - source: "Theorem 5.8 (exact degree, no inverse factors): Z_cheap(p, k) = S(p^k)"
+      lean: "M2Polymath.exact_degree_cheap"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L.Zcheap_eq (lean/Construct.lean)."
+    - source: "Theorem 5.8 (exact degree, signed): Z_signed(p, k) = S(p^ceil(k/2))"
+      lean: "M2Polymath.exact_degree_signed"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L.Zsigned_eq (lean/Construct.lean)."
+    - source: "Corollary 4.3 (no member detects primes modulo p), untwisted general family"
+      lean: "M2Polymath.no_prime_detection"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L2.not_targetU_untwisted (lean/A1.lean)."
+    - source: "Corollary 4.9 (degree p is needed for target D)"
+      lean: "M2Polymath.degree_p_needed"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L2.not_targetD_below_p (lean/BCor.lean)."
+    - source: "Corollary 4.10 (the mod 9 criterion for degrees 1, 2, 3)"
+      lean: "M2Polymath.mod9_iff"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L2.mod9_iff (lean/BCor.lean)."
+    - source: "Theorem 7.5: D_3(x) = floor(x^(1/3)) + 3 H(x)"
+      lean: "M2Polymath.d3_ternary"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L3.ternary_M1 (lean/M2Ternary.lean)."
+    - source: "Theorem 7.16 (a computable pi(x) mod 3, correct for every x)"
+      lean: "M2Polymath.piMod3_correct"
+      module: "Challenge"
+      status: "proved"
+      note: "From M2L5.piMod3_correct (lean/M2BlockS.lean)."
+
+acknowledgements: "Lean 4 and Mathlib; Claude (Anthropic) and ChatGPT (OpenAI) for AI assistance; the Palomar starter template for the check scripts."

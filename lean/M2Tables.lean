@@ -1,10 +1,15 @@
-/-
+module
+
+public import Mathlib
+public import Construct
+
+/-!
   Seat M2L4, item 4: (H5) explicit Lagrange weights; the coefficient tables of A19 section 11, each
   row checked by kernel `decide` on concrete integers and turned into an explicit TargetD member;
   the level table (H1)/(H2) evaluated; and (H6)/(H7) as identities of formal power series over Z.
 -/
-import Mathlib
-import Construct
+
+@[expose] public section
 
 open Finset Polynomial
 open scoped Nat
@@ -76,9 +81,9 @@ theorem weights_unique (T : Finset ℤ) (h0 : (0 : ℤ) ∉ T) (b : ℤ → ℚ)
     intro z hz
     simp only [P, eval_mul, eval_X]
     by_cases h : z = z0
-    · subst h; rw [Lagrange.eval_basis_self (intCast_injOn T) hz, mul_one, if_pos rfl]
+    · subst h; rw [Lagrange.eval_basis_self (intCast_injOn T) hz, mul_one, ite_eq_left rfl]
     · rw [Lagrange.eval_basis_of_ne (s := T) (v := fun t : ℤ => (t : ℚ)) (Ne.symm h) hz, mul_zero,
-        if_neg h]
+        ite_eq_right h]
   have hsum : ∑ z ∈ T, b z * P.eval (z : ℚ) = 0 := by
     simp_rw [eval_eq_sum_range' hPdeg, mul_sum]
     rw [sum_comm]
@@ -90,7 +95,7 @@ theorem weights_unique (T : Finset ℤ) (h0 : (0 : ℤ) ∉ T) (b : ℤ → ℚ)
       rw [show ∑ z ∈ T, b z * (P.coeff i * (z : ℚ) ^ i) = P.coeff i * ∑ z ∈ T, b z * (z : ℚ) ^ i by
         rw [mul_sum]; exact sum_congr rfl fun _ _ => by ring, this, mul_zero]
   rw [sum_congr rfl (fun z hz => by rw [hev z hz])] at hsum
-  simp only [mul_ite, mul_zero, sum_ite_eq', if_pos hz0] at hsum
+  simp only [mul_ite, mul_zero, sum_ite_eq', ite_eq_left hz0] at hsum
   exact (mul_eq_zero.1 hsum).resolve_right (cast_ne_zero_of_mem h0 hz0)
 
 /-- Weights with `s_1 = C` and `s_r = 0` for `2 ≤ r ≤ |T|` are exactly the explicit Lagrange
@@ -149,7 +154,7 @@ theorem mom_dvd_of_vanish (T : Finset ℤ) (hne : T.Nonempty) (a : ℤ → ℤ)
   have hR0 : R.coeff 0 = -((nodePoly T).coeff 0 * A.coeff 0) := by
     have := congrArg (coeff · 0) hRA
     simp only [coeff_add, mul_coeff_zero, coeff_X_pow] at this
-    rw [if_neg (by omega)] at this
+    rw [ite_eq_right (by omega)] at this
     linear_combination this
   rw [hmr, hR0]
   have : ∏ z ∈ T, z ∣ (nodePoly T).coeff 0 := by
@@ -435,9 +440,9 @@ theorem H6_coeff_zero_one (z : ℤ) :
       exact ⟨this.1, by rw [this.2]; ring⟩
   obtain ⟨u0, u1⟩ := hz z
   have b0 : PowerSeries.coeff 0 (1 + PowerSeries.C z * PowerSeries.X * geomS) = 1 := by
-    rw [B_series_coeff, if_pos rfl]
+    rw [B_series_coeff, ite_eq_left rfl]
   have b1 : PowerSeries.coeff 1 (1 + PowerSeries.C z * PowerSeries.X * geomS) = z := by
-    rw [B_series_coeff, if_neg one_ne_zero]
+    rw [B_series_coeff, ite_eq_right one_ne_zero]
   generalize (1 + PowerSeries.C z * PowerSeries.X * geomS) = B at hU b0 b1
   rw [hU, PowerSeries.coeff_mul, PowerSeries.coeff_mul]
   constructor

@@ -1,4 +1,8 @@
-/-
+module
+
+public import Mathlib
+
+/-!
   Seat M2L3, item 4: the algebraic core of A19 Theorem J (section 13).
   The theta-series facts are hypotheses, stated plainly:
   (T1) a_ψ = (r_0 - r_1)/2, a_0 = (r_0 + 2 r_1)/2, and on a product of r distinct selected
@@ -8,7 +12,8 @@
   (with a correction vanishing on squarefree n > 1) separates the selected primes from their
   products, provided the selected primes form an infinite set (Chebotarev, a hypothesis here).
 -/
-import Mathlib
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 
@@ -127,7 +132,7 @@ lemma powOmega_apply (u : ℤ) (n : ℕ) :
 lemma powOmega_prod (u : ℤ) {s : Finset ℕ} (hs : ∀ p ∈ s, p.Prime) :
     powOmega u (∏ p ∈ s, p) = u ^ s.card := by
   have hne : ∏ p ∈ s, p ≠ 0 := prod_ne_zero_iff.2 fun p hp => (hs p hp).ne_zero
-  rw [powOmega_apply, if_neg hne, Nat.primeFactors_prod hs]
+  rw [powOmega_apply, ite_eq_right hne, Nat.primeFactors_prod hs]
 
 /-- A model of the hypotheses: `S` = all primes, `a_0 = 2^ω`, `a_ψ = (-1)^ω`,
 `r_1 = (2 a_0 - 2 a_ψ)/3`, `r_0 = 2 a_ψ + r_1`. -/

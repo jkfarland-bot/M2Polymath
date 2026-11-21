@@ -1,4 +1,17 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+public import A1
+
+/-!
 Run r25 / M2, seat M2L2 (item 6): the R-053 index shift through Theorem H's moment argument
 (cold read m2/cr/REPORT_cold_read.md, point 7, the `Q(t)` form).
 
@@ -20,18 +33,10 @@ Contents.
    the upper bound from r25 (`levelCount_add_one_le_kempner`); it agrees with r25's
    `levelCount_zetaZ_int`, proved there by a different route.
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1, FamGen and A1.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1, FamGen and A1.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
-import A1
+
+@[expose] public section
 
 namespace M2L2
 

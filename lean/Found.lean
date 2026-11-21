@@ -1,4 +1,8 @@
-/-
+module
+
+public import Mathlib
+
+/-!
 Run r25, seat L1: shared foundation for the Frobenius level counts (ledger R-058, R-060, R-080).
 
 Abstract setting: a commutative ring `A`, a prime `p`, a ring endomorphism `σ` of `A` with
@@ -7,10 +11,11 @@ Concrete setting: `A = MvPowerSeries τ R` with `σ = frob p`, the substitution 
 (Mathlib's `MvPowerSeries.expand`), for every coefficient ring `R` with `a ^ p ≡ a (mod p R)`;
 this covers `R = ℤ` and `R = ℤ_[p]`.
 
-Lean v4.33.1 with Mathlib. No sorry, no axioms beyond propext, Classical.choice, Quot.sound.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system). No sorry, no axioms beyond propext, Classical.choice, Quot.sound.
 See FOUNDATION.md for the list of definitions and how to import this file.
 -/
-import Mathlib
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -114,9 +119,9 @@ theorem HasLevel.mono {p : ℕ} {σ : A →+* A} {f : A} {k L L' : ℕ}
     have hsub : Finset.range (L + 1) ⊆ Finset.range (L' + 1) :=
       Finset.range_subset_range.2 (by omega)
     rw [← Finset.sum_subset hsub]
-    · exact Finset.sum_congr rfl fun z hz => by rw [if_pos (Finset.mem_range.1 hz)]
+    · exact Finset.sum_congr rfl fun z hz => by rw [ite_eq_left (Finset.mem_range.1 hz)]
     · intro z _ hz
-      rw [if_neg (by simpa using hz), map_zero, mul_zero]
+      rw [ite_eq_right (by simpa using hz), map_zero, mul_zero]
   rw [this]; exact hg
 
 /-- Monic form, first half (note Lemma 5.2): a level `L` identity for `f` gives a monic
@@ -460,7 +465,8 @@ theorem int_pow_sub (a : ℤ) : ((p : ℕ) : ℤ) ∣ a ^ p - a := by
 
 theorem padicInt_pow_sub (a : ℤ_[p]) : ((p : ℕ) : ℤ_[p]) ∣ a ^ p - a := by
   rw [← Ideal.mem_span_singleton, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod,
-    RingHom.mem_ker, map_sub, map_pow, ZMod.pow_card, sub_self]
+    RingHom.mem_ker, map_sub, map_pow, ZMod.pow_card]
+  exact sub_self _
 
 theorem int_noPTorsion : NoPTorsion p ℤ := by
   intro a ha

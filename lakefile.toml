@@ -1,12 +1,20 @@
 name = "M2Polymath"
-defaultTargets = ["M2Lib"]
+defaultTargets = ["M2Lib", "Challenge", "Solution"]
 
 [[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4"
-rev = "0df444a360eaa60ab8c11dca51a86af692955474"
+rev = "v4.35.0-rc2"
 
 [[lean_lib]]
 name = "M2Lib"
 srcDir = "lean"
-roots = ["A1", "BCor", "Construct", "DirBase", "DirMain", "FamGen", "Found", "Lower", "LowerPadic", "M2AxisSwap", "M2ConstructO", "M2FilterD", "M2Frobenius", "M2GapG", "M2Polymath", "M2ResultM", "M2ResultN", "M2Tables", "M2Ternary", "M2TheoremL", "M2ThetaJ", "M2ThetaJ2", "M2WitnessK", "Moment", "MomentZ", "MuShift", "RingO", "Slice", "Summatory", "Twist", "TwistO", "Upper", "M2BlockS", "M2Parity", "M2Closures", "M2TupleN", "Audit.AuditR1", "Audit.AuditR2", "Audit.AuditR3", "Audit.AuditR4", "Audit.AuditR5", "AllAxioms"]
+roots = ["A1", "BCor", "Construct", "DirBase", "DirMain", "FamGen", "Found", "Lower", "LowerPadic", "M2AxisSwap", "M2ConstructO", "M2FilterD", "M2Frobenius", "M2GapG", "M2Polymath", "M2ResultM", "M2ResultN", "M2Tables", "M2Ternary", "M2TheoremL", "M2ThetaJ", "M2ThetaJ2", "M2WitnessK", "Moment", "MomentZ", "MuShift", "RingO", "Slice", "Summatory", "Twist", "TwistO", "Upper", "M2BlockS", "M2Parity", "M2Closures", "M2TupleN", "Audit.AuditR1", "Audit.AuditR2", "Audit.AuditR3", "Audit.AuditR4", "Audit.AuditR5", "AllAxioms", "ChallengeDefs"]
+
+[[lean_lib]]
+name = "Challenge"
+roots = ["Challenge"]
+
+[[lean_lib]]
+name = "Solution"
+roots = ["Solution"]

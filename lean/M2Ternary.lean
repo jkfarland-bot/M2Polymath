@@ -1,9 +1,14 @@
-/-
+module
+
+public import Mathlib
+
+/-!
   Seat M2L3, item 1: the ternary count (F1) and the cyclic-orbit identity (M1).
   A19 section 7 (Theorem F) and section 9a (Result M, equation (M1)).
   Every statement is an exact identity for every natural x.
 -/
-import Mathlib
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.sigma ArithmeticFunction.Moebius
@@ -70,11 +75,11 @@ lemma D3_eq_double (x : ℕ) : D3 x = ∑ a ∈ Ioc 0 x, ∑ b ∈ Ioc 0 x, x / 
   have ha' : 0 < a := (mem_Ioc.1 ha).1
   have hz := sum_Ioc_mul_zeta_eq_sum (ζ : ArithmeticFunction ℕ) (x / a)
   simp only [natCoe_nat, Nat.cast_id] at hz
-  rw [zeta_apply, if_neg (by omega), one_mul, hz]
+  rw [zeta_apply, ite_eq_right (by omega), one_mul, hz]
   have h1 : ∑ b ∈ Ioc 0 (x / a), ζ b * (x / a / b) = ∑ b ∈ Ioc 0 (x / a), x / (a * b) := by
     refine sum_congr rfl fun b hb => ?_
     have hb' : 0 < b := (mem_Ioc.1 hb).1
-    rw [zeta_apply, if_neg (by omega), one_mul, Nat.div_div_eq_div_mul]
+    rw [zeta_apply, ite_eq_right (by omega), one_mul, Nat.div_div_eq_div_mul]
   rw [h1]
   apply sum_subset (Ioc_subset_Ioc_right (Nat.div_le_self _ _))
   intro b hb hnb
@@ -165,7 +170,7 @@ lemma gw_pointwise (a b c : ℕ) :
   unfold gw dw
   rcases lt_trichotomy a b with h1 | h1 | h1 <;> rcases lt_trichotomy b c with h2 | h2 | h2 <;>
     rcases lt_trichotomy a c with h3 | h3 | h3 <;>
-    simp (disch := omega) only [if_pos, if_neg] <;> omega
+    simp (disch := omega) only [ite_eq_left, ite_eq_right] <;> omega
 
 /-- The cyclic-orbit predicate of (M1): `a ≤ b` and `a < c`. -/
 def rw3 (a b c : ℕ) : ℤ := if a ≤ b ∧ a < c then 1 else 0
@@ -174,7 +179,7 @@ lemma rw3_pointwise (a b c : ℕ) : dw a b c + rw3 a b c + rw3 b c a + rw3 c a b
   unfold dw rw3
   rcases lt_trichotomy a b with h1 | h1 | h1 <;> rcases lt_trichotomy b c with h2 | h2 | h2 <;>
     rcases lt_trichotomy a c with h3 | h3 | h3 <;>
-    simp (disch := omega) only [if_pos, if_neg] <;> omega
+    simp (disch := omega) only [ite_eq_left, ite_eq_right] <;> omega
 
 /-! ## (F1): the symmetric-triple formula -/
 
@@ -234,7 +239,7 @@ lemma T_eq (x : ℕ) :
           nlinarith
     · apply sum_eq_zero
       intro c _
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨⟨h1, h2⟩, h3⟩
       apply h ⟨h1, (le_ha_iff ha0).2 ?_⟩
       calc a * b * b ≤ a * b * c := Nat.mul_le_mul_left _ h2
@@ -270,8 +275,8 @@ lemma T_eq (x : ℕ) :
 
 lemma restrict_icbrt_ite (x : ℕ) (f : ℕ → ℤ) :
     ∑ a ∈ Ioc 0 x, (if a ≤ icbrt x then f a else 0) = ∑ a ∈ Icc 1 (icbrt x), f a := by
-  rw [restrict_icbrt x _ (fun a _ h => if_neg (by omega))]
-  exact sum_congr rfl fun a h => if_pos (mem_Icc.1 h).2
+  rw [restrict_icbrt x _ (fun a _ h => ite_eq_right (by omega))]
+  exact sum_congr rfl fun a h => ite_eq_left (mem_Icc.1 h).2
 
 /-- Collapse a sum over `b` against the condition `a = b`. -/
 lemma collapse_eq (X : Finset ℕ) (a : ℕ) (ha : a ∈ X) (G : ℕ → ℕ → ℤ) (P : ℕ → ℕ → Prop)
@@ -281,8 +286,8 @@ lemma collapse_eq (X : Finset ℕ) (a : ℕ) (ha : a ∈ X) (G : ℕ → ℕ →
   · refine sum_congr rfl fun b _ => ?_
     split_ifs with hab
     · subst hab; exact sum_congr rfl fun c _ => by simp only [true_and]
-    · exact sum_eq_zero fun c _ => if_neg (fun h => hab h.1)
-  · rw [sum_ite_eq, if_pos ha]
+    · exact sum_eq_zero fun c _ => ite_eq_right (fun h => hab h.1)
+  · rw [sum_ite_eq, ite_eq_left ha]
 
 lemma Eab_eq (x : ℕ) :
     ∑ a ∈ Ioc 0 x, ∑ b ∈ Ioc 0 x, ∑ c ∈ Ioc 0 x,
@@ -310,7 +315,7 @@ lemma Eab_eq (x : ℕ) :
         nlinarith
   · apply sum_eq_zero
     intro c _
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h1, h2⟩
     apply hm
     rw [← cube_le_iff]
@@ -328,7 +333,7 @@ lemma Ebc_eq (x : ℕ) :
         = ∑ b ∈ Ioc 0 x, (if a ≤ b ∧ a * b * b ≤ x then (1 : ℤ) else 0) := by
     intro a _
     refine sum_congr rfl fun b hb => ?_
-    rw [sum_eq_single_of_mem b hb (fun c _ hcb => if_neg (fun h => hcb h.1.2.symm))]
+    rw [sum_eq_single_of_mem b hb (fun c _ hcb => ite_eq_right (fun h => hcb h.1.2.symm))]
     simp
   rw [sum_congr rfl step, ← restrict_icbrt_ite]
   refine sum_congr rfl fun a ha' => ?_
@@ -349,7 +354,7 @@ lemma Ebc_eq (x : ℕ) :
           _ ≤ x := h2
   · apply sum_eq_zero
     intro b _
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h1, h2⟩
     exact hm ((a_le_ha_iff ha0).1 (h1.trans ((le_ha_iff ha0).2 h2)))
 
@@ -362,7 +367,7 @@ lemma diag_eq (x : ℕ) :
   have step : ∀ a ∈ Ioc 0 x, ∑ c ∈ Ioc 0 x, (if a = c ∧ a * a * c ≤ x then (1 : ℤ) else 0)
       = if a ≤ icbrt x then 1 else 0 := by
     intro a ha'
-    rw [sum_eq_single_of_mem a ha' (fun c _ hca => if_neg (fun h => hca h.1.symm))]
+    rw [sum_eq_single_of_mem a ha' (fun c _ hca => ite_eq_right (fun h => hca h.1.symm))]
     have : a * a * a ≤ x ↔ a ≤ icbrt x := by rw [← cube_le_iff]; ring_nf
     simp only [true_and, this]
   rw [sum_congr rfl step]

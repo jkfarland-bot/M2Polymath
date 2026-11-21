@@ -1,11 +1,16 @@
-/-
+module
+
+public import Mathlib
+public import M2Ternary
+
+/-!
   Seat M2L3, item 2: the Polymath-type mod 3 identity (A19 (I1) at p = 3, (F2), (M2)).
   f_3 = E_3(μ) * d_3 has f_3(1) = 1, f_3(q^j) = 3 j exactly, and f_3(n) ≡ 0 (mod 9) when
   ω(n) ≥ 2.  Summed: S_3(x) = ∑_{c ≤ x^(1/3)} μ(c) D_3(⌊x/c^3⌋) ≡ 1 + 3 G(x) (mod 9),
   G(x) = ∑_{q^e ≤ x} e, and G(x) ≡ ∑_{c ≤ x^(1/3)} μ(c) H(⌊x/c^3⌋) (mod 3).
 -/
-import Mathlib
-import M2Ternary
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.sigma ArithmeticFunction.Moebius
@@ -22,15 +27,15 @@ def E3mu : ArithmeticFunction ℤ :=
 lemma E3mu_apply (n : ℕ) : E3mu n = ∑ c ∈ Ioc 0 n, if c ^ 3 = n then μ c else 0 := rfl
 
 lemma E3mu_cube {c : ℕ} (hc : 0 < c) : E3mu (c ^ 3) = μ c := by
-  rw [E3mu_apply, sum_eq_single_of_mem c ?_ ?_, if_pos rfl]
+  rw [E3mu_apply, sum_eq_single_of_mem c ?_ ?_, ite_eq_left rfl]
   · rw [mem_Ioc]; exact ⟨hc, le_of_cube_le le_rfl⟩
   · intro d _ hdc
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     exact hdc (Nat.pow_left_injective (by norm_num) h)
 
 lemma E3mu_noncube {n : ℕ} (h : ∀ c, c ^ 3 ≠ n) : E3mu n = 0 := by
-  rw [E3mu_apply]; exact sum_eq_zero fun c _ => if_neg (h c)
+  rw [E3mu_apply]; exact sum_eq_zero fun c _ => ite_eq_right (h c)
 
 lemma isMultiplicative_E3mu : IsMultiplicative E3mu := by
   rw [IsMultiplicative.iff_ne_zero]
@@ -74,8 +79,8 @@ lemma E3mu_prime_pow {q : ℕ} (hq : q.Prime) (i : ℕ) :
     · interval_cases k
       · simp at hk; subst hk; simp
       · subst hk; simp [moebius_apply_prime hq]
-    · rw [moebius_apply_prime_pow hq (by omega), if_neg (by omega), if_neg (by omega),
-        if_neg (by omega)]
+    · rw [moebius_apply_prime_pow hq (by omega), ite_eq_right (by omega), ite_eq_right (by omega),
+        ite_eq_right (by omega)]
       simp
   · rw [E3mu_noncube (fun c hc => hcube ⟨c, hc⟩)]
     have h0 : i ≠ 0 := by rintro rfl; exact hcube ⟨1, by simp⟩
@@ -103,7 +108,7 @@ lemma d3_prime_pow_two_mul {q : ℕ} (hq : q.Prime) (j : ℕ) :
   rw [d3_eq_sigma0_mul_zeta, mul_apply_prime_pow _ _ hq]
   have : ∀ i ∈ range (j + 1), σ 0 (q ^ i) * ζ (q ^ (j - i)) = i + 1 := by
     intro i _
-    rw [sigma_zero_apply_prime_pow hq, zeta_apply, if_neg (pow_ne_zero _ hq.ne_zero), mul_one]
+    rw [sigma_zero_apply_prime_pow hq, zeta_apply, ite_eq_right (pow_ne_zero _ hq.ne_zero), mul_one]
   rw [sum_congr rfl this, two_mul_sum_succ]
 
 /-! ## `f_3 = E_3(μ) * d_3` -/
@@ -124,7 +129,7 @@ theorem f3_apply (n : ℕ) :
     have hun : u ∣ n := Nat.dvd_of_mem_divisors hu
     have hul : u ≤ n := Nat.le_of_dvd hn hun
     have hz : ∀ c, c ^ 3 ≠ u → (if c ^ 3 = u then (μ c : ℤ) else 0) * (d3 (n / u) : ℤ) = 0 :=
-      fun c hc => by rw [if_neg hc, zero_mul]
+      fun c hc => by rw [ite_eq_right hc, zero_mul]
     rw [sum_subset (Ioc_subset_Ioc_right hul) (fun c _ hc => hz c (by
       intro h; apply hc; rw [mem_Ioc]
       exact ⟨Nat.pos_of_ne_zero (by rintro rfl; simp at h; subst h; simp at hu),
@@ -159,15 +164,15 @@ theorem f3_prime_pow {q : ℕ} (hq : q.Prime) {j : ℕ} (hj : 0 < j) : f3 (q ^ j
     sum_ite_eq', mem_range, natCoe_apply]
   have hd : ∀ k : ℕ, (2 : ℤ) * (d3 (q ^ k) : ℤ) = ((k : ℤ) + 1) * ((k : ℤ) + 2) := by
     intro k; exact_mod_cast d3_prime_pow_two_mul hq k
-  rw [if_pos (by omega)]
+  rw [ite_eq_left (by omega)]
   simp only [Nat.sub_zero]
   by_cases h3 : 3 < j + 1
-  · rw [if_pos h3]
+  · rw [ite_eq_left h3]
     have e := hd j
     have e3 := hd (j - 3)
     push_cast [show 3 ≤ j by omega] at e3
     linarith
-  · rw [if_neg h3]
+  · rw [ite_eq_right h3]
     have e := hd j
     have : j = 1 ∨ j = 2 := by omega
     rcases this with rfl | rfl <;> push_cast at e ⊢ <;> linarith
@@ -197,14 +202,14 @@ theorem f3_mod_nine {n : ℕ} (hn : 0 < n) :
     f3 n ≡ (if n = 1 then 1 else 0) + 3 * (if IsPrimePow n then (Ω n : ℤ) else 0) [ZMOD 9] := by
   by_cases h1 : n = 1
   · subst h1; simp [f3_one, not_isPrimePow_one]
-  rw [if_neg h1]
+  rw [ite_eq_right h1]
   by_cases hpp : IsPrimePow n
-  · rw [if_pos hpp]
+  · rw [ite_eq_left hpp]
     obtain ⟨p, k, hp, hk, rfl⟩ := hpp
     rw [← Nat.prime_iff] at hp
     rw [f3_prime_pow hp hk, cardFactors_apply_prime_pow hp]
     simp
-  · rw [if_neg hpp, Int.modEq_iff_dvd]
+  · rw [ite_eq_right hpp, Int.modEq_iff_dvd]
     have h2 : 2 ≤ ω n := by
       have h0 : ω n ≠ 0 := by rw [Ne, cardDistinctFactors_eq_zero]; omega
       have h1' : ω n ≠ 1 := fun h => hpp (cardDistinctFactors_eq_one_iff.1 h)
@@ -256,10 +261,10 @@ theorem S3_eq (x : ℕ) :
   rw [sum_ite_eq]
   have hc0 : 0 < c := (mem_Ioc.1 hc).1
   by_cases hm : c ≤ icbrt x
-  · rw [if_pos hm, if_pos]
+  · rw [ite_eq_left hm, ite_eq_left]
     rw [mem_Ioc]
     exact ⟨pow_pos hc0 3, cube_le_iff.2 hm⟩
-  · rw [if_neg hm, if_neg]
+  · rw [ite_eq_right hm, ite_eq_right]
     rw [mem_Ioc]
     exact fun h => hm (cube_le_iff.1 h.2)
 
@@ -311,29 +316,29 @@ lemma ppow_pointwise_w (w : ℕ → ℤ) {x n : ℕ} (hn : n ∈ Ioc 0 x) :
       = ∑ k ∈ Ioc 0 x, ∑ p ∈ Ioc 0 x, (if p ^ k = n ∧ p.Prime then w k else 0) := by
   rw [mem_Ioc] at hn
   by_cases hpp : IsPrimePow n
-  · rw [if_pos hpp]
+  · rw [ite_eq_left hpp]
     obtain ⟨p0, k0, hp0, hk0, rfl⟩ := hpp
     rw [← Nat.prime_iff] at hp0
     rw [cardFactors_apply_prime_pow hp0]
     have hk0x : k0 ∈ Ioc 0 x := mem_Ioc.2 ⟨hk0, (Nat.lt_pow_self hp0.one_lt).le.trans hn.2⟩
     have hp0x : p0 ∈ Ioc 0 x :=
       mem_Ioc.2 ⟨hp0.pos, (Nat.le_self_pow hk0.ne' p0).trans hn.2⟩
-    rw [sum_eq_single_of_mem k0 hk0x, sum_eq_single_of_mem p0 hp0x, if_pos ⟨rfl, hp0⟩]
+    rw [sum_eq_single_of_mem k0 hk0x, sum_eq_single_of_mem p0 hp0x, ite_eq_left ⟨rfl, hp0⟩]
     · intro p _ hp
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨h, hpr⟩
       exact hp (hpr.pow_inj' hp0 hk0.ne' hk0.ne' h).1
     · intro k hk hkk
       apply sum_eq_zero
       intro p _
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨h, hpr⟩
       exact hkk (hpr.pow_inj' hp0 (mem_Ioc.1 hk).1.ne' hk0.ne' h).2
-  · rw [if_neg hpp]
+  · rw [ite_eq_right hpp]
     symm
     apply sum_eq_zero; intro k hk
     apply sum_eq_zero; intro p _
-    rw [if_neg]
+    rw [ite_eq_right]
     rintro ⟨h, hpr⟩
     exact hpp ⟨p, k, Nat.prime_iff.1 hpr, (mem_Ioc.1 hk).1, h⟩
 

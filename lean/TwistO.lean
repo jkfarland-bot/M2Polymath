@@ -1,4 +1,19 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+public import A1
+public import Twist
+public import RingO
+
+/-!
 Run r25 / M2, seat M2L2 (items 4 and 7 together): twisted cores with values in a ring `O`
 (Dirichlet characters with values in `O`, for example cyclotomic integers) meet the congruence
 hypothesis of RingO on primes `q = 1 (mod M)`.
@@ -12,20 +27,10 @@ Contents.
    A1 for twisted cores with values in `O` (`O` a characteristic-0 domain with
    `IntDvdDescends p O`); `thmH_twisted_cyclotomic`: the case `O = 𝓞 (ℚ(zeta_N'))`.
 
-Lean v4.33.1 with Mathlib; imports the r25 library, round 1, FamGen, A1, Twist and RingO.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library, round 1, FamGen, A1, Twist and RingO.
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
-import A1
-import Twist
-import RingO
+
+@[expose] public section
 
 namespace M2L2
 
@@ -44,7 +49,7 @@ theorem ellO_apply' (χ : DirichletCharacter O N) (j n : ℕ) :
     ellO χ j n = if n = 0 then 0 else χ (n : ZMod N) * (n : O) ^ j := rfl
 
 theorem ellO_apply (χ : DirichletCharacter O N) (j : ℕ) {n : ℕ} (hn : n ≠ 0) :
-    ellO χ j n = χ (n : ZMod N) * (n : O) ^ j := by rw [ellO_apply', if_neg hn]
+    ellO χ j n = χ (n : ZMod N) * (n : O) ^ j := by rw [ellO_apply', ite_eq_right hn]
 
 theorem ellO_one (χ : DirichletCharacter O N) (j : ℕ) : ellO χ j 1 = 1 := by
   rw [ellO_apply χ j one_ne_zero]; simp

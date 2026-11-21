@@ -1,11 +1,15 @@
-import M2ResultM
-import M2AxisSwap
-import M2ConstructO
-import M2Tables
-import M2ThetaJ2
-import M2ResultN
-import M2TheoremL
-import M2Frobenius
+module
+
+public import M2ResultM
+public import M2AxisSwap
+public import M2ConstructO
+public import M2Tables
+public import M2ThetaJ2
+public import M2ResultN
+public import M2TheoremL
+public import M2Frobenius
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.omega
@@ -62,11 +66,11 @@ example : ∃ W : ℕ → ℤ, W 1 = 1 ∧ (∀ n, 2 ≤ ω n → 8 ∣ W n) ∧
     then 4 else 0, by simp, fun n hn => ?_, fun q j hq hj => ?_⟩
   · have h1 : n ≠ 1 := by rintro rfl; simp at hn
     beta_reduce
-    rw [if_neg h1, if_neg]; · exact dvd_zero _
+    rw [ite_eq_right h1, ite_eq_right]; · exact dvd_zero _
     rintro ⟨q, j, hq, hj, rfl, -⟩
     rw [ArithmeticFunction.cardDistinctFactors_apply_prime_pow hq (by omega)] at hn; omega
   · have h1 : q ^ j ≠ 1 := (Nat.one_lt_pow (by omega) hq.one_lt).ne'
-    simp only [if_neg h1, false_or]
+    simp only [ite_eq_right h1, false_or]
     congr 1
     apply propext
     constructor

@@ -1,10 +1,15 @@
-/-
+module
+
+public import Mathlib
+public import M2Ternary
+
+/-!
   Seat M2L4, item 2: the incomplete-sum axis swap of the M2d-v report (section 1(b)),
   for every y and every lower limit a, and (F1) evaluated with it equals D_3, for every x.
   All divisions are natural-number floor divisions; the identity is stated over the integers.
 -/
-import Mathlib
-import M2Ternary
+
+@[expose] public section
 
 open Finset
 
@@ -61,7 +66,7 @@ theorem swap_core (y c : ℕ) (hc : c ≤ Nat.sqrt y) :
       rw [sum_congr rfl (g := fun _ => 1), sum_const, Nat.card_Ioc, smul_eq_mul, mul_one,
         Nat.sub_zero]
       intro t ht
-      rw [if_pos]
+      rw [ite_eq_left]
       exact (Nat.mul_le_mul (mem_Ioc.1 hb).2 (mem_Ioc.1 ht).2).trans hrr
     rw [sum_congr rfl this, sum_const, Nat.card_Ioc, smul_eq_mul, mul_comm]
   have e3 : ∀ t ∈ Ioc r y, ∑ b ∈ Ioc c r, (if b * t ≤ y then 1 else 0) = y / t - c := by

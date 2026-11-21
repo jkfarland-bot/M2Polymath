@@ -1,4 +1,10 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import Upper
+
+/-!
 Run r25, seat L3: the Dirichlet ring with the Frobenius push `E_p`, and the transfer to power
 series in finitely many variables (one per prime), ledger R-084.
 
@@ -15,11 +21,10 @@ Contents.
 5. Transfer: a ring hom commuting with the lifts carries level identities (`HasLevel.map`), so
    the level count can only drop (`levelCount_map_le`).
 
-Lean v4.33.1 with Mathlib; imports seat L1's oleans (Found, Upper). No sorry.
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports seat L1's oleans (Found, Upper). No sorry.
 -/
-import Mathlib
-import Found
-import Upper
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -41,9 +46,9 @@ theorem frobPush_apply (p : ℕ) (f : ArithmeticFunction R) (n : ℕ) :
 theorem frobPush_apply_pow {p : ℕ} (hp0 : p ≠ 0) (f : ArithmeticFunction R) {j : ℕ}
     (hj : j ≠ 0) : frobPush p f (j ^ p) = f j := by
   rw [frobPush_apply, Finset.sum_eq_single j]
-  · rw [if_pos rfl]
+  · rw [ite_eq_left rfl]
   · intro b _ hb
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     exact hb (Nat.pow_left_injective hp0 h)
   · intro hj'
@@ -54,7 +59,7 @@ theorem frobPush_apply_of_not {p : ℕ} (f : ArithmeticFunction R) {n : ℕ}
   rw [frobPush_apply]
   apply Finset.sum_eq_zero
   intro d _
-  rw [if_neg]
+  rw [ite_eq_right]
   exact fun hd => h ⟨d, hd⟩
 
 theorem frobPush_apply_zero {p : ℕ} (f : ArithmeticFunction R) : frobPush p f 0 = 0 := by
@@ -124,12 +129,12 @@ theorem frobPush_one {p : ℕ} (hp0 : p ≠ 0) : frobPush p (1 : ArithmeticFunct
     rw [frobPush_apply_pow hp0 _ hm, ArithmeticFunction.one_apply, ArithmeticFunction.one_apply]
     by_cases h1 : m = 1
     · subst h1; simp
-    · rw [if_neg h1, if_neg]
+    · rw [ite_eq_right h1, ite_eq_right]
       intro h
       rcases (pow_eq_one_iff).mp h with h' | h'
       · exact h1 h'
       · exact hp0 h'
-  · rw [frobPush_apply_of_not _ hex, ArithmeticFunction.one_apply, if_neg]
+  · rw [frobPush_apply_of_not _ hex, ArithmeticFunction.one_apply, ite_eq_right]
     rintro rfl; exact hex ⟨1, one_pow p⟩
 
 theorem frobPush_add {p : ℕ} (f g : ArithmeticFunction R) :
@@ -188,7 +193,7 @@ theorem natCast_mul_apply (m : ℕ) (D : ArithmeticFunction R) (n : ℕ) :
   · simp
   rw [ArithmeticFunction.mul_apply, Finset.sum_eq_single (1, n)]
   · show (if (1 : ℕ) = 1 then (m : R) else 0) * D n = _
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
   · intro x hx hne
     have hx' := Nat.mem_divisorsAntidiagonal.mp hx
     have h1 : x.1 ≠ 1 := by
@@ -198,7 +203,7 @@ theorem natCast_mul_apply (m : ℕ) (D : ArithmeticFunction R) (n : ℕ) :
       show x.2 = n
       rw [← hx'.1, h, one_mul]
     show (if x.1 = 1 then (m : R) else 0) * D x.2 = 0
-    rw [if_neg h1, zero_mul]
+    rw [ite_eq_right h1, zero_mul]
   · intro h
     exact absurd (Nat.mem_divisorsAntidiagonal.mpr ⟨one_mul n, hn⟩) h
 
@@ -225,7 +230,7 @@ theorem natCast_dvd_of_apply {m : ℕ} {D : ArithmeticFunction R} (h : ∀ n, (m
   rcases eq_or_ne n 0 with rfl | hn
   · simp
   · show D n = (m : R) * (if n = 0 then 0 else c n)
-    rw [if_neg hn, ← hc n]
+    rw [ite_eq_right hn, ← hc n]
 
 end Push
 
@@ -238,7 +243,7 @@ variable {R : Type*} [CommRing R]
 /-- The point function with value `c` at `d`. -/
 def pt (d : ℕ) (c : R) : ArithmeticFunction R :=
   ⟨fun m => if m = d ∧ d ≠ 0 then c else 0, by
-    rw [if_neg]; rintro ⟨h1, h2⟩; exact h2 h1.symm⟩
+    rw [ite_eq_right]; rintro ⟨h1, h2⟩; exact h2 h1.symm⟩
 
 theorem pt_apply (d : ℕ) (c : R) (m : ℕ) :
     pt d c m = if m = d ∧ d ≠ 0 then c else 0 := rfl
@@ -257,7 +262,7 @@ theorem pt_mul (a b : ℕ) (c e : R) : pt a c * pt b e = pt (a * b) (c * e) := b
       split_ifs with h1 h2 <;> first | exact absurd (Prod.ext h1.1 h2.1) hne | simp
     · intro hx
       exact absurd (Nat.mem_divisorsAntidiagonal.mpr ⟨rfl, hab⟩) hx
-  · rw [pt_apply, if_neg h]
+  · rw [pt_apply, ite_eq_right h]
     apply Finset.sum_eq_zero
     intro x hx
     rw [pt_apply, pt_apply]
@@ -324,7 +329,7 @@ theorem frob_apply' (p : ℕ) [Fact p.Prime] [CharP R p] (f : ArithmeticFunction
     rw [Finset.sum_eq_single m]
     · simp [(Nat.pos_of_mem_divisors hm).ne']
     · intro b _ hb
-      rw [if_neg]
+      rw [ite_eq_right]
       rintro ⟨h1, _⟩
       exact hb h1.symm
     · intro hm'
@@ -336,8 +341,8 @@ theorem frob_apply' (p : ℕ) [Fact p.Prime] [CharP R p] (f : ArithmeticFunction
   have hd0 : d ≠ 0 := (Nat.pos_of_mem_divisors hd).ne'
   have hdp : d ^ p ≠ 0 := pow_ne_zero _ hd0
   by_cases h : d ^ p = n
-  · rw [if_pos ⟨h.symm, hdp⟩, if_pos h]
-  · rw [if_neg (fun h' => h h'.1.symm), if_neg h]
+  · rw [ite_eq_left ⟨h.symm, hdp⟩, ite_eq_left h]
+  · rw [ite_eq_right (fun h' => h h'.1.symm), ite_eq_right h]
 
 /-- **`E_p` is a Frobenius lift of the Dirichlet ring** over every commutative ring `R` with
 `p ∣ a ^ p - a` for all `a` (for example `ℤ` and `ℤ_[p]`): `E_p f ≡ f ^ p` modulo `p`. -/
@@ -407,7 +412,7 @@ omit hq in
 theorem smoothNum_single (i : Fin n) : smoothNum q (Finsupp.single i 1) = q i := by
   rw [smoothNum, Finset.prod_eq_single i]
   · simp
-  · intro j _ hj; rw [Finsupp.single_apply, if_neg (Ne.symm hj), pow_zero]
+  · intro j _ hj; rw [Finsupp.single_apply, ite_eq_right (Ne.symm hj), pow_zero]
   · intro h; exact absurd (Finset.mem_univ i) h
 
 theorem factorization_smoothNum (e : Fin n →₀ ℕ) (r : ℕ) :
@@ -422,14 +427,14 @@ include hinj in
 theorem factorization_smoothNum_q (e : Fin n →₀ ℕ) (j : Fin n) :
     (smoothNum q e).factorization (q j) = e j := by
   rw [factorization_smoothNum hq, Finset.sum_eq_single j]
-  · rw [if_pos rfl]
-  · intro i _ hij; rw [if_neg (fun h => hij (hinj h))]
+  · rw [ite_eq_left rfl]
+  · intro i _ hij; rw [ite_eq_right (fun h => hij (hinj h))]
   · intro h; exact absurd (Finset.mem_univ j) h
 
 theorem factorization_smoothNum_of_notMem (e : Fin n →₀ ℕ) {r : ℕ} (hr : ∀ i, q i ≠ r) :
     (smoothNum q e).factorization r = 0 := by
   rw [factorization_smoothNum hq]
-  exact Finset.sum_eq_zero fun i _ => if_neg (hr i)
+  exact Finset.sum_eq_zero fun i _ => ite_eq_right (hr i)
 
 include hinj in
 theorem expOf_smoothNum (e : Fin n →₀ ℕ) : expOf q (smoothNum q e) = e := by
@@ -523,8 +528,8 @@ def res : ArithmeticFunction R →+* MvPowerSeries (Fin n) R where
     have : smoothNum q e = 1 ↔ e = 0 := by
       rw [← smoothNum_zero (q := q)]; exact (smoothNum_injective hq hinj).eq_iff
     by_cases h : e = 0
-    · rw [if_pos (this.2 h), if_pos h]
-    · rw [if_neg (fun h' => h (this.1 h')), if_neg h]
+    · rw [ite_eq_left (this.2 h), ite_eq_left h]
+    · rw [ite_eq_right (fun h' => h (this.1 h')), ite_eq_right h]
   map_mul' := resFun_mul hq hinj
   map_zero' := by ext e; rw [coeff_resFun]; simp
   map_add' f g := by ext e; rw [map_add, coeff_resFun, coeff_resFun, coeff_resFun]; rfl

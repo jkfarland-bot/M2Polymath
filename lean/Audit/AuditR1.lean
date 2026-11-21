@@ -1,9 +1,13 @@
-import Mathlib
-import Found
-import Moment
-import MomentZ
-import Slice
-import Construct
+module
+
+public import Mathlib
+public import Found
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+
+@[expose] public section
 
 open M2L ArithmeticFunction Finset
 open scoped ArithmeticFunction.omega

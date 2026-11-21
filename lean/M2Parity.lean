@@ -1,4 +1,9 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultM
+
+/-!
   Seat M2L5, item 2: the parity identities (P1) and (P2) of A19 section 9,
   as exact statements for every x.
   (P1): S_2(x) = ∑_{d ≤ U} μ(d) D(⌊x/d²⌋) + ∑_{m ≤ V} τ(m) M(⌊√(x/m)⌋) - M(U) D(V),
@@ -6,8 +11,8 @@
   (P2): π(x) ≡ (S_2(x) - 1)/2 - ∑_{2 ≤ j ≤ ⌊log₂ x⌋} π(⌊x^(1/j)⌋) (mod 2), x ≥ 1, with the exact
         integer identity S_2(x) = 1 + 2 ∑_{1 ≤ j ≤ ⌊log₂ x⌋} π(⌊x^(1/j)⌋) + 4 K(x) behind it.
 -/
-import Mathlib
-import M2ResultM
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.sigma ArithmeticFunction.Moebius
@@ -28,15 +33,15 @@ lemma E2mu_apply (n : ℕ) : E2mu n = ∑ c ∈ Ioc 0 n, if c ^ 2 = n then μ c 
 lemma le_of_sq_le' {c n : ℕ} (h : c ^ 2 ≤ n) : c ≤ n := (Nat.le_self_pow two_ne_zero c).trans h
 
 lemma E2mu_sq {c : ℕ} (hc : 0 < c) : E2mu (c ^ 2) = μ c := by
-  rw [E2mu_apply, sum_eq_single_of_mem c ?_ ?_, if_pos rfl]
+  rw [E2mu_apply, sum_eq_single_of_mem c ?_ ?_, ite_eq_left rfl]
   · rw [mem_Ioc]; exact ⟨hc, le_of_sq_le' le_rfl⟩
   · intro d _ hdc
-    rw [if_neg]
+    rw [ite_eq_right]
     intro h
     exact hdc (Nat.pow_left_injective (by norm_num) h)
 
 lemma E2mu_nonsq {n : ℕ} (h : ∀ c, c ^ 2 ≠ n) : E2mu n = 0 := by
-  rw [E2mu_apply]; exact sum_eq_zero fun c _ => if_neg (h c)
+  rw [E2mu_apply]; exact sum_eq_zero fun c _ => ite_eq_right (h c)
 
 lemma isMultiplicative_E2mu : IsMultiplicative E2mu := by
   rw [IsMultiplicative.iff_ne_zero]
@@ -80,8 +85,8 @@ lemma E2mu_prime_pow {q : ℕ} (hq : q.Prime) (i : ℕ) :
     · interval_cases k
       · simp at hk; subst hk; simp
       · subst hk; simp [moebius_apply_prime hq]
-    · rw [moebius_apply_prime_pow hq (by omega), if_neg (by omega), if_neg (by omega),
-        if_neg (by omega)]
+    · rw [moebius_apply_prime_pow hq (by omega), ite_eq_right (by omega), ite_eq_right (by omega),
+        ite_eq_right (by omega)]
       simp
   · rw [E2mu_nonsq (fun c hc => hsq ⟨c, hc⟩)]
     have h0 : i ≠ 0 := by rintro rfl; exact hsq ⟨1, by simp⟩
@@ -98,11 +103,11 @@ theorem f2_prime_pow {q : ℕ} (hq : q.Prime) {j : ℕ} (hj : 0 < j) : f2 (q ^ j
   rw [f2, mul_apply_prime_pow _ _ hq]
   simp only [E2mu_prime_pow hq, sub_mul, sum_sub_distrib, ite_mul, one_mul, zero_mul,
     sum_ite_eq', mem_range, natCoe_apply, sigma_zero_apply_prime_pow hq]
-  rw [if_pos (by omega)]
+  rw [ite_eq_left (by omega)]
   simp only [Nat.sub_zero]
   by_cases h2 : 2 < j + 1
-  · rw [if_pos h2]; push_cast [show 2 ≤ j by omega]; ring
-  · rw [if_neg h2]
+  · rw [ite_eq_left h2]; push_cast [show 2 ≤ j by omega]; ring
+  · rw [ite_eq_right h2]
     have : j = 1 := by omega
     subst this; norm_num
 
@@ -158,8 +163,8 @@ theorem S2_eq_mu_D2 (x : ℕ) : S2 x = ∑ c ∈ Ioc 0 x, μ c * D2 (x / c ^ 2) 
   rw [sum_ite_eq]
   have hc0 : 0 < c := (mem_Ioc.1 hc).1
   by_cases hm : c ^ 2 ≤ x
-  · rw [if_pos (mem_Ioc.2 ⟨pow_pos hc0 2, hm⟩)]
-  · rw [if_neg (fun h => hm (mem_Ioc.1 h).2), Nat.div_eq_of_lt (by omega)]
+  · rw [ite_eq_left (mem_Ioc.2 ⟨pow_pos hc0 2, hm⟩)]
+  · rw [ite_eq_right (fun h => hm (mem_Ioc.1 h).2), Nat.div_eq_of_lt (by omega)]
     simp [D2]
 
 /-- `D(⌊x / c²⌋)` as a sum over the box `m ≤ x` with the indicator `[c² m ≤ x]`. -/
@@ -198,7 +203,7 @@ theorem P1_general {x U V : ℕ} (hU : 1 ≤ U) (hV : 1 ≤ V) (hlo : U ^ 2 * V 
     rw [sum_Ioc_le_ite _ hUx]
     refine sum_congr rfl fun c hc => ?_
     by_cases h : c ≤ U
-    · simp only [if_pos h]
+    · simp only [ite_eq_left h]
       rw [D2_box x c (mem_Ioc.1 hc).1, mul_sum]
       refine sum_congr rfl fun m _ => ?_
       simp only [B]; split_ifs <;> simp
@@ -208,7 +213,7 @@ theorem P1_general {x U V : ℕ} (hU : 1 ≤ U) (hV : 1 ≤ V) (hlo : U ^ 2 * V 
     rw [sum_comm, sum_Ioc_le_ite _ hVx]
     refine sum_congr rfl fun m hm => ?_
     by_cases h : m ≤ V
-    · simp only [if_pos h]
+    · simp only [ite_eq_left h]
       rw [Mert_box x m (mem_Ioc.1 hm).1, mul_sum]
       refine sum_congr rfl fun c _ => ?_
       simp only [B]; split_ifs <;> ring
@@ -303,7 +308,7 @@ lemma two_pow_omega_split {n : ℕ} (hn : 0 < n) :
     simp [h1, hpp, this]
   · have h1' : ω n ≠ 1 := fun h => hpp (cardDistinctFactors_eq_one_iff.1 h)
     have h2 : 2 ≤ ω n := by omega
-    simp only [h1, hpp, if_false, if_pos h2]
+    simp only [h1, hpp, ite_false, ite_eq_left h2]
     rw [show ω n = (ω n - 2) + 2 by omega, pow_add]
     simp; ring
 

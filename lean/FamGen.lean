@@ -1,4 +1,15 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+
+/-!
 Run r25 / M2, seat M2L2 (item 3): the family with several cores per degree and degree-0 terms.
 
 A family member is indexed by a finite set `I` of an arbitrary type:
@@ -19,16 +30,10 @@ Contents.
    corrections vanishing on squarefree `m > 1`. Degrees in `{0..Z}`: achievable iff `S(p^k) <= Z`;
    degrees in `{-Z..Z}`: iff `S(p^ceil(k/2)) <= Z`.
 
-Lean v4.33.1 with Mathlib; imports the r25 library and round 1 (Moment, MomentZ, Slice, Construct).
+Lean v4.35.0-rc2 with Mathlib v4.35.0-rc2 (module system); imports the r25 library and round 1 (Moment, MomentZ, Slice, Construct).
 -/
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
+
+@[expose] public section
 
 namespace M2L2
 

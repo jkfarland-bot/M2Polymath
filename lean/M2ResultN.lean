@@ -1,13 +1,18 @@
-/-
+module
+
+public import Mathlib
+public import M2ResultM
+public import M2Polymath
+
+/-!
   Seat M2L4, item 5b: Result N's identity (N4) (A19 section 9b) for the coefficients
   c_0 = δ, c_{L+1} = d_2 * E_3(c_L):  c_L ≡ μ * E_{3^L}(ζ) (mod 3), hence c_L(n) ≡ μ(n) (mod 3)
   for 1 ≤ n < 2^(3^L), with first failure at n = 2^(3^L) (difference 1 mod 3).
   Ingredients: the dilation E_k as a multiplicative map of Dirichlet rings, and the Frobenius
   identity ζ^3 = E_3(ζ) over Z/3.
 -/
-import Mathlib
-import M2ResultM
-import M2Polymath
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.Moebius
@@ -38,13 +43,13 @@ lemma Ek_apply (k : ℕ) (f : ArithmeticFunction R) (n : ℕ) :
     Ek k f n = if iroot k n ^ k = n then f (iroot k n) else 0 := rfl
 
 lemma Ek_pow {k : ℕ} (hk : 0 < k) (f : ArithmeticFunction R) (c : ℕ) : Ek k f (c ^ k) = f c := by
-  rw [Ek_apply, iroot_pow_self hk, if_pos rfl]
+  rw [Ek_apply, iroot_pow_self hk, ite_eq_left rfl]
 
 lemma Ek_notpow {k : ℕ} (f : ArithmeticFunction R) {n : ℕ} (h : ∀ c, c ^ k ≠ n) : Ek k f n = 0 := by
-  rw [Ek_apply, if_neg (h _)]
+  rw [Ek_apply, ite_eq_right (h _)]
 
 lemma Ek_one_fun (f : ArithmeticFunction R) : Ek 1 f = f := by
-  ext n; rw [Ek_apply, iroot_one, pow_one, if_pos rfl]
+  ext n; rw [Ek_apply, iroot_one, pow_one, ite_eq_left rfl]
 
 lemma pow_left_inj' {k : ℕ} (hk : 0 < k) {a b : ℕ} (h : a ^ k = b ^ k) : a = b :=
   Nat.pow_left_injective hk.ne' h
@@ -189,9 +194,9 @@ theorem zeta_cube_frobenius : ζ3 * ζ3 * ζ3 = Ek 3 ζ3 := by
   push_cast
   rw [this]
   by_cases h3 : 3 ∣ i
-  · rw [if_pos ((ZMod.natCast_eq_zero_iff i 3).2 h3), if_pos h3]
+  · rw [ite_eq_left ((ZMod.natCast_eq_zero_iff i 3).2 h3), ite_eq_left h3]
     simp [ζ3, natCoe_apply, hq.ne_zero]
-  · rw [if_neg (fun h => h3 ((ZMod.natCast_eq_zero_iff i 3).1 h)), if_neg h3]
+  · rw [ite_eq_right (fun h => h3 ((ZMod.natCast_eq_zero_iff i 3).1 h)), ite_eq_right h3]
 
 /-- `d_2 = ζ * ζ` over `ℤ`. -/
 noncomputable def d2Z : ArithmeticFunction ℤ := (ζ : ArithmeticFunction ℤ) * (ζ : ArithmeticFunction ℤ)

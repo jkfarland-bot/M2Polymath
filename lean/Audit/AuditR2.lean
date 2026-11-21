@@ -1,19 +1,23 @@
-import Mathlib
-import Found
-import DirBase
-import DirMain
-import Moment
-import MomentZ
-import Slice
-import Construct
-import FamGen
-import A1
-import BCor
-import Twist
-import Summatory
-import MuShift
-import RingO
-import TwistO
+module
+
+public import Mathlib
+public import Found
+public import DirBase
+public import DirMain
+public import Moment
+public import MomentZ
+public import Slice
+public import Construct
+public import FamGen
+public import A1
+public import BCor
+public import Twist
+public import Summatory
+public import MuShift
+public import RingO
+public import TwistO
+
+@[expose] public section
 
 namespace AuditV2
 
@@ -92,7 +96,7 @@ theorem ell_one_zero_eq : ell (1 : DirichletCharacter ℤ 1) 0 = (ζ : Arithmeti
 
 theorem core_two : core [powF 0 false, powF 0 false] = zpowZeta 2 := by
   have : (powF 0 false).af = (ζ : ArithmeticFunction ℤ) := by
-    simp only [TwFactor.af, powF, Bool.false_eq_true, if_false]; exact ell_one_zero_eq
+    simp only [TwFactor.af, powF, Bool.false_eq_true, ite_false]; exact ell_one_zero_eq
   rw [zpowZeta_of_pos (by norm_num)]
   simp [core, this, pow_two]
 

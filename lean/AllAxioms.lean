@@ -1,39 +1,44 @@
-import A1
-import BCor
-import Construct
-import DirBase
-import DirMain
-import FamGen
-import Found
-import Lower
-import LowerPadic
-import M2AxisSwap
-import M2BlockS
-import M2Closures
-import M2ConstructO
-import M2FilterD
-import M2Frobenius
-import M2GapG
-import M2Parity
-import M2Polymath
-import M2ResultM
-import M2ResultN
-import M2Tables
-import M2Ternary
-import M2TheoremL
-import M2ThetaJ
-import M2ThetaJ2
-import M2TupleN
-import M2WitnessK
-import Moment
-import MomentZ
-import MuShift
-import RingO
-import Slice
-import Summatory
-import Twist
-import TwistO
-import Upper
+module
+
+import all A1
+import all BCor
+import all Construct
+import all DirBase
+import all DirMain
+import all FamGen
+import all Found
+import all Lower
+import all LowerPadic
+import all M2AxisSwap
+import all M2BlockS
+import all M2Closures
+import all M2ConstructO
+import all M2FilterD
+import all M2Frobenius
+import all M2GapG
+import all M2Parity
+import all M2Polymath
+import all M2ResultM
+import all M2ResultN
+import all M2Tables
+import all M2Ternary
+import all M2TheoremL
+import all M2ThetaJ
+import all M2ThetaJ2
+import all M2TupleN
+import all M2WitnessK
+import all Moment
+import all MomentZ
+import all MuShift
+import all RingO
+import all Slice
+import all Summatory
+import all Twist
+import all TwistO
+import all Upper
+
+@[expose] public section
+
 /-!
 Axiom audit for the whole M2Polymath development: every declaration in the M2 modules (and the six
 library modules they build on) may use only propext, Classical.choice and Quot.sound. Building this

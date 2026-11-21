@@ -1,4 +1,13 @@
-/-
+module
+
+public import Mathlib
+public import M2Parity
+public import M2Tables
+public import M2ConstructO
+public import M2Frobenius
+public import M2ThetaJ2
+
+/-!
   Seat M2L5, item 3: small closures of the round 4 audit list.
   (a) the (H6) power series of round 4 are the local factors of round 1's corrections `hcorr`;
   (b) (H9) and (H10) with the explicit table weights of round 4;
@@ -7,12 +16,8 @@
   (e) Theorem B's finite-domain remark and the `F_{p²}` counterexample `f = α δ`;
   (f) Theorem D's meta-claim: our conjectured class, and the round 3 mod 9 filter lies outside it.
 -/
-import Mathlib
-import M2Parity
-import M2Tables
-import M2ConstructO
-import M2Frobenius
-import M2ThetaJ2
+
+@[expose] public section
 
 open ArithmeticFunction Finset
 open scoped ArithmeticFunction.zeta ArithmeticFunction.sigma ArithmeticFunction.Moebius
@@ -150,7 +155,7 @@ theorem H9_exact {T : Finset ℤ} (hne : T.Nonempty) {a : ℤ → ℤ} {C : ℤ}
     rw [fam_hcorr_apply T a (by omega)]
     exact mom_omega_split hrow.1 hn0
   rw [sum_congr rfl e, sum_add_distrib, sum_add_distrib, ← mul_sum, hK, sum_ite_eq',
-    card_primePow_eq_sum, if_pos (mem_Ioc.2 ⟨by omega, hx⟩)]
+    card_primePow_eq_sum, ite_eq_left (mem_Ioc.2 ⟨by omega, hx⟩)]
 
 /-- **(H9)** for a checked row: `∑_{n ≤ x} F_T(n) ≡ ∑_z a_z + C ∑_{j} π(⌊x^(1/j)⌋) (mod C ∏ z)`,
 hence modulo `C p^k` whenever `p^k ∣ ∏ z`. -/
@@ -272,7 +277,7 @@ theorem thetaJ_multi {ι : Type*} (m e t : ℕ) (S : Set ℕ) (hS : ∀ q ∈ S,
     have := hval i hi s hs hc
     linear_combination (c i * h i 1) * this
   have key := M2L4.thetaJ_slice m e t S hS hinf th _ _ hval' 1
-    (fun n _ hn => by rw [ArithmeticFunction.one_apply, if_neg hn])
+    (fun n _ hn => by rw [ArithmeticFunction.one_apply, ite_eq_right hn])
   rintro ⟨h1, h2⟩
   apply key
   refine ⟨fun q hq => ?_, fun s hs hc => ?_⟩

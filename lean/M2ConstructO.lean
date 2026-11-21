@@ -1,13 +1,18 @@
-/-
+module
+
+public import Mathlib
+public import Construct
+public import RingO
+public import Twist
+public import M2FilterD
+
+/-!
   Seat M2L4, item 3: Theorem H as an exact iff / IsLeast over a ring O (every characteristic-zero
   domain with p^m O ∩ Z = p^m Z, in particular every ring of integers and O = Z[zeta_N]), and a
   TargetD member built from the nontrivial character chi_4 attaining the twisted lower bound.
 -/
-import Mathlib
-import Construct
-import RingO
-import Twist
-import M2FilterD
+
+@[expose] public section
 
 open Finset ArithmeticFunction
 open scoped ArithmeticFunction.omega
@@ -237,10 +242,10 @@ lemma core_L4_prime_mod4 {q : ℕ} (hq : q.Prime) : (4 : ℤ) ∣ core L4 q - 2 
   rcases hq.eq_two_or_odd with rfl | hodd
   · norm_num
   · have h4 : q % 4 = 1 ∨ q % 4 = 3 := by omega
-    rw [if_neg (by omega)]
+    rw [ite_eq_right (by omega)]
     rcases h4 with h | h
-    · rw [if_pos h]; omega
-    · rw [if_neg (by omega)]; omega
+    · rw [ite_eq_left h]; omega
+    · rw [ite_eq_right (by omega)]; omega
 
 /-- The multiplicative function with value `q + χ₄(q)` at every prime power `q^e`, `e ≥ 1`. -/
 noncomputable def B4 : ArithmeticFunction ℤ := prodPrimeFactors (fun q => core L4 q)

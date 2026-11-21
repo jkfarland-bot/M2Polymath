@@ -1,12 +1,17 @@
-/-
+module
+
+public import Mathlib
+public import Found
+public import Upper
+public import Lower
+
+/-!
 Run r25, seat L1: the lower half of R-080 stage (d) over `ℤ_[p]`, by reduction to `ℤ`
 (Lower.lean): a monic annihilator over `B` modulo `p ^ k` with coefficients in `ℤ_[p][[x]]` is
 congruent modulo `p ^ k` to one with coefficients in `ℤ[[x]]` (`PadicInt.appr`).
 -/
-import Mathlib
-import Found
-import Upper
-import Lower
+
+@[expose] public section
 
 namespace FrobLevel
 
@@ -104,7 +109,7 @@ theorem monicAnn_int_of_padic {n k m : ℕ} {u : MvPowerSeries (Fin n) ℤ_[p]}
     intro i
     rw [Polynomial.coeff_sub, Polynomial.coeff_map, hcoef]
     rcases lt_trichotomy i m with hi | hi | hi
-    · rw [if_neg hi.ne, if_pos hi, zero_add, hfφ, ← hb i, ← map_sub]
+    · rw [ite_eq_right hi.ne, ite_eq_left hi, zero_add, hfφ, ← hb i, ← map_sub]
       obtain ⟨w, hw⟩ := hb' i
       rw [← hφ] at hw
       refine ⟨-frob p w, ?_⟩
@@ -112,10 +117,10 @@ theorem monicAnn_int_of_padic {n k m : ℕ} {u : MvPowerSeries (Fin n) ℤ_[p]}
         map_natCast]
       ring
     · subst hi
-      rw [if_pos rfl, if_neg (lt_irrefl _), add_zero, map_one, ← hdeg, hmon.coeff_natDegree,
+      rw [ite_eq_left rfl, ite_eq_right (lt_irrefl _), add_zero, map_one, ← hdeg, hmon.coeff_natDegree,
         sub_self]
       exact dvd_zero _
-    · rw [if_neg hi.ne', if_neg (not_lt.2 hi.le), add_zero, map_zero, zero_sub,
+    · rw [ite_eq_right hi.ne', ite_eq_right (not_lt.2 hi.le), add_zero, map_zero, zero_sub,
         coeff_eq_zero_of_natDegree_lt (by rw [hdeg]; exact hi), neg_zero]
       exact dvd_zero _
   have h1 := dvd_eval_of_coeff hdiff u
