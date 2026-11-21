@@ -11,6 +11,8 @@ import all Lower
 import all LowerPadic
 import all M2AxisSwap
 import all M2BlockS
+import all CostAll
+import all N2
 import all M2Closures
 import all M2ConstructO
 import all M2FilterD
@@ -47,7 +49,7 @@ file prints the count of declarations scanned and the number of nonstandard axio
 open Lean in
 #eval show CoreM Unit from do
   let env ← getEnv
-  let mods : List Name := [`A1, `BCor, `Construct, `FamGen, `M2AxisSwap, `M2BlockS, `M2Closures, `M2ConstructO, `M2FilterD, `M2Frobenius, `M2GapG, `M2Parity, `M2Polymath, `M2ResultM, `M2ResultN, `M2Tables, `M2Ternary, `M2TheoremL, `M2ThetaJ, `M2ThetaJ2, `M2TupleN, `M2WitnessK, `Moment, `MomentZ, `MuShift, `RingO, `Slice, `Summatory, `Twist, `TwistO, `Found, `Upper, `Lower, `LowerPadic, `DirBase, `DirMain]
+  let mods : List Name := [`A1, `BCor, `Construct, `FamGen, `M2AxisSwap, `M2BlockS, `M2Closures, `M2ConstructO, `M2FilterD, `M2Frobenius, `M2GapG, `M2Parity, `M2Polymath, `M2ResultM, `M2ResultN, `M2Tables, `M2Ternary, `M2TheoremL, `M2ThetaJ, `M2ThetaJ2, `M2TupleN, `M2WitnessK, `Moment, `MomentZ, `MuShift, `RingO, `Slice, `Summatory, `Twist, `TwistO, `Found, `Upper, `Lower, `LowerPadic, `DirBase, `DirMain, `CostAll, `N2]
   let mut bad := 0
   let mut tot := 0
   for (n, _) in env.constants.toList do

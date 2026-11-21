@@ -5,7 +5,7 @@ authors:
   - family-names: Farland
     given-names: Joseph S.
     orcid: "https://orcid.org/0009-0007-6809-804X"
-version: "1.1.0"
+version: "1.2.0"
 doi: 10.5281/zenodo.24408423
 identifiers:
   - type: doi
@@ -14,6 +14,9 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.24408424
     description: "Version 1.0.0"
+  - type: doi
+    value: 10.5281/zenodo.24411133
+    description: "Version 1.1.0"
 date-released: 2026-11-21
 license: Apache-2.0
 repository-code: "https://github.com/jkfarland-bot/M2Polymath"

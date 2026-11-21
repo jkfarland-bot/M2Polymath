@@ -114,8 +114,9 @@ status:
     pi(x) mod 3 for every x). The development (lean/) proves every theorem of the preprint, including the versions over
     rings of integers of number fields and Z_p, twisted factors, the explicit constructions and tables, the
     prime-counting identities, the Moebius link, Result M's identities and reductions, and the unequal-shift filters.
-    Not formalized: running times (the algorithm's correctness is certified, its cost is not; the x^(5/9) cost bound is
-    a paper proof in the repository outside the preprint's scope); results that need Chebotarev's density theorem.
+    Not formalized here: running times of the seven compared statements. Since version 1.2.0, lean/CostAll.lean proves
+    the per-call cost of the block routine in an explicit operation-count model (outside the preprint's scope); the
+    full x^(5/9) bound remains a paper proof. Results that need Chebotarev's density theorem are not formalized.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []

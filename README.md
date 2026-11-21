@@ -1,6 +1,6 @@
 # M2Polymath: pi(x) mod 3, divisor sums and the exact degree
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24408424.svg)](https://doi.org/10.5281/zenodo.24408424)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24408423.svg)](https://doi.org/10.5281/zenodo.24408423)
 
 **Author:** Joseph S. Farland
 
@@ -42,6 +42,8 @@ recorded there as conditional and are not claimed.
 |---|---|
 | `lean/` | Lean 4 sources: the M2 development (five rounds) and the six library modules it builds on (Found, Upper, Lower, LowerPadic, DirBase, DirMain, from the author's Frobenius levels work) |
 | `lean/Audit/` | Lemmas written by the independent statement auditors (for example `thetaJ_half`, `DType3_iff_d3`, `F9_in_relaxed`) |
+| `lean/CostAll.lean` | Version 1.2.0: the operation count of the block routine for D_3 (fast path always taken, number of blocks, an instrumented copy proved equal to the routine with cost at most 2000 (icbrt y + 1)(log2 y + 2)^2, uniformly in the lower limit) |
+| `lean/N2.lean` | Version 1.2.0: (N2) of Theorem L, so Theorem L is proved in Lean unconditionally |
 | `lean/AllAxioms.lean` | Scans every declaration and reports any axiom beyond propext, Classical.choice, Quot.sound |
 | `PROOF_D3_5_9.md` | The full proof that D_3(x) is computable in O(x^(5/9) log^2 x) operations |
 | `code/` | Exact-arithmetic check scripts (Python 3, run with `python3 -I`) with their recorded outputs, one folder per review seat |
@@ -97,6 +99,15 @@ from scratch, scanned for axioms, tested with a deliberately planted error per f
 a separate reader for whether the Lean statements mean what the mathematics claims and whether any hypothesis is
 vacuous. "No prior art found" in the reviews is never a claim of novelty.
 
+## Version 1.2.0
+
+Adds two Lean files, written by Claude seats M2L6c and M2L6n and audited by a separate seat (twelve planted errors, line-by-line comparison of the instrumented functions with the originals):
+
+- `lean/CostAll.lean` (namespace `M2L6c`): `approx` returns a continued-fraction convergent with 1 <= q <= Q (`approx_good`); the run-time checks of a block step always pass, so the fast branch is always taken (`blockStep_checks`, `blockStep_fast`); the block loop makes at most 4 (icbrt y + 1)(log2 y + 2) + 1 steps (`nblocks_le`); and an instrumented copy `blockSZW`, proved equal to the routine (`blockSZW_fst`), has cost at most 2000 (icbrt y + 1)(log2 y + 2)^2 for every lower limit (`blockSZW_cost`). The counter is defined in the file: one unit per term of a direct sum, per bisection probe, 8 per evaluation of a level polynomial, 6 per Euclid step; `Nat.sqrt` is charged 2 log2 y + 2 without instrumentation; operations on O(log y)-bit integers count as one unit. Lean checks the bound on this counter; that the charges match real work was checked by reading.
+- `lean/N2.lean` (namespace `M2L6n`): (N2), the values of W at prime powers (`Wfun_prime_pow`), by an elementary argument (uniqueness of primitive representations, Thue's lemma, powers of x + y sqrt(-3)), and Theorem L unconditionally (`L_summed_exact_Wfun`, `L_summed_mod8_Wfun`, `L_N3_Wfun`).
+
+The axiom report now scans 2,353 declarations, with no axiom beyond propext, Classical.choice and Quot.sound. The Palomar files (`Challenge.lean`, `Solution.lean`, `comparator.json`) are unchanged and the comparator still accepts.
+
 ## Prior art
 
 Polymath4, D. H. J. Polymath, "Deterministic methods to find primes", Math. Comp. 81 (2012),
@@ -109,7 +120,9 @@ U. Mendlovic, [arXiv:2212.09857](https://arxiv.org/abs/2212.09857).
 
 Preprint: J. S. Farland, *The exact degree of divisor-sum identities for the prime-counting function modulo prime powers*, Zenodo, 2026, [10.5281/zenodo.24408923](https://doi.org/10.5281/zenodo.24408923) (all versions [10.5281/zenodo.24408922](https://doi.org/10.5281/zenodo.24408922)). Every theorem of the preprint is proved in this repository.
 
-Software, version 1.0.0: [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
+Software: version 1.0.0 [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424); version 1.1.0 [10.5281/zenodo.24411133](https://doi.org/10.5281/zenodo.24411133). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
+
+Palomar registry: version 1.1.0 (commit `0a2ef3f72382b44cd15953d64b86bc374af17852`) was accepted as entry PALOMAR-2026-11-21-000012, version 1.
 
 ## License
 
