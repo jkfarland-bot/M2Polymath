@@ -13,7 +13,13 @@ project:
     where S(m) is the least s with m dividing s! (the Kempner function). As corollaries no combination detects primes
     modulo p, and the divided target needs a degree divisible by p. It also proves D_3(x) = floor(x^(1/3)) + 3H(x),
     where H(x) counts triples (a, b, c) with abc <= x, a <= b and a < c, and certifies an algorithm for pi(x) mod 3
-    through D_3.
+    through D_3; for its block routine the run-time checks always pass and the number of blocks is at most
+    4 (floor(y^(1/3)) + 1)(floor(log2 y) + 2) + 1. Outside the family, it proves a weighted primitive-norm count for the
+    primes q = a^2 + 27 b^2: with r*(n) the number of coprime pairs (a, b) with a^2 + 27 b^2 = n and
+    W(n) = 2^omega(n) r*(n) / 2 for n prime to 6 (0 otherwise), W(1) = 1, 8 divides W(n) when n has at least two
+    distinct prime factors, and W(q^j) = 4 exactly when q > 3, q = 1 mod 3 and (q = a^2 + 27 b^2 or 3 divides j), else
+    0. Summing W over n <= x therefore gives the number of primes a^2 + 27 b^2 up to x modulo 2, after explicit
+    corrections at prime powers.
   authors:
     - "Joseph S. Farland"
   license: "Apache-2.0"

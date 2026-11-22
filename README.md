@@ -124,9 +124,9 @@ U. Mendlovic, [arXiv:2212.09857](https://arxiv.org/abs/2212.09857).
 
 Preprint: J. S. Farland, *The exact degree of divisor-sum identities for the prime-counting function modulo prime powers*, Zenodo, 2026, version 2.0 [10.5281/zenodo.24423389](https://doi.org/10.5281/zenodo.24423389), version 1 [10.5281/zenodo.24408923](https://doi.org/10.5281/zenodo.24408923) (all versions [10.5281/zenodo.24408922](https://doi.org/10.5281/zenodo.24408922)). Every theorem of the preprint is proved in this repository.
 
-Software: version 1.0.0 [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424); version 1.1.0 [10.5281/zenodo.24411133](https://doi.org/10.5281/zenodo.24411133); version 1.2.0 [10.5281/zenodo.24421664](https://doi.org/10.5281/zenodo.24421664). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
+Software: version 1.0.0 [10.5281/zenodo.24408424](https://doi.org/10.5281/zenodo.24408424); version 1.1.0 [10.5281/zenodo.24411133](https://doi.org/10.5281/zenodo.24411133); version 1.2.0 [10.5281/zenodo.24421664](https://doi.org/10.5281/zenodo.24421664); version 1.3.0 [10.5281/zenodo.24424730](https://doi.org/10.5281/zenodo.24424730). All versions: [10.5281/zenodo.24408423](https://doi.org/10.5281/zenodo.24408423).
 
-Palomar registry: version 1.1.0 (commit `0a2ef3f72382b44cd15953d64b86bc374af17852`) was accepted as entry PALOMAR-2026-11-21-000012, version 1.
+Palomar registry: version 1.1.0 (commit `0a2ef3f72382b44cd15953d64b86bc374af17852`) was accepted as entry PALOMAR-2026-11-21-000012, version 1; version 1.3.0 (commit `47f63036342b3cfc956a7f92d1d47c160cf3f8d4`, fourteen compared theorems) was accepted as version 2 of that entry.
 
 ## License
 
