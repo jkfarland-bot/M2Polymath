@@ -47,5 +47,5 @@ references:
       - family-names: Farland
         given-names: Joseph S.
     year: 2026
-    doi: 10.5281/zenodo.24423389
-    notes: "Preprint, version 2.0 (version 1: 10.5281/zenodo.24408923); every theorem is proved in this repository"
+    doi: 10.5281/zenodo.24485458
+    notes: "Preprint, version 1.1 (version 1: 10.5281/zenodo.24408923); every theorem is proved in this repository"

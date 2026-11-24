@@ -4,7 +4,7 @@ Saved by the director from the seat's returned text (condensed; the seat wrote n
 
 VERDICT: FAITHFUL WITH CAVEATS (both minor; caveat 1 fixed by the director before release).
 
-Fidelity. The new definitions match preprint version 2.0 (10.5281/zenodo.24423389): rStar counts primitive pairs with
+Fidelity. The new definitions match the preprint version that added Theorems 7.20 and 9.1 (now published as version 1.1, 10.5281/zenodo.24485458): rStar counts primitive pairs with
 signs (the box |a|, |b| <= n holds every solution; n = 0 gives 0); Wfun = 2^omega r*/2 for gcd(n, 6) = 1, else 0, with
 exact division; R27, piR, piPlus and CR as in the preprint (CR sums j from 2 to Nat.log 2 x, iroot is floor(x^(1/j)));
 nblocks has the recursion and fuel shape of loop. block_count bounds the loop actually run by blockSZ (same start and
