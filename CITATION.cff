@@ -46,6 +46,7 @@ references:
     authors:
       - family-names: Farland
         given-names: Joseph S.
+        orcid: "https://orcid.org/0009-0007-6809-804X"
     year: 2026
     doi: 10.5281/zenodo.24485458
     notes: "Preprint, version 1.1 (version 1: 10.5281/zenodo.24408923); every theorem is proved in this repository"
